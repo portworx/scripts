@@ -98,6 +98,7 @@ if [[ "$option" == "PX" ]]; then
     "get sc -o yaml"
     "get pvc -A"
     "get pv"
+    "get sn -n $namespace"
   )
   output_files=(
     "k8s_px/px_pods.txt"
@@ -129,6 +130,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/sc.yaml"
     "k8s_oth/pvc_list.txt"
     "k8s_oth/pv_list.txt"
+    "k8s_oth/storagenodes_list.txt"
 
   )
   pxctl_commands=(
