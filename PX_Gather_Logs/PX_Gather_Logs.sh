@@ -104,7 +104,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_pods.txt"
     "k8s_px/px_pods.yaml"
     "k8s_px/px_pods_desc.txt"
-    "k8s_px/k8s_nodes.txt"
+    "k8s_oth/k8s_nodes.txt"
     "k8s_oth/k8s_nodes.yaml"
     "k8s_oth/k8s_nodes_desc.txt"
     "k8s_oth/k8s_events_all.txt"
