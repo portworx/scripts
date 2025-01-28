@@ -162,9 +162,9 @@ if [[ "$option" == "PX" ]]; then
     "px_out/pxctl_cs_status.txt"
     "px_out/pxctl_cs_status.json"
     "px_out/pxctl_cd_list.txt"
-    "px_out/pxct_cred_list.txt"
-    "px_out/px_volume_list.txt"
-    "px_out/px_volume_snapshot.txt"
+    "px_out/pxctl_cred_list.txt"
+    "px_out/pxctl_volume_list.txt"
+    "px_out/pxctl_volume_snapshot.txt"
     
   )
 
