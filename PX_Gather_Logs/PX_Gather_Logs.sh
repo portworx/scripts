@@ -67,6 +67,8 @@ echo "option: $option"
 if [[ "$option" == "PX" ]]; then
   admin_ns=$($cli -n $namespace get stc -o yaml|grep admin-namespace|cut -d ":" -f2|tr -d " ")
   admin_ns="${admin_ns:-kube-system}"
+  sec_enabled=$($cli -n $namespace get stc -o=jsonpath='{.items[*].spec.security.enabled}')
+
 
   commands=(
     "get pods -o wide -n $namespace"
@@ -216,8 +218,9 @@ if [[ "$option" == "PX" ]]; then
     "migration/schedulepolicies.txt"
     "migration/schedulepolicies.yaml"
   )
+  
 
-  pxcmd="exec service/portworx-service -- /opt/pwx/bin/pxctl"
+  
   main_dir="PX_${namespace}_outputs_$(date +%Y%m%d_%s)"
   output_dir="/tmp/${main_dir}"
   sub_dir=(${output_dir}/logs ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration)
@@ -359,13 +362,31 @@ for i in "${!commands[@]}"; do
   #echo "------------------------------------" 
 done
 
+
+   if [ "$sec_enabled" == "true" ]; then
+     TOKEN_EXP="export PXCTL_AUTH_TOKEN=$($cli -n $namespace get secret px-admin-token --template='{{index .data "auth-token" | base64decode}}')"
+     echo "Security Enabled: true">>$summary_file
+     #pxcmd="exec service/portworx-service -- bash -c \"\${TOKEN} && /opt/pwx/bin/pxctl"
+     #pxcmd="exec service/portworx-service -- bash -c \"${TOKEN} && /opt/pwx/bin/pxctl"
+
+  else
+     echo "Security Enabled: false">>$summary_file
+     #pxcmd="exec service/portworx-service -- \"/opt/pwx/bin/pxctl"
+  fi
 # Execute pxctl commands 
 
 for i in "${!pxctl_commands[@]}"; do
   cmd="${pxctl_commands[$i]}"
   output_file="$output_dir/${pxctl_output_files[$i]}"
   #echo "Executing: pxctl $cmd"
-  $cli -n $namespace $pxcmd $cmd > "$output_file" 2>&1
+  #final_px_command="$pxcmd $cmd\""
+  #echo $final_px_command
+  if [ "$sec_enabled" == "true" ]; then
+  $cli -n $namespace exec service/portworx-service -- bash -c "${TOKEN_EXP} && /opt/pwx/bin/pxctl $cmd" > "$output_file" 2>&1
+  else
+  $cli -n $namespace exec service/portworx-service -- bash -c "/opt/pwx/bin/pxctl $cmd" > "$output_file" 2>&1
+  fi
+  #$cli -n $namespace $final_px_command > "$output_file" 2>&1
   #echo "Output saved to: $output_file"
   #echo ""
   #echo "------------------------------------" 
