@@ -8,7 +8,7 @@
 #       Example: PX_Gather_Logs.sh -n portworx -c kubectl -o PX
 #   For PX Backup: PX_Gather_Logs.sh -n <Portworx Backup namespace> -c <k8s cli> -o PXB
 #       Example: PX_Gather_Logs.sh -n px-backup -c oc -o PXB
-# - If there are no parameters passed, shell will promt for input
+# - If there are no parameters passed, shell will prompt for input
 #
 # ================================================================
 
