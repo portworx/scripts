@@ -271,6 +271,7 @@ else
     "get sc -o yaml"
     "get pvc -A"
     "get pv"
+    "get dataexports -A"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -323,6 +324,7 @@ else
     "k8s_oth/sc.yaml"
     "k8s_oth/pvc_list.txt"
     "k8s_oth/pv_list.txt"
+    "k8s_bkp/pxb_dataexports.txt"
   )
 log_labels=()
 migration_commands=()
