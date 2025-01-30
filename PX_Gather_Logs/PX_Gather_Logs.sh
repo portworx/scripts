@@ -232,7 +232,7 @@ else
     "get nodes -o wide -n $namespace"
     "get nodes -o wide -n $namespace -o yaml"
     "describe nodes -n $namespace"
-    "get events -A"
+    "get events -A --sort-by=.lastTimestamp"
     "get deploy -o wide -n $namespace"
     "get deploy -o wide -n $namespace -o yaml"
     "describe deploy -n $namespace"
