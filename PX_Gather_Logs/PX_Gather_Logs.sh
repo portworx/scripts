@@ -77,7 +77,7 @@ if [[ "$option" == "PX" ]]; then
     "get nodes -o wide -n $namespace"
     "get nodes -o wide -n $namespace -o yaml"
     "describe nodes -n $namespace"
-    "get events -A"
+    "get events -A --sort-by=.lastTimestamp"
     "get stc -o yaml -n $namespace"
     "describe stc -n $namespace"
     "get deploy -o wide -n $namespace"
