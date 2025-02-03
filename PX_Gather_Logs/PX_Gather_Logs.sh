@@ -467,4 +467,4 @@ else
   echo ""
 fi
 
-echo "Script execution completed successfully."
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Script execution completed successfully."
