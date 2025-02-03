@@ -83,7 +83,8 @@ if [[ "$option" == "PX" ]]; then
     "get deploy -o wide -n $namespace"
     "get deploy -o wide -n $namespace -o yaml"
     "describe deploy -n $namespace"
-    "get volumeattachments -A "
+    "get volumeattachments"
+    "get volumeattachments -o yaml"
     "get csidrivers"
     "get csinodes"
     "get csinodes -o yaml"
@@ -115,7 +116,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_deploy.txt"
     "k8s_px/px_deploy.yaml"
     "k8s_px/px_deploy_desc.txt"
-    "k8s_oth/k8s_volumeattachments_all.txt"
+    "k8s_oth/volumeattachments.txt"
+    "k8s_oth/volumeattachments.yaml"
     "k8s_oth/csidrivers.txt"
     "k8s_oth/csinodes.txt"
     "k8s_oth/csinodes.yaml"
@@ -166,7 +168,7 @@ if [[ "$option" == "PX" ]]; then
     "px_out/pxctl_cd_list.txt"
     "px_out/pxctl_cred_list.txt"
     "px_out/pxctl_volume_list.txt"
-    "px_out/pxctl_volume_snapshot.txt"
+    "px_out/pxctl_volume_snapshot_list.txt"
     
   )
 
@@ -186,12 +188,16 @@ if [[ "$option" == "PX" ]]; then
 
   oth_commands=(
     "$cli -n kube-system get cm $($cli -n kube-system get cm|grep px-bootstrap|awk '{print $1}') -o yaml"
+    "$cli -n kube-system get cm $($cli -n kube-system get cm|grep px-bootstrap|awk '{print $1}') -o json"
     "$cli -n kube-system get cm $($cli -n kube-system get cm|grep px-cloud-drive|awk '{print $1}') -o yaml"
+    "$cli -n kube-system get cm $($cli -n kube-system get cm|grep px-cloud-drive|awk '{print $1}') -o json"
 
   )
   oth_output_files=(
     "k8s_px/px-bootstrap.yaml"
+    "k8s_px/px-bootstrap.json"
     "k8s_px/px-cloud-drive.yaml"
+    "k8s_px/px-cloud-drive.json"
 
   )
   migration_commands=(
@@ -199,7 +205,7 @@ if [[ "$option" == "PX" ]]; then
     "describe clusterpair -n $admin_ns "
     "get clusterpair -n $admin_ns -o yaml"
     "get migrations -n $admin_ns"
-    "get describe migrations -n $admin_ns"
+    "describe migrations -n $admin_ns"
     "get migrations -n $admin_ns -o yaml"
     "get migrationschedule -n $admin_ns"
     "get migrationschedule -n $admin_ns -o yaml"
