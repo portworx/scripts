@@ -60,9 +60,9 @@ fi
 
 
 # Confirm inputs
-echo "Namespace: $namespace"
-echo "CLI tool: $cli"
-echo "option: $option"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Namespace: $namespace"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): CLI tool: $cli"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): option: $option"
 # Set commands based on the chosen option
 if [[ "$option" == "PX" ]]; then
   admin_ns=$($cli -n $namespace get stc -o yaml|grep admin-namespace|cut -d ":" -f2|tr -d " ")
@@ -347,8 +347,8 @@ fi
 # Create a temporary directory for storing outputs
 mkdir -p "$output_dir"
 mkdir -p "${sub_dir[@]}"
-echo "Output will be stored in: $output_dir"
-echo "Extraction is in progress"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Output will be stored in: $output_dir"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is started"
 
 #Generate Summary file with parameter and date information
 summary_file=$output_dir/Summary.txt
@@ -358,6 +358,7 @@ echo "option: $option">>$summary_file
 echo "Start of generation:" $(date)>>$summary_file
 
 # Execute commands and save outputs to files
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 1/5..."
 for i in "${!commands[@]}"; do
   cmd="${commands[$i]}"
   output_file="$output_dir/${output_files[$i]}"
@@ -380,6 +381,7 @@ done
      #pxcmd="exec service/portworx-service -- \"/opt/pwx/bin/pxctl"
   fi
 # Execute pxctl commands 
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 2/5..."
 
 for i in "${!pxctl_commands[@]}"; do
   cmd="${pxctl_commands[$i]}"
@@ -399,6 +401,8 @@ for i in "${!pxctl_commands[@]}"; do
 done
 
 # Generating Logs
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 3/5..."
+
 for i in "${!log_labels[@]}"; do
   label="${log_labels[$i]}"
   if [[ "$option" == "PX" ]]; then
@@ -416,6 +420,7 @@ for i in "${!log_labels[@]}"; do
 done
 
 # Execute other commands 
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 4/5..."
 
 for i in "${!oth_commands[@]}"; do
   cmd="${oth_commands[$i]}"
@@ -429,6 +434,7 @@ done
 
 #Execute Migration commands
 
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 5/5..."
 
 for i in "${!migration_commands[@]}"; do
   cmd="${migration_commands[$i]}"
@@ -440,6 +446,7 @@ for i in "${!migration_commands[@]}"; do
   #echo "------------------------------------" 
 done
 
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
 echo "End of generation:" $(date)>>$summary_file
 
 # Compress the output directory into a tar file
@@ -448,7 +455,7 @@ cd /tmp
 tar -cf "$archive_file" "$main_dir"
 echo "************************************************"
 echo ""
-echo "All outputs compressed into: /tmp/$archive_file"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): All outputs compressed into: /tmp/$archive_file"
 echo ""
 echo "************************************************"
 
