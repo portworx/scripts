@@ -337,7 +337,9 @@ else
     "k8s_oth/pv_list.txt"
     "k8s_bkp/pxb_dataexports.txt"
   )
-log_labels=()
+log_labels=(
+""
+)
 migration_commands=()
 oth_commands=()
   main_dir="PX_Backup_${namespace}_outputs_$(date +%Y%m%d_%s)"
