@@ -260,6 +260,8 @@ else
     "get job,cronjobs -o wide -n $namespace"
     "get applicationbackups -A"
     "get applicationbackups -A -o yaml"
+    "get applicationbackupschedule -A"
+    "get applicationbackupschedule -A -o yaml"
     "get applicationrestores -A"
     "get applicationrestores -A -o yaml"
     "get applicationregistrations -A"
