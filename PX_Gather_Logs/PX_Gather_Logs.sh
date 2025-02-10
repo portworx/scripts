@@ -102,6 +102,8 @@ if [[ "$option" == "PX" ]]; then
     "get pvc -A"
     "get pv"
     "get sn -n $namespace"
+    "get mutatingwebhookconfiguration"
+    "get mutatingwebhookconfiguration -o yaml"
   )
   output_files=(
     "k8s_px/px_pods.txt"
@@ -135,6 +137,9 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/pvc_list.txt"
     "k8s_oth/pv_list.txt"
     "k8s_oth/storagenodes_list.txt"
+    "k8s_oth/mutatingwebhookconfiguration.txt"
+    "k8s_oth/mutatingwebhookconfiguration.yaml"
+
 
   )
   pxctl_commands=(
@@ -224,7 +229,7 @@ if [[ "$option" == "PX" ]]; then
     "migration/schedulepolicies.txt"
     "migration/schedulepolicies.yaml"
   )
-  
+  logs_oth_ns=()
 
   
   main_dir="PX_${namespace}_outputs_$(date +%Y%m%d_%s)"
@@ -283,6 +288,8 @@ else
     "get pvc -A"
     "get pv"
     "get dataexports -A"
+    "get mutatingwebhookconfiguration"
+    "get mutatingwebhookconfiguration -o yaml"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -336,12 +343,19 @@ else
     "k8s_oth/pvc_list.txt"
     "k8s_oth/pv_list.txt"
     "k8s_bkp/pxb_dataexports.txt"
+    "k8s_oth/mutatingwebhookconfiguration.txt"
+    "k8s_oth/mutatingwebhookconfiguration.yaml"
   )
 log_labels=(
-""
+  ""
 )
 migration_commands=()
 oth_commands=()
+logs_oth_ns=(
+    "name=stork"
+    "kdmp.portworx.com/driver-name=kopiabackup"
+)
+
   main_dir="PX_Backup_${namespace}_outputs_$(date +%Y%m%d_%s)"
   output_dir="/tmp/${main_dir}"
   sub_dir=(${output_dir}/logs ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
@@ -362,7 +376,7 @@ echo "option: $option">>$summary_file
 echo "Start of generation:" $(date)>>$summary_file
 
 # Execute commands and save outputs to files
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 1/5..."
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 1/6..."
 for i in "${!commands[@]}"; do
   cmd="${commands[$i]}"
   output_file="$output_dir/${output_files[$i]}"
@@ -385,7 +399,7 @@ done
      #pxcmd="exec service/portworx-service -- \"/opt/pwx/bin/pxctl"
   fi
 # Execute pxctl commands 
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 2/5..."
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 2/6..."
 
 for i in "${!pxctl_commands[@]}"; do
   cmd="${pxctl_commands[$i]}"
@@ -405,7 +419,7 @@ for i in "${!pxctl_commands[@]}"; do
 done
 
 # Generating Logs
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 3/5..."
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 3/6..."
 
 for i in "${!log_labels[@]}"; do
   label="${log_labels[$i]}"
@@ -424,7 +438,7 @@ for i in "${!log_labels[@]}"; do
 done
 
 # Execute other commands 
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 4/5..."
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 4/6..."
 
 for i in "${!oth_commands[@]}"; do
   cmd="${oth_commands[$i]}"
@@ -438,7 +452,7 @@ done
 
 #Execute Migration commands
 
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 5/5..."
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 5/6..."
 
 for i in "${!migration_commands[@]}"; do
   cmd="${migration_commands[$i]}"
@@ -448,6 +462,29 @@ for i in "${!migration_commands[@]}"; do
   #echo "Output saved to: $output_file"
   #echo ""
   #echo "------------------------------------" 
+done
+
+#Execute log extractions from other namespaces
+
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 6/6..."
+
+for i in "${!logs_oth_ns[@]}"; do
+  label="${logs_oth_ns[$i]}"
+  $cli get pods -A -l $label -o jsonpath="{range .items[*]}{.metadata.namespace} {.metadata.name}{'\n'}{end}"|
+  while read -r namespace pod; do  
+  if [[ -n "$namespace" && -n "$pod" ]]; then
+        LOG_FILE="${output_dir}/logs/${pod}.log"
+        if [[ "$option" == "PXB" ]]; then
+        POD_YAML_FILE="${output_dir}/k8s_pxb/${pod}.yaml"
+        else
+        POD_YAML_FILE="${output_dir}/k8s_px/${pod}.yaml"
+        fi
+        #echo "Saving logs for Pod: $pod (Namespace: $namespace)"
+        $cli logs -n "$namespace" "$pod" --tail -1 --all-containers > "$LOG_FILE"
+        $cli -n "$namespace" get pod "$pod" -o yaml > "$POD_YAML_FILE"
+  fi
+  
+  done
 done
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
