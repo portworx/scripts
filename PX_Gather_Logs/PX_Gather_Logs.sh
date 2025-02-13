@@ -354,6 +354,7 @@ oth_commands=()
 logs_oth_ns=(
     "name=stork"
     "kdmp.portworx.com/driver-name=kopiabackup"
+    "kdmp.portworx.com/driver-name=nfsbackup"
 )
 
   main_dir="PX_Backup_${namespace}_outputs_$(date +%Y%m%d_%s)"
