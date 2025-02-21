@@ -104,6 +104,10 @@ if [[ "$option" == "PX" ]]; then
     "get sn -n $namespace"
     "get mutatingwebhookconfiguration"
     "get mutatingwebhookconfiguration -o yaml"
+    "get svc,ep -o wide -n $namespace"
+    "get svc,ep -o yaml -n $namespace"
+    "get ds -o yaml -n $namespace"
+    
   )
   output_files=(
     "k8s_px/px_pods.txt"
@@ -139,6 +143,9 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/storagenodes_list.txt"
     "k8s_oth/mutatingwebhookconfiguration.txt"
     "k8s_oth/mutatingwebhookconfiguration.yaml"
+    "k8s_px/px_svc_ep.txt"
+    "k8s_px/px_svc_ep.yaml"
+    "k8s_px/px_ds.yaml"
 
 
   )
@@ -232,7 +239,7 @@ if [[ "$option" == "PX" ]]; then
   logs_oth_ns=()
 
   
-  main_dir="PX_${namespace}_outputs_$(date +%Y%m%d_%s)"
+  main_dir="PX_${namespace}_outputs_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
   sub_dir=(${output_dir}/logs ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration)
 else
@@ -357,7 +364,7 @@ logs_oth_ns=(
     "kdmp.portworx.com/driver-name=nfsbackup"
 )
 
-  main_dir="PX_Backup_${namespace}_outputs_$(date +%Y%m%d_%s)"
+  main_dir="PX_Backup_${namespace}_outputs_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
   sub_dir=(${output_dir}/logs ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
 
