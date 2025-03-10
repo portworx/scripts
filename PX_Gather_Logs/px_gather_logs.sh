@@ -107,6 +107,9 @@ if [[ "$option" == "PX" ]]; then
     "get svc,ep -o wide -n $namespace"
     "get svc,ep -o yaml -n $namespace"
     "get ds -o yaml -n $namespace"
+    "get pdb -n $namespace"
+    "get pdb -n $namespace -o yaml"
+    "get pods -n kube-system -o wide"
     
   )
   output_files=(
@@ -146,6 +149,9 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_svc_ep.txt"
     "k8s_px/px_svc_ep.yaml"
     "k8s_px/px_ds.yaml"
+    "k8s_px/px_pdb.txt"
+    "k8s_px/px_pdb.yaml"
+    "k8s_oth/pods_kube_system.txt"
 
 
   )
