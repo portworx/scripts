@@ -277,25 +277,25 @@ if [[ "$option" == "PX" ]]; then
   )
   
    kubevirt_ouput=(
-    "k8s_px/kubevirts_list.txt"
-    "k8s_px/kubevirts.yaml"
-    "k8s_px/kubevirt_virtualmachines.txt"
-    "k8s_px/kubevirt_virtualmachines.yaml"
-    "k8s_px/kubevirt_virtualmachineinstances.txt"
-    "k8s_px/kubevirt_virtualmachineinstances.yaml"
-    "k8s_px/kubevirt_hyperconvergeds.txt"
-    "k8s_px/kubevirt_hyperconvergeds.yaml"
-    "k8s_px/kubevirt_kubevirt_cdiconfigs.txt"
-    "k8s_px/kubevirt_cdiconfigs.yaml"
-    "k8s_px/kubevirt_cdis.txt"
-    "k8s_px/kubevirt_cdis.yaml"
-    "k8s_px/kubevirt_datavolumes.txt"
-    "k8s_px/kubevirt_datavolumes.yaml"
-    "k8s_px/kubevirt_datavolumes_desc.txt"
-    "k8s_px/kubevirt_storageprofiles.txt"
-    "k8s_px/kubevirt_storageprofiles.yaml"
-    "k8s_px/kubevirt_migrations_list.txt"
-    "k8s_px/kubevirt_migrations.yaml"
+    "k8s_oth/kubevirts_list.txt"
+    "k8s_oth/kubevirts.yaml"
+    "k8s_oth/kubevirt_virtualmachines.txt"
+    "k8s_oth/kubevirt_virtualmachines.yaml"
+    "k8s_oth/kubevirt_virtualmachineinstances.txt"
+    "k8s_oth/kubevirt_virtualmachineinstances.yaml"
+    "k8s_oth/kubevirt_hyperconvergeds.txt"
+    "k8s_oth/kubevirt_hyperconvergeds.yaml"
+    "k8s_oth/kubevirt_kubevirt_cdiconfigs.txt"
+    "k8s_oth/kubevirt_cdiconfigs.yaml"
+    "k8s_oth/kubevirt_cdis.txt"
+    "k8s_oth/kubevirt_cdis.yaml"
+    "k8s_oth/kubevirt_datavolumes.txt"
+    "k8s_oth/kubevirt_datavolumes.yaml"
+    "k8s_oth/kubevirt_datavolumes_desc.txt"
+    "k8s_oth/kubevirt_storageprofiles.txt"
+    "k8s_oth/kubevirt_storageprofiles.yaml"
+    "k8s_oth/kubevirt_migrations_list.txt"
+    "k8s_oth/kubevirt_migrations.yaml"
   )
   
   logs_oth_ns=()
@@ -456,17 +456,6 @@ for i in "${!commands[@]}"; do
   #echo "------------------------------------" 
 done
 
-#Check if kubevirt is enabled and get kubevirt configs only if kubevirt is enabled
-if $cli get crd | grep -q "virtualmachines.kubevirt.io"; then
-  #echo "KubeVirt is likely enabled."
-  mkdir -p $output_dir
-  for i in "${!kubevirt_commands[@]}"; do
-    cmd="${kubevirt_commands[$i]}"
-    output_file="$output_dir/${kubevirt_ouput[$i]}"
-    $cli $cmd > "$output_file" 2>&1
-  done
-fi
-
    if [ "$sec_enabled" == "true" ]; then
      TOKEN_EXP="export PXCTL_AUTH_TOKEN=$($cli -n $namespace get secret px-admin-token --template='{{index .data "auth-token" | base64decode}}')"
      echo "Security Enabled: true">>$summary_file
@@ -528,6 +517,17 @@ for i in "${!oth_commands[@]}"; do
   #echo ""
   #echo "------------------------------------" 
 done
+
+#Check if kubevirt is enabled and get kubevirt configs only if kubevirt is enabled
+if $cli get crd | grep -q "virtualmachines.kubevirt.io"; then
+  #echo "KubeVirt is likely enabled."
+  mkdir -p $output_dir
+  for i in "${!kubevirt_commands[@]}"; do
+    cmd="${kubevirt_commands[$i]}"
+    output_file="$output_dir/${kubevirt_ouput[$i]}"
+    $cli $cmd > "$output_file" 2>&1
+  done
+fi
 
 #Execute Migration commands
 
