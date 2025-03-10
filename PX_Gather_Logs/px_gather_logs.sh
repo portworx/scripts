@@ -111,6 +111,10 @@ if [[ "$option" == "PX" ]]; then
     "get pdb -n $namespace -o yaml"
     "get pods -n kube-system -o wide"
     "version"
+    "get autopilotrules"
+    "get autopilotrules -o yaml"
+    "get autopilotruleobjects -A"
+    "get autopilotruleobjects -A -o yaml"
     
   )
   output_files=(
@@ -154,6 +158,10 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_pdb.yaml"
     "k8s_oth/pods_kube_system.txt"
     "k8s_oth/k8s_version.txt"
+    "k8s_px/autopilotrules.txt"
+    "k8s_px/autopilotrules.yaml"
+    "k8s_px/autopilotruleobjects.txt"
+    "k8s_px/autopilotruleobjects.yaml"
 
   )
   pxctl_commands=(
