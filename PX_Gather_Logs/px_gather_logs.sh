@@ -107,6 +107,14 @@ if [[ "$option" == "PX" ]]; then
     "get svc,ep -o wide -n $namespace"
     "get svc,ep -o yaml -n $namespace"
     "get ds -o yaml -n $namespace"
+    "get pdb -n $namespace"
+    "get pdb -n $namespace -o yaml"
+    "get pods -n kube-system -o wide"
+    "version"
+    "get autopilotrules"
+    "get autopilotrules -o yaml"
+    "get autopilotruleobjects -A"
+    "get autopilotruleobjects -A -o yaml"
     
   )
   output_files=(
@@ -146,7 +154,14 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_svc_ep.txt"
     "k8s_px/px_svc_ep.yaml"
     "k8s_px/px_ds.yaml"
-
+    "k8s_px/px_pdb.txt"
+    "k8s_px/px_pdb.yaml"
+    "k8s_oth/pods_kube_system.txt"
+    "k8s_oth/k8s_version.txt"
+    "k8s_px/autopilotrules.txt"
+    "k8s_px/autopilotrules.yaml"
+    "k8s_px/autopilotruleobjects.txt"
+    "k8s_px/autopilotruleobjects.yaml"
 
   )
   pxctl_commands=(
@@ -161,6 +176,7 @@ if [[ "$option" == "PX" ]]; then
     "cloudsnap status"
     "cloudsnap status -j"
     "cd list"
+    "cd list -j"
     "cred list"
     "volume list -v"
     "volume list -s"
@@ -178,6 +194,7 @@ if [[ "$option" == "PX" ]]; then
     "px_out/pxctl_cs_status.txt"
     "px_out/pxctl_cs_status.json"
     "px_out/pxctl_cd_list.txt"
+    "px_out/pxctl_cd_list.json"
     "px_out/pxctl_cred_list.txt"
     "px_out/pxctl_volume_list.txt"
     "px_out/pxctl_volume_snapshot_list.txt"
