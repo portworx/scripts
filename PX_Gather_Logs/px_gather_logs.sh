@@ -110,6 +110,7 @@ if [[ "$option" == "PX" ]]; then
     "get pdb -n $namespace"
     "get pdb -n $namespace -o yaml"
     "get pods -n kube-system -o wide"
+    "version"
     
   )
   output_files=(
@@ -152,7 +153,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_pdb.txt"
     "k8s_px/px_pdb.yaml"
     "k8s_oth/pods_kube_system.txt"
-
+    "k8s_oth/k8s_version.txt"
 
   )
   pxctl_commands=(
