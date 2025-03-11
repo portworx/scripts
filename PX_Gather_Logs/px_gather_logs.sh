@@ -20,6 +20,12 @@ usage() {
   echo "  -o <option>    : Operation option (PX/PXB)"
   exit 1
 }
+# Function to print progress
+
+print_progress() {
+    local stage=$1
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $stage/7..."
+}
 
 # Parse command-line arguments
 while getopts "n:c:o:" opt; do
@@ -241,7 +247,7 @@ if [[ "$option" == "PX" ]]; then
     "get schedulepolicies"
     "get schedulepolicies -o yaml"
   )
-   migration_ouput=(
+   migration_output=(
     "migration/clusterpair.txt"
     "migration/clusterpair_desc.txt"
     "migration/clusterpair.yaml"
@@ -276,7 +282,7 @@ if [[ "$option" == "PX" ]]; then
     "get migrations.forklift.konveyor.io -A -o yaml"
   )
   
-   kubevirt_ouput=(
+   kubevirt_output=(
     "k8s_oth/kubevirts_list.txt"
     "k8s_oth/kubevirts.yaml"
     "k8s_oth/kubevirt_virtualmachines.txt"
@@ -445,7 +451,7 @@ echo "option: $option">>$summary_file
 echo "Start of generation:" $(date)>>$summary_file
 
 # Execute commands and save outputs to files
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 1/6..."
+print_progress 1
 for i in "${!commands[@]}"; do
   cmd="${commands[$i]}"
   output_file="$output_dir/${output_files[$i]}"
@@ -467,7 +473,7 @@ done
      #pxcmd="exec service/portworx-service -- \"/opt/pwx/bin/pxctl"
   fi
 # Execute pxctl commands 
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 2/6..."
+print_progress 2
 
 for i in "${!pxctl_commands[@]}"; do
   cmd="${pxctl_commands[$i]}"
@@ -487,7 +493,7 @@ for i in "${!pxctl_commands[@]}"; do
 done
 
 # Generating Logs
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 3/6..."
+print_progress 3
 
 for i in "${!log_labels[@]}"; do
   label="${log_labels[$i]}"
@@ -506,7 +512,7 @@ for i in "${!log_labels[@]}"; do
 done
 
 # Execute other commands 
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 4/6..."
+print_progress 4
 
 for i in "${!oth_commands[@]}"; do
   cmd="${oth_commands[$i]}"
@@ -519,23 +525,25 @@ for i in "${!oth_commands[@]}"; do
 done
 
 #Check if kubevirt is enabled and get kubevirt configs only if kubevirt is enabled
+print_progress 5
+
 if $cli get crd | grep -q "virtualmachines.kubevirt.io"; then
   #echo "KubeVirt is likely enabled."
   mkdir -p $output_dir
   for i in "${!kubevirt_commands[@]}"; do
     cmd="${kubevirt_commands[$i]}"
-    output_file="$output_dir/${kubevirt_ouput[$i]}"
+    output_file="$output_dir/${kubevirt_output[$i]}"
     $cli $cmd > "$output_file" 2>&1
   done
 fi
 
 #Execute Migration commands
 
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 5/6..."
+print_progress 6
 
 for i in "${!migration_commands[@]}"; do
   cmd="${migration_commands[$i]}"
-  output_file="$output_dir/${migration_ouput[$i]}"
+  output_file="$output_dir/${migration_output[$i]}"
   #echo "Executing: $cli $cmd"
   $cli $cmd > "$output_file" 2>&1
   #echo "Output saved to: $output_file"
@@ -545,7 +553,7 @@ done
 
 #Execute log extractions from other namespaces
 
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting 6/6..."
+print_progress 7
 
 for i in "${!logs_oth_ns[@]}"; do
   label="${logs_oth_ns[$i]}"
