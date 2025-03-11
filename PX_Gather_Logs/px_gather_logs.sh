@@ -247,7 +247,7 @@ if [[ "$option" == "PX" ]]; then
     "get schedulepolicies"
     "get schedulepolicies -o yaml"
   )
-   migration_ouput=(
+   migration_output=(
     "migration/clusterpair.txt"
     "migration/clusterpair_desc.txt"
     "migration/clusterpair.yaml"
@@ -282,7 +282,7 @@ if [[ "$option" == "PX" ]]; then
     "get migrations.forklift.konveyor.io -A -o yaml"
   )
   
-   kubevirt_ouput=(
+   kubevirt_output=(
     "k8s_oth/kubevirts_list.txt"
     "k8s_oth/kubevirts.yaml"
     "k8s_oth/kubevirt_virtualmachines.txt"
@@ -532,7 +532,7 @@ if $cli get crd | grep -q "virtualmachines.kubevirt.io"; then
   mkdir -p $output_dir
   for i in "${!kubevirt_commands[@]}"; do
     cmd="${kubevirt_commands[$i]}"
-    output_file="$output_dir/${kubevirt_ouput[$i]}"
+    output_file="$output_dir/${kubevirt_output[$i]}"
     $cli $cmd > "$output_file" 2>&1
   done
 fi
@@ -543,7 +543,7 @@ print_progress 6
 
 for i in "${!migration_commands[@]}"; do
   cmd="${migration_commands[$i]}"
-  output_file="$output_dir/${migration_ouput[$i]}"
+  output_file="$output_dir/${migration_output[$i]}"
   #echo "Executing: $cli $cmd"
   $cli $cmd > "$output_file" 2>&1
   #echo "Output saved to: $output_file"
