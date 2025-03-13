@@ -23,8 +23,9 @@ usage() {
 # Function to print progress
 
 print_progress() {
-    local stage=$1
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $stage/7..."
+    local current_stage=$1
+    local total_stages="7"
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..."
 }
 
 # Parse command-line arguments
@@ -364,6 +365,7 @@ else
     "get dataexports -A"
     "get mutatingwebhookconfiguration"
     "get mutatingwebhookconfiguration -o yaml"
+    "get cm kdmp-config -n kube-system -o yaml"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -419,6 +421,7 @@ else
     "k8s_bkp/pxb_dataexports.txt"
     "k8s_oth/mutatingwebhookconfiguration.txt"
     "k8s_oth/mutatingwebhookconfiguration.yaml"
+    "k8s_pxb/kdmp-config.yaml"
   )
 log_labels=(
   ""
