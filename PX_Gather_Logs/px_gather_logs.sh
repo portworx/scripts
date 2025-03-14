@@ -20,18 +20,6 @@ usage() {
   echo "  -o <option>    : Operation option (PX/PXB)"
   exit 1
 }
-# Function to print progress
-
-print_progress() {
-    local current_stage=$1
-    if [[ "$option" == "PXALL" ]]; then
-      local total_stages="8"
-    else
-      local total_stages="7"
-    fi
-    #echo "Extracting $current_stage/$total_stages..." | tee -a >(date '+%Y-%m-%d %H:%M:%S' >> "$summary_file")
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
-}
 
 # Parse command-line arguments
 while getopts "n:c:o:" opt; do
@@ -70,6 +58,16 @@ if [[ -z "$option" ]]; then
   fi
 fi
 
+# Function to print progress
+print_progress() {
+    local current_stage=$1
+    if [[ "$option" == "PXALL" ]]; then
+      local total_stages="8"
+    else
+      local total_stages="7"
+    fi
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
+}
 
 # Confirm inputs
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Namespace: $namespace"
