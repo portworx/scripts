@@ -444,7 +444,7 @@ logs_oth_ns=(
 fi
 
 
-if [[ "$option" == "PX-ALL" || "$option" == "PX" ]]; then
+if [[ "$option" == "PXALL" || "$option" == "PX" ]]; then
   bkp_commands=(
     "get dataexports -A"
     "get applicationbackups -A"
