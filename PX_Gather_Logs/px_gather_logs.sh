@@ -29,8 +29,8 @@ print_progress() {
     else
       local total_stages="7"
     fi
-    echo "Extracting $current_stage/$total_stages..." | tee -a >(date '+%Y-%m-%d %H:%M:%S' >> "$summary_file")
-    #echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..."
+    #echo "Extracting $current_stage/$total_stages..." | tee -a >(date '+%Y-%m-%d %H:%M:%S' >> "$summary_file")
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
 # Parse command-line arguments
