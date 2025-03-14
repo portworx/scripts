@@ -186,7 +186,9 @@ if [[ "$option" == "PX" ]]; then
     "cd list -j"
     "cred list"
     "volume list -v"
+    "volume list -v -j"
     "volume list -s"
+    "volume list -s -j"
 
   )
   pxctl_output_files=(
@@ -204,7 +206,9 @@ if [[ "$option" == "PX" ]]; then
     "px_out/pxctl_cd_list.json"
     "px_out/pxctl_cred_list.txt"
     "px_out/pxctl_volume_list.txt"
+    "px_out/pxctl_volume_list.json"
     "px_out/pxctl_volume_snapshot_list.txt"
+    "px_out/pxctl_volume_snapshot_list.json"
     
   )
 
