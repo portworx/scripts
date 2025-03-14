@@ -51,8 +51,8 @@ fi
 
 # Prompt for option if not provided
 if [[ -z "$option" ]]; then
-  read -p "Choose an option (PX/PXB) (Enter PX for Portworx Enterprise/CSI, PXALL for PX detailed, Enter PXB for PX Backup): " option
-  if [[ "$option" != "PX" && "$option" != "PXB" || "$option" != "PXALL" ]]; then
+  read -p "Choose an option (PX/PXB/PXALL) (Enter PX for Portworx Enterprise/CSI, PXALL for PX detailed, Enter PXB for PX Backup): " option
+  if [[ "$option" != "PX" && "$option" != "PXB" && "$option" != "PXALL" ]]; then
     echo "Error: Invalid option. Choose either 'PX' or 'PXB' or 'PXALL'"
     exit 1
   fi
