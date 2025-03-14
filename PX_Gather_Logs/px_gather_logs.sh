@@ -24,7 +24,7 @@ usage() {
 
 print_progress() {
     local current_stage=$1
-    if [[ "$option" == "PX-ALL" ]]; then
+    if [[ "$option" == "PXALL" ]]; then
       local total_stages="8"
     else
       local total_stages="7"
