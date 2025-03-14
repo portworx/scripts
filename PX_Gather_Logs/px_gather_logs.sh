@@ -537,7 +537,7 @@ print_progress 3
 
 for i in "${!log_labels[@]}"; do
   label="${log_labels[$i]}"
-  if [[ "$option" == "PX" ]]; then
+  if [[ "$option" == "PX"  || "$option" == "PXALL" ]]; then
     PODS=$($cli get pods -n $namespace -l $label -o jsonpath="{.items[*].metadata.name}")
   else
     PODS=$($cli get pods -n $namespace -o jsonpath="{.items[*].metadata.name}")
