@@ -20,13 +20,6 @@ usage() {
   echo "  -o <option>    : Operation option (PX/PXB)"
   exit 1
 }
-# Function to print progress
-
-print_progress() {
-    local current_stage=$1
-    local total_stages="7"
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..."
-}
 
 # Parse command-line arguments
 while getopts "n:c:o:" opt; do
@@ -58,20 +51,30 @@ fi
 
 # Prompt for option if not provided
 if [[ -z "$option" ]]; then
-  read -p "Choose an option (PX/PXB) (Enter PX for Portworx Enterprise/CSI, Enter PXB for PX Backup): " option
-  if [[ "$option" != "PX" && "$option" != "PXB" ]]; then
-    echo "Error: Invalid option. Choose either 'PX' or 'PXB'."
+  read -p "Choose an option (PX/PXB/PXALL) (Enter PX for Portworx Enterprise/CSI, PXALL for PX detailed, Enter PXB for PX Backup): " option
+  if [[ "$option" != "PX" && "$option" != "PXB" && "$option" != "PXALL" ]]; then
+    echo "Error: Invalid option. Choose either 'PX' or 'PXB' or 'PXALL'"
     exit 1
   fi
 fi
 
+# Function to print progress
+print_progress() {
+    local current_stage=$1
+    if [[ "$option" == "PXALL" ]]; then
+      local total_stages="8"
+    else
+      local total_stages="7"
+    fi
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
+}
 
 # Confirm inputs
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Namespace: $namespace"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): CLI tool: $cli"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): option: $option"
 # Set commands based on the chosen option
-if [[ "$option" == "PX" ]]; then
+if [[ "$option" == "PX" || "$option" == "PXALL" ]]; then
   admin_ns=$($cli -n $namespace get stc -o yaml|grep admin-namespace|cut -d ":" -f2|tr -d " ")
   admin_ns="${admin_ns:-kube-system}"
   sec_enabled=$($cli -n $namespace get stc -o=jsonpath='{.items[*].spec.security.enabled}')
@@ -448,6 +451,40 @@ logs_oth_ns=(
 
 fi
 
+
+if [[ "$option" == "PXALL" ]]; then
+  bkp_commands=(
+    "get dataexports -A"
+    "get applicationbackups -A"
+    "get applicationbackupschedule -A"
+    "get applicationbackupschedule -A -o yaml"
+    "get applicationrestores -A"
+    "get applicationregistrations -A"
+    "get backuplocations -A"
+    "get volumesnapshots -A"
+    "get volumesnapshotdatas -A"
+    "get volumesnapshotschedules -A"
+    "get volumesnapshotrestores -A"
+    "get volumesnapshotcontents -A"
+    "get cm kdmp-config -n kube-system -o yaml"
+    )
+  bkp_output_files=(
+    "k8s_oth/k8s_dataexports.txt"
+    "k8s_oth/k8s_applicationbackups.txt"
+    "k8s_oth/k8s_applicationbackupschedule.txt"
+    "k8s_oth/k8s_applicationbackupschedule.yaml"
+    "k8s_oth/k8s_applicationrestores.txt"
+    "k8s_oth/k8s_applicationregistrations.txt"
+    "k8s_oth/k8s_backuplocationstxt"
+    "k8s_oth/k8s_volumesnapshots.txt"
+    "k8s_oth/k8s_volumesnapshotdatas.txt"
+    "k8s_oth/k8s_volumesnapshotschedules.txt"
+    "k8s_oth/k8s_volumesnapshotrestores.txt"
+    "k8s_oth/k8s_volumesnapshotcontents.txt"
+    "k8s_oth/k8s_kdmp_config.yaml"
+    )
+fi
+
 # Create a temporary directory for storing outputs
 mkdir -p "$output_dir"
 mkdir -p "${sub_dir[@]}"
@@ -508,7 +545,7 @@ print_progress 3
 
 for i in "${!log_labels[@]}"; do
   label="${log_labels[$i]}"
-  if [[ "$option" == "PX" ]]; then
+  if [[ "$option" == "PX"  || "$option" == "PXALL" ]]; then
     PODS=$($cli get pods -n $namespace -l $label -o jsonpath="{.items[*].metadata.name}")
   else
     PODS=$($cli get pods -n $namespace -o jsonpath="{.items[*].metadata.name}")
@@ -583,6 +620,14 @@ for i in "${!logs_oth_ns[@]}"; do
   fi
   
   done
+done
+
+print_progress 8
+
+for i in "${!bkp_commands[@]}"; do
+  cmd="${bkp_commands[$i]}"
+  output_file="$output_dir/${bkp_output_files[$i]}"
+  $cli $cmd > "$output_file" 2>&1
 done
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
