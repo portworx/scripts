@@ -186,7 +186,9 @@ if [[ "$option" == "PX" ]]; then
     "cd list -j"
     "cred list"
     "volume list -v"
+    "volume list -v -j"
     "volume list -s"
+    "volume list -s -j"
 
   )
   pxctl_output_files=(
@@ -204,7 +206,9 @@ if [[ "$option" == "PX" ]]; then
     "px_out/pxctl_cd_list.json"
     "px_out/pxctl_cred_list.txt"
     "px_out/pxctl_volume_list.txt"
+    "px_out/pxctl_volume_list.json"
     "px_out/pxctl_volume_snapshot_list.txt"
+    "px_out/pxctl_volume_snapshot_list.json"
     
   )
 
@@ -350,6 +354,8 @@ else
     "get backuplocations -A -o yaml"
     "get volumesnapshots -A"
     "get volumesnapshots -A -o yaml"
+    "get volumesnapshotcontents"
+    "get volumesnapshotcontents -o yaml"
     "get volumesnapshotdatas -A"
     "get volumesnapshotdatas -A -o yaml"
     "get volumesnapshotschedules -A"
@@ -406,6 +412,8 @@ else
     "k8s_bkp/pxb_backuplocations.yaml"
     "k8s_bkp/pxb_volumesnapshots.txt"
     "k8s_bkp/pxb_volumesnapshots.yaml"
+    "k8s_bkp/pxb_volumesnapshotcontents.txt"
+    "k8s_bkp/pxb_volumesnapshotcontents.yaml"
     "k8s_bkp/pxb_volumesnapshotdatas.txt"
     "k8s_bkp/pxb_volumesnapshotdatas.yaml"
     "k8s_bkp/pxb_volumesnapshotschedules.txt"
