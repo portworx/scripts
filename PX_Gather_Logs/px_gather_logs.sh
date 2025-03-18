@@ -282,6 +282,11 @@ if [[ "$option" == "PX" ]]; then
     "name=px-plugin-proxy"
   )
 
+  k8s_log_labels=(
+    "component=kube-apiserver"
+    "component=kube-scheduler"
+  )
+  
   oth_commands=(
     "$cli -n kube-system get cm $($cli -n kube-system get cm|grep px-bootstrap|awk '{print $1}') -o yaml"
     "$cli -n kube-system get cm $($cli -n kube-system get cm|grep px-bootstrap|awk '{print $1}') -o json"
@@ -578,6 +583,22 @@ for i in "${!log_labels[@]}"; do
   #echo "Fetching logs for pod: $POD"
   # Fetch logs and write to file
   $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+  done
+  #echo "Logs for pod $POD written to: $LOG_FILE"
+done
+
+for i in "${!k8s_log_labels[@]}"; do
+  label="${k8s_log_labels[$i]}"
+  if [[ "$option" == "PX" ]]; then
+    PODS=$($cli get pods -n kube-system -l $label -o jsonpath="{.items[*].metadata.name}")
+  else
+    PODS=$($cli get pods -n kube-system -o jsonpath="{.items[*].metadata.name}")
+  fi
+  for POD in $PODS; do
+  LOG_FILE="${output_dir}/logs/${POD}.log"
+  #echo "Fetching logs for pod: $POD"
+  # Fetch logs and write to file
+  $cli logs -n kube-system "$POD" --tail -1 --all-containers > "$LOG_FILE"
   done
   #echo "Logs for pod $POD written to: $LOG_FILE"
 done
