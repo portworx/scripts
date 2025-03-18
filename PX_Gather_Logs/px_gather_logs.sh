@@ -25,7 +25,7 @@ usage() {
 print_progress() {
     local current_stage=$1
     local total_stages="7"
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..."
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
 # Parse command-line arguments
@@ -122,6 +122,30 @@ if [[ "$option" == "PX" ]]; then
     "get autopilotrules -o yaml"
     "get autopilotruleobjects -A"
     "get autopilotruleobjects -A -o yaml"
+    "get applicationbackups -A"
+    "get applicationbackups -A -o yaml"
+    "get applicationbackupschedule -A"
+    "get applicationbackupschedule -A -o yaml"
+    "describe applicationbackupschedule -A"
+    "get applicationrestores -A"
+    "get applicationrestores -A -o yaml"
+    "describe applicationrestores -A"
+    "get applicationregistrations -A"
+    "get applicationregistrations -A -o yaml"
+    "get backuplocations -A"
+    "get backuplocations -A -o yaml"
+    "get volumesnapshots -A"
+    "get volumesnapshots -A -o yaml"
+    "get volumesnapshotcontents"
+    "get volumesnapshotcontents -o yaml"
+    "get volumesnapshotdatas -A"
+    "get volumesnapshotdatas -A -o yaml"
+    "get volumesnapshotschedules -A"
+    "get volumesnapshotschedules -A -o yaml"
+    "get volumesnapshotrestores -A"
+    "get volumesnapshotrestores -A -o yaml"
+    "get schedulepolicies"
+    "get schedulepolicies -o yaml"
     
   )
   output_files=(
@@ -169,6 +193,30 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/autopilotrules.yaml"
     "k8s_px/autopilotruleobjects.txt"
     "k8s_px/autopilotruleobjects.yaml"
+    "k8s_bkp/pxb_applicationbackups.txt"
+    "k8s_bkp/pxb_applicationbackups.yaml"
+    "k8s_bkp/pxb_applicationbackupschedules.txt"
+    "k8s_bkp/pxb_applicationbackupschedules.yaml"
+    "k8s_bkp/pxb_applicationbackupschedules_desc.txt"
+    "k8s_bkp/pxb_applicationrestores.txt"
+    "k8s_bkp/pxb_applicationrestores.yaml"
+    "k8s_bkp/pxb_applicationrestores_desc.txt"
+    "k8s_bkp/pxb_applicationregistrations.txt"
+    "k8s_bkp/pxb_applicationregistrations.yaml"
+    "k8s_bkp/pxb_backuplocations.txt"
+    "k8s_bkp/pxb_backuplocations.yaml"
+    "k8s_bkp/pxb_volumesnapshots.txt"
+    "k8s_bkp/pxb_volumesnapshots.yaml"
+    "k8s_bkp/pxb_volumesnapshotcontents.txt"
+    "k8s_bkp/pxb_volumesnapshotcontents.yaml"
+    "k8s_bkp/pxb_volumesnapshotdatas.txt"
+    "k8s_bkp/pxb_volumesnapshotdatas.yaml"
+    "k8s_bkp/pxb_volumesnapshotschedules.txt"
+    "k8s_bkp/pxb_volumesnapshotschedules.yaml"
+    "k8s_bkp/pxb_volumesnapshotrestores.txt"
+    "k8s_bkp/pxb_volumesnapshotrestores.yaml"
+    "k8s_bkp/pxb_schedulepolicies.txt"
+    "k8s_bkp/pxb_schedulepolicies.yaml"
 
   )
   pxctl_commands=(
@@ -313,7 +361,7 @@ if [[ "$option" == "PX" ]]; then
 
   main_dir="PX_${namespace}_outputs_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
-  sub_dir=(${output_dir}/logs ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration)
+  sub_dir=(${output_dir}/logs ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp)
 else
   commands=(
     "get pods -o wide -n $namespace"
@@ -346,8 +394,10 @@ else
     "get applicationbackups -A -o yaml"
     "get applicationbackupschedule -A"
     "get applicationbackupschedule -A -o yaml"
+    "describe applicationbackupschedule -A"
     "get applicationrestores -A"
     "get applicationrestores -A -o yaml"
+    "describe applicationrestores -A"
     "get applicationregistrations -A"
     "get applicationregistrations -A -o yaml"
     "get backuplocations -A"
@@ -404,8 +454,10 @@ else
     "k8s_bkp/pxb_applicationbackups.yaml"
     "k8s_bkp/pxb_applicationbackupschedules.txt"
     "k8s_bkp/pxb_applicationbackupschedules.yaml"
+    "k8s_bkp/pxb_applicationbackupschedules_desc.txt"
     "k8s_bkp/pxb_applicationrestores.txt"
     "k8s_bkp/pxb_applicationrestores.yaml"
+    "k8s_bkp/pxb_applicationrestores_desc.txt"
     "k8s_bkp/pxb_applicationregistrations.txt"
     "k8s_bkp/pxb_applicationregistrations.yaml"
     "k8s_bkp/pxb_backuplocations.txt"
