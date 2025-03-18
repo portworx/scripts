@@ -348,6 +348,7 @@ if [[ "$option" == "PX" ]]; then
     "get migrations.forklift.konveyor.io -A -o yaml"
     "get virtualmachinerestore -A"
     "get virtualmachinerestore -A -o yaml"
+    "describe virtualmachinerestore -A"
   )
   
    kubevirt_output=(
@@ -372,6 +373,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/kubevirt_migrations.yaml"
     "k8s_oth/kubevirt_vmrestore.txt"
     "k8s_oth/kubevirt_vmrestore.yaml"
+    "k8s_oth/kubevirt_vmrestore_desc.txt"
   )
   
   logs_oth_ns=()
