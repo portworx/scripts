@@ -25,7 +25,7 @@ usage() {
 print_progress() {
     local current_stage=$1
     local total_stages="7"
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..."
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
 # Parse command-line arguments
@@ -126,8 +126,10 @@ if [[ "$option" == "PX" ]]; then
     "get applicationbackups -A -o yaml"
     "get applicationbackupschedule -A"
     "get applicationbackupschedule -A -o yaml"
+    "describe applicationbackupschedule -A"
     "get applicationrestores -A"
     "get applicationrestores -A -o yaml"
+    "describe applicationrestores -A"
     "get applicationregistrations -A"
     "get applicationregistrations -A -o yaml"
     "get backuplocations -A"
@@ -195,8 +197,10 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/pxb_applicationbackups.yaml"
     "k8s_bkp/pxb_applicationbackupschedules.txt"
     "k8s_bkp/pxb_applicationbackupschedules.yaml"
+    "k8s_bkp/pxb_applicationbackupschedules_desc.txt"
     "k8s_bkp/pxb_applicationrestores.txt"
     "k8s_bkp/pxb_applicationrestores.yaml"
+    "k8s_bkp/pxb_applicationrestores_desc.txt"
     "k8s_bkp/pxb_applicationregistrations.txt"
     "k8s_bkp/pxb_applicationregistrations.yaml"
     "k8s_bkp/pxb_backuplocations.txt"
@@ -390,8 +394,10 @@ else
     "get applicationbackups -A -o yaml"
     "get applicationbackupschedule -A"
     "get applicationbackupschedule -A -o yaml"
+    "describe applicationbackupschedule -A"
     "get applicationrestores -A"
     "get applicationrestores -A -o yaml"
+    "describe applicationrestores -A"
     "get applicationregistrations -A"
     "get applicationregistrations -A -o yaml"
     "get backuplocations -A"
@@ -448,8 +454,10 @@ else
     "k8s_bkp/pxb_applicationbackups.yaml"
     "k8s_bkp/pxb_applicationbackupschedules.txt"
     "k8s_bkp/pxb_applicationbackupschedules.yaml"
+    "k8s_bkp/pxb_applicationbackupschedules_desc.txt"
     "k8s_bkp/pxb_applicationrestores.txt"
     "k8s_bkp/pxb_applicationrestores.yaml"
+    "k8s_bkp/pxb_applicationrestores_desc.txt"
     "k8s_bkp/pxb_applicationregistrations.txt"
     "k8s_bkp/pxb_applicationregistrations.yaml"
     "k8s_bkp/pxb_backuplocations.txt"
