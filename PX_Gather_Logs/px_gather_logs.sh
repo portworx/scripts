@@ -357,7 +357,7 @@ if [[ "$option" == "PX" ]]; then
 
   main_dir="PX_${namespace}_outputs_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
-  sub_dir=(${output_dir}/logs ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_pxb)
+  sub_dir=(${output_dir}/logs ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp)
 else
   commands=(
     "get pods -o wide -n $namespace"
