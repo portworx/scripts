@@ -146,6 +146,10 @@ if [[ "$option" == "PX" ]]; then
     "get volumesnapshotrestores -A -o yaml"
     "get schedulepolicies"
     "get schedulepolicies -o yaml"
+    "get dataexports -A"
+    "get mutatingwebhookconfiguration"
+    "get mutatingwebhookconfiguration -o yaml"
+    "get cm kdmp-config -n kube-system -o yaml"
     
   )
   output_files=(
@@ -217,6 +221,10 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/pxb_volumesnapshotrestores.yaml"
     "k8s_bkp/pxb_schedulepolicies.txt"
     "k8s_bkp/pxb_schedulepolicies.yaml"
+    "k8s_bkp/pxb_dataexports.txt"
+    "k8s_oth/mutatingwebhookconfiguration.txt"
+    "k8s_oth/mutatingwebhookconfiguration.yaml"
+    "k8s_pxb/kdmp-config.yaml"    
 
   )
   pxctl_commands=(
