@@ -25,7 +25,7 @@ usage() {
 print_progress() {
     local current_stage=$1
     local total_stages="7"
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..."
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
 # Parse command-line arguments
