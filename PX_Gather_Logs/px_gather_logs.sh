@@ -346,6 +346,9 @@ if [[ "$option" == "PX" ]]; then
     "get storageprofiles -o yaml"
     "get migrations.forklift.konveyor.io -A"
     "get migrations.forklift.konveyor.io -A -o yaml"
+    "get virtualmachinerestore -A"
+    "get virtualmachinerestore -A -o yaml"
+    "describe virtualmachinerestore -A"
   )
   
    kubevirt_output=(
@@ -368,6 +371,9 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/kubevirt_storageprofiles.yaml"
     "k8s_oth/kubevirt_migrations_list.txt"
     "k8s_oth/kubevirt_migrations.yaml"
+    "k8s_oth/kubevirt_vmrestore.txt"
+    "k8s_oth/kubevirt_vmrestore.yaml"
+    "k8s_oth/kubevirt_vmrestore_desc.txt"
   )
   
   logs_oth_ns=()
