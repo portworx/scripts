@@ -279,6 +279,8 @@ if [[ "$option" == "PX" ]]; then
   k8s_log_labels=(
     "component=kube-apiserver"
     "component=kube-scheduler"
+    "component=etcd"
+    "component=kube-scheduler"
   )
   
   oth_commands=(
