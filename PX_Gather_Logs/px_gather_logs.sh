@@ -1,13 +1,13 @@
 #!/bin/bash
 # ================================================================
-# Script: PX_Gather_Logs.sh
-# Description: Collects logs and other ifnormation related to portworx/PX Backup.
+# Script: px_gather_logs.sh
+# Description: Collects logs and other information related to portworx/PX Backup.
 # Usage:
 # - We can pass the inputs as parameters like below
-#   For Portworx : PX_Gather_Logs.sh -n <Portworx namespace> -c <k8s cli> -o PX
-#       Example: PX_Gather_Logs.sh -n portworx -c kubectl -o PX
-#   For PX Backup: PX_Gather_Logs.sh -n <Portworx Backup namespace> -c <k8s cli> -o PXB
-#       Example: PX_Gather_Logs.sh -n px-backup -c oc -o PXB
+#   For Portworx : px_gather_logs.sh -n <Portworx namespace> -c <k8s cli> -o PX
+#       Example: px_gather_logs.sh -n portworx -c kubectl -o PX
+#   For PX Backup: px_gather_logs.sh -n <Portworx Backup namespace> -c <k8s cli> -o PXB
+#       Example: px_gather_logs.sh -n px-backup -c oc -o PXB
 # - If there are no parameters passed, shell will prompt for input
 #
 # ================================================================
@@ -95,9 +95,6 @@ if [[ "$option" == "PX" ]]; then
     "get csidrivers"
     "get csinodes"
     "get csinodes -o yaml"
-    "get all -o wide -n $namespace"
-    "describe all -n $namespace"
-    "get all -o wide -n $namespace -o yaml"
     "get configmaps -n $namespace"
     "describe namespace $namespace"
     "get namespace $namespace -o yaml"
@@ -170,9 +167,6 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/csidrivers.txt"
     "k8s_oth/csinodes.txt"
     "k8s_oth/csinodes.yaml"
-    "k8s_px/px_all.txt"
-    "k8s_px/px_all_desc.txt"
-    "k8s_px/px_all.yaml"
     "k8s_px/px_cm.txt"
     "k8s_px/px_ns_dec.txt"
     "k8s_px/px_ns_dec.yaml"
@@ -285,6 +279,8 @@ if [[ "$option" == "PX" ]]; then
   k8s_log_labels=(
     "component=kube-apiserver"
     "component=kube-scheduler"
+    "component=etcd"
+    "component=kube-controller-manager"
   )
   
   oth_commands=(
