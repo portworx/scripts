@@ -1,7 +1,7 @@
 #!/bin/bash
 # ================================================================
 # Script: PX_Gather_Logs.sh
-# Description: Collects logs and other ifnormation related to portworx/PX Backup.
+# Description: Collects logs and other information related to portworx/PX Backup.
 # Usage:
 # - We can pass the inputs as parameters like below
 #   For Portworx : PX_Gather_Logs.sh -n <Portworx namespace> -c <k8s cli> -o PX
