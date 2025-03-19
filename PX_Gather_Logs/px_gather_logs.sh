@@ -280,7 +280,7 @@ if [[ "$option" == "PX" ]]; then
     "component=kube-apiserver"
     "component=kube-scheduler"
     "component=etcd"
-    "component=kube-scheduler"
+    "component=kube-controller-manager"
   )
   
   oth_commands=(
