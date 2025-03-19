@@ -672,9 +672,9 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
 echo "End of generation:" $(date)>>$summary_file
 
 # Compress the output directory into a tar file
-archive_file="${main_dir}.tar"
+archive_file="${main_dir}.tar.gz"
 cd /tmp
-tar -cf "$archive_file" "$main_dir"
+tar -czf "$archive_file" "$main_dir"
 echo "************************************************"
 echo ""
 echo "$(date '+%Y-%m-%d %H:%M:%S'): All outputs compressed into: /tmp/$archive_file"
