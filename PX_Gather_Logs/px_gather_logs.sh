@@ -374,7 +374,7 @@ if [[ "$option" == "PX" ]]; then
   
   logs_oth_ns=()
 
-  main_dir="PX_${namespace}_outputs_$(date +%Y%m%d_%H%M%S)"
+  main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
   sub_dir=(${output_dir}/logs ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp ${output_dir}/k8s_pxb)
 else
@@ -509,7 +509,7 @@ logs_oth_ns=(
     "kdmp.portworx.com/driver-name=nfsbackup"
 )
 
-  main_dir="PX_Backup_${namespace}_outputs_$(date +%Y%m%d_%H%M%S)"
+  main_dir="PX_Backup_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
   sub_dir=(${output_dir}/logs ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
 
