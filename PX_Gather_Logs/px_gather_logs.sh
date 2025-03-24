@@ -149,6 +149,8 @@ if [[ "$option" == "PX" ]]; then
     "get mutatingwebhookconfiguration"
     "get mutatingwebhookconfiguration -o yaml"
     "get cm kdmp-config -n kube-system -o yaml"
+    "get rules -A"
+    "get rules -A -o yaml"
     
   )
   output_files=(
@@ -222,7 +224,9 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/pxb_dataexports.txt"
     "k8s_oth/mutatingwebhookconfiguration.txt"
     "k8s_oth/mutatingwebhookconfiguration.yaml"
-    "k8s_pxb/kdmp-config.yaml"    
+    "k8s_pxb/kdmp-config.yaml"
+    "k8s_bkp/px_rules.txt"
+    "k8s_bkp/px_rules.yaml"
 
   )
   pxctl_commands=(
@@ -312,6 +316,10 @@ if [[ "$option" == "PX" ]]; then
     "get migrationschedule -n $admin_ns -o yaml"
     "get schedulepolicies"
     "get schedulepolicies -o yaml"
+    "get clusterdomainsstatuses"
+    "get clusterdomainsstatuses -o yaml"
+    "get resourcetransformations -A"
+    "get resourcetransformations -A -o yaml"
   )
    migration_output=(
     "migration/clusterpair.txt"
@@ -324,6 +332,10 @@ if [[ "$option" == "PX" ]]; then
     "migration/migrationschedule.yaml"
     "migration/schedulepolicies.txt"
     "migration/schedulepolicies.yaml"
+    "migration/cds.txt"
+    "migration/cds.yaml"
+    "migration/resourcetransformations.txt"
+    "migration/resourcetransformations.yaml"
   )
 
    kubevirt_commands=(
