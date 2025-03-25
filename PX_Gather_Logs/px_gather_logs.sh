@@ -115,6 +115,7 @@ if [[ "$option" == "PX" ]]; then
     "get pdb -n $namespace -o yaml"
     "get pods -n kube-system -o wide"
     "version"
+    "api-resources"
     "get autopilotrules"
     "get autopilotrules -o yaml"
     "get autopilotruleobjects -A"
@@ -191,6 +192,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_pdb.yaml"
     "k8s_oth/pods_kube_system.txt"
     "k8s_oth/k8s_version.txt"
+    "k8s_oth/k8s_api_resources.txt"
     "k8s_px/autopilotrules.txt"
     "k8s_px/autopilotrules.yaml"
     "k8s_px/autopilotruleobjects.txt"
@@ -455,6 +457,8 @@ else
     "get mutatingwebhookconfiguration"
     "get mutatingwebhookconfiguration -o yaml"
     "get cm kdmp-config -n kube-system -o yaml"
+    "version"
+    "api-resources"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -517,6 +521,8 @@ else
     "k8s_oth/mutatingwebhookconfiguration.txt"
     "k8s_oth/mutatingwebhookconfiguration.yaml"
     "k8s_pxb/kdmp-config.yaml"
+    "k8s_oth/k8s_version.txt"
+    "k8s_oth/k8s_api_resources.txt"
   )
 log_labels=(
   ""
