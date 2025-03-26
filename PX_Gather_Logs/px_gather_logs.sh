@@ -309,8 +309,6 @@ if [[ "$option" == "PX" ]]; then
   )
   migration_commands=(
     "get clusterpair -n $admin_ns"
-    "describe clusterpair -n $admin_ns "
-    "get clusterpair -n $admin_ns -o yaml"
     "get migrations -n $admin_ns"
     "describe migrations -n $admin_ns"
     "get migrations -n $admin_ns -o yaml"
@@ -325,8 +323,6 @@ if [[ "$option" == "PX" ]]; then
   )
    migration_output=(
     "migration/clusterpair.txt"
-    "migration/clusterpair_desc.txt"
-    "migration/clusterpair.yaml"
     "migration/migrations.txt"
     "migration/migrations_desc.txt"
     "migration/migrations.yaml"
