@@ -152,6 +152,9 @@ if [[ "$option" == "PX" ]]; then
     "get cm kdmp-config -n kube-system -o yaml"
     "get rules -A"
     "get rules -A -o yaml"
+    "get svc,ep -A -l "portworx.io/volid" -o wide"
+    "get svc,ep -A -l "portworx.io/volid" -o yaml"
+    
     
   )
   output_files=(
@@ -229,6 +232,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_pxb/kdmp-config.yaml"
     "k8s_bkp/px_rules.txt"
     "k8s_bkp/px_rules.yaml"
+    "k8s_px/px_sharedv4_svc_ep.txt"
+    "k8s_px/px_sharedv4_svc_ep.yaml"
 
   )
   pxctl_commands=(
