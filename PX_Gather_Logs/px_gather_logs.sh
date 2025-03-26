@@ -152,8 +152,8 @@ if [[ "$option" == "PX" ]]; then
     "get cm kdmp-config -n kube-system -o yaml"
     "get rules -A"
     "get rules -A -o yaml"
-    "get svc,ep -A -l 'portworx.io/volid' -o wide"
-    "get svc,ep -A -l 'portworx.io/volid' -o yaml"
+    "get svc,ep -A -l "portworx.io/volid" -o wide"
+    "get svc,ep -A -l "portworx.io/volid" -o yaml"
     
     
   )
