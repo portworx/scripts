@@ -367,28 +367,28 @@ if [[ "$option" == "PX" ]]; then
   )
   
    kubevirt_output=(
-    "k8s_oth/kubevirts_list.txt"
-    "k8s_oth/kubevirts.yaml"
-    "k8s_oth/kubevirt_virtualmachines.txt"
-    "k8s_oth/kubevirt_virtualmachines.yaml"
-    "k8s_oth/kubevirt_virtualmachineinstances.txt"
-    "k8s_oth/kubevirt_virtualmachineinstances.yaml"
-    "k8s_oth/kubevirt_hyperconvergeds.txt"
-    "k8s_oth/kubevirt_hyperconvergeds.yaml"
-    "k8s_oth/kubevirt_kubevirt_cdiconfigs.txt"
-    "k8s_oth/kubevirt_cdiconfigs.yaml"
-    "k8s_oth/kubevirt_cdis.txt"
-    "k8s_oth/kubevirt_cdis.yaml"
-    "k8s_oth/kubevirt_datavolumes.txt"
-    "k8s_oth/kubevirt_datavolumes.yaml"
-    "k8s_oth/kubevirt_datavolumes_desc.txt"
-    "k8s_oth/kubevirt_storageprofiles.txt"
-    "k8s_oth/kubevirt_storageprofiles.yaml"
-    "k8s_oth/kubevirt_migrations_list.txt"
-    "k8s_oth/kubevirt_migrations.yaml"
-    "k8s_oth/kubevirt_vmrestore.txt"
-    "k8s_oth/kubevirt_vmrestore.yaml"
-    "k8s_oth/kubevirt_vmrestore_desc.txt"
+    "kubevirt/kubevirts_list.txt"
+    "kubevirt/kubevirts.yaml"
+    "kubevirt/kubevirt_virtualmachines.txt"
+    "kubevirt/kubevirt_virtualmachines.yaml"
+    "kubevirt/kubevirt_virtualmachineinstances.txt"
+    "kubevirt/kubevirt_virtualmachineinstances.yaml"
+    "kubevirt/kubevirt_hyperconvergeds.txt"
+    "kubevirt/kubevirt_hyperconvergeds.yaml"
+    "kubevirt/kubevirt_kubevirt_cdiconfigs.txt"
+    "kubevirt/kubevirt_cdiconfigs.yaml"
+    "kubevirt/kubevirt_cdis.txt"
+    "kubevirt/kubevirt_cdis.yaml"
+    "kubevirt/kubevirt_datavolumes.txt"
+    "kubevirt/kubevirt_datavolumes.yaml"
+    "kubevirt/kubevirt_datavolumes_desc.txt"
+    "kubevirt/kubevirt_storageprofiles.txt"
+    "kubevirt/kubevirt_storageprofiles.yaml"
+    "kubevirt/kubevirt_migrations_list.txt"
+    "kubevirt/kubevirt_migrations.yaml"
+    "kubevirt/kubevirt_vmrestore.txt"
+    "kubevirt/kubevirt_vmrestore.yaml"
+    "kubevirt/kubevirt_vmrestore_desc.txt"
   )
   
   logs_oth_ns=()
@@ -650,7 +650,7 @@ print_progress 5
 
 if $cli get crd | grep -q "virtualmachines.kubevirt.io"; then
   #echo "KubeVirt is likely enabled."
-  mkdir -p $output_dir
+  mkdir -p $output_dir/kubevirt
   for i in "${!kubevirt_commands[@]}"; do
     cmd="${kubevirt_commands[$i]}"
     output_file="$output_dir/${kubevirt_output[$i]}"
