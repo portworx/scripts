@@ -12,6 +12,8 @@
 #
 # ================================================================
 
+SCRIPT_VERSION="25.4.0"
+
 # Function to display usage
 usage() {
   echo "Usage: $0 [-n <namespace>] [-c <cli>] [-o <option>]"
@@ -20,6 +22,12 @@ usage() {
   echo "  -o <option>    : Operation option (PX/PXB)"
   exit 1
 }
+# Function to print info in summary file
+
+log_info() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): $*">>$summary_file
+}
+
 # Function to print progress
 
 print_progress() {
@@ -550,10 +558,12 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is started"
 
 #Generate Summary file with parameter and date information
 summary_file=$output_dir/Summary.txt
+log_info "Script version: $SCRIPT_VERSION"
 echo "Namespace: $namespace">$summary_file
 echo "CLI tool: $cli">>$summary_file
 echo "option: $option">>$summary_file
 echo "Start of generation:" $(date)>>$summary_file
+
 
 # Execute commands and save outputs to files
 print_progress 1
