@@ -559,10 +559,10 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is started"
 #Generate Summary file with parameter and date information
 summary_file=$output_dir/Summary.txt
 log_info "Script version: $SCRIPT_VERSION"
-echo "Namespace: $namespace">$summary_file
-echo "CLI tool: $cli">>$summary_file
-echo "option: $option">>$summary_file
-echo "Start of generation:" $(date)>>$summary_file
+log_info "Namespace: $namespace"
+log_info "CLI tool: $cli"
+log_info "option: $option"
+log_info "Extraction Started"
 
 
 # Execute commands and save outputs to files
@@ -706,7 +706,7 @@ for i in "${!logs_oth_ns[@]}"; do
 done
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
-echo "End of generation:" $(date)>>$summary_file
+log_info "Extraction is completed"
 
 # Compress the output directory into a tar file
 archive_file="${main_dir}.tar.gz"
