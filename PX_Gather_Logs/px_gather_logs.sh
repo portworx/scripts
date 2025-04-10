@@ -12,6 +12,8 @@
 #
 # ================================================================
 
+SCRIPT_VERSION="25.4.0"
+
 # Function to display usage
 usage() {
   echo "Usage: $0 [-n <namespace>] [-c <cli>] [-o <option>]"
@@ -20,6 +22,12 @@ usage() {
   echo "  -o <option>    : Operation option (PX/PXB)"
   exit 1
 }
+# Function to print info in summary file
+
+log_info() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): $*" >> $summary_file
+}
+
 # Function to print progress
 
 print_progress() {
@@ -367,28 +375,28 @@ if [[ "$option" == "PX" ]]; then
   )
   
    kubevirt_output=(
-    "k8s_oth/kubevirts_list.txt"
-    "k8s_oth/kubevirts.yaml"
-    "k8s_oth/kubevirt_virtualmachines.txt"
-    "k8s_oth/kubevirt_virtualmachines.yaml"
-    "k8s_oth/kubevirt_virtualmachineinstances.txt"
-    "k8s_oth/kubevirt_virtualmachineinstances.yaml"
-    "k8s_oth/kubevirt_hyperconvergeds.txt"
-    "k8s_oth/kubevirt_hyperconvergeds.yaml"
-    "k8s_oth/kubevirt_kubevirt_cdiconfigs.txt"
-    "k8s_oth/kubevirt_cdiconfigs.yaml"
-    "k8s_oth/kubevirt_cdis.txt"
-    "k8s_oth/kubevirt_cdis.yaml"
-    "k8s_oth/kubevirt_datavolumes.txt"
-    "k8s_oth/kubevirt_datavolumes.yaml"
-    "k8s_oth/kubevirt_datavolumes_desc.txt"
-    "k8s_oth/kubevirt_storageprofiles.txt"
-    "k8s_oth/kubevirt_storageprofiles.yaml"
-    "k8s_oth/kubevirt_migrations_list.txt"
-    "k8s_oth/kubevirt_migrations.yaml"
-    "k8s_oth/kubevirt_vmrestore.txt"
-    "k8s_oth/kubevirt_vmrestore.yaml"
-    "k8s_oth/kubevirt_vmrestore_desc.txt"
+    "kubevirt/kubevirts_list.txt"
+    "kubevirt/kubevirts.yaml"
+    "kubevirt/kubevirt_virtualmachines.txt"
+    "kubevirt/kubevirt_virtualmachines.yaml"
+    "kubevirt/kubevirt_virtualmachineinstances.txt"
+    "kubevirt/kubevirt_virtualmachineinstances.yaml"
+    "kubevirt/kubevirt_hyperconvergeds.txt"
+    "kubevirt/kubevirt_hyperconvergeds.yaml"
+    "kubevirt/kubevirt_kubevirt_cdiconfigs.txt"
+    "kubevirt/kubevirt_cdiconfigs.yaml"
+    "kubevirt/kubevirt_cdis.txt"
+    "kubevirt/kubevirt_cdis.yaml"
+    "kubevirt/kubevirt_datavolumes.txt"
+    "kubevirt/kubevirt_datavolumes.yaml"
+    "kubevirt/kubevirt_datavolumes_desc.txt"
+    "kubevirt/kubevirt_storageprofiles.txt"
+    "kubevirt/kubevirt_storageprofiles.yaml"
+    "kubevirt/kubevirt_migrations_list.txt"
+    "kubevirt/kubevirt_migrations.yaml"
+    "kubevirt/kubevirt_vmrestore.txt"
+    "kubevirt/kubevirt_vmrestore.yaml"
+    "kubevirt/kubevirt_vmrestore_desc.txt"
   )
   
   logs_oth_ns=()
@@ -550,10 +558,13 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is started"
 
 #Generate Summary file with parameter and date information
 summary_file=$output_dir/Summary.txt
-echo "Namespace: $namespace">$summary_file
-echo "CLI tool: $cli">>$summary_file
-echo "option: $option">>$summary_file
-echo "Start of generation:" $(date)>>$summary_file
+log_info "Script version: $SCRIPT_VERSION"
+log_info "Namespace: $namespace"
+log_info "CLI tool: $cli"
+log_info "option: $option"
+log_info "Security Enabled: ${sec_enabled:-false}"
+log_info "Extraction Started"
+
 
 # Execute commands and save outputs to files
 print_progress 1
@@ -569,12 +580,12 @@ done
 
    if [ "$sec_enabled" == "true" ]; then
      TOKEN_EXP="export PXCTL_AUTH_TOKEN=$($cli -n $namespace get secret px-admin-token --template='{{index .data "auth-token" | base64decode}}')"
-     echo "Security Enabled: true">>$summary_file
+     #echo "Security Enabled: true">>$summary_file
      #pxcmd="exec service/portworx-service -- bash -c \"\${TOKEN} && /opt/pwx/bin/pxctl"
      #pxcmd="exec service/portworx-service -- bash -c \"${TOKEN} && /opt/pwx/bin/pxctl"
 
-  else
-     echo "Security Enabled: false">>$summary_file
+  #else
+     #echo "Security Enabled: false">>$summary_file
      #pxcmd="exec service/portworx-service -- \"/opt/pwx/bin/pxctl"
   fi
 # Execute pxctl commands 
@@ -650,7 +661,7 @@ print_progress 5
 
 if $cli get crd | grep -q "virtualmachines.kubevirt.io"; then
   #echo "KubeVirt is likely enabled."
-  mkdir -p $output_dir
+  mkdir -p $output_dir/kubevirt
   for i in "${!kubevirt_commands[@]}"; do
     cmd="${kubevirt_commands[$i]}"
     output_file="$output_dir/${kubevirt_output[$i]}"
@@ -696,7 +707,7 @@ for i in "${!logs_oth_ns[@]}"; do
 done
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
-echo "End of generation:" $(date)>>$summary_file
+log_info "Extraction is completed"
 
 # Compress the output directory into a tar file
 archive_file="${main_dir}.tar.gz"
