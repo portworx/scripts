@@ -563,6 +563,7 @@ log_info "Namespace: $namespace"
 log_info "CLI tool: $cli"
 log_info "option: $option"
 log_info "Extraction Started"
+log_info "${sec_enabled:-false}"
 
 
 # Execute commands and save outputs to files
@@ -579,12 +580,12 @@ done
 
    if [ "$sec_enabled" == "true" ]; then
      TOKEN_EXP="export PXCTL_AUTH_TOKEN=$($cli -n $namespace get secret px-admin-token --template='{{index .data "auth-token" | base64decode}}')"
-     echo "Security Enabled: true">>$summary_file
+     #echo "Security Enabled: true">>$summary_file
      #pxcmd="exec service/portworx-service -- bash -c \"\${TOKEN} && /opt/pwx/bin/pxctl"
      #pxcmd="exec service/portworx-service -- bash -c \"${TOKEN} && /opt/pwx/bin/pxctl"
 
-  else
-     echo "Security Enabled: false">>$summary_file
+  #else
+     #echo "Security Enabled: false">>$summary_file
      #pxcmd="exec service/portworx-service -- \"/opt/pwx/bin/pxctl"
   fi
 # Execute pxctl commands 
