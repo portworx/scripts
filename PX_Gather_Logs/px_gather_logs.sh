@@ -562,8 +562,8 @@ log_info "Script version: $SCRIPT_VERSION"
 log_info "Namespace: $namespace"
 log_info "CLI tool: $cli"
 log_info "option: $option"
+log_info "Security Enabled: ${sec_enabled:-false}"
 log_info "Extraction Started"
-log_info "${sec_enabled:-false}"
 
 
 # Execute commands and save outputs to files
