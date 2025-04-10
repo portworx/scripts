@@ -25,7 +25,7 @@ usage() {
 # Function to print info in summary file
 
 log_info() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): $*">>$summary_file
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): $*" >> $summary_file
 }
 
 # Function to print progress
