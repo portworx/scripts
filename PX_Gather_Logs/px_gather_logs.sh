@@ -299,12 +299,7 @@ if [[ "$option" == "PX" ]]; then
     "name=px-plugin-proxy"
   )
 
-  k8s_log_labels=(
-    "component=kube-apiserver"
-    "component=kube-scheduler"
-    "component=etcd"
-    "component=kube-controller-manager"
-  )
+
   
   oth_commands=(
     "$cli -n kube-system get cm $($cli -n kube-system get cm|grep px-bootstrap|awk '{print $1}') -o yaml"
@@ -550,6 +545,15 @@ logs_oth_ns=(
 
 fi
 
+# Common extracts applicable for all 
+
+  k8s_log_labels=(
+    "component=kube-apiserver"
+    "component=kube-scheduler"
+    "component=etcd"
+    "component=kube-controller-manager"
+  )
+
 # Create a temporary directory for storing outputs
 mkdir -p "$output_dir"
 mkdir -p "${sub_dir[@]}"
@@ -629,11 +633,7 @@ done
 
 for i in "${!k8s_log_labels[@]}"; do
   label="${k8s_log_labels[$i]}"
-  if [[ "$option" == "PX" ]]; then
-    PODS=$($cli get pods -n kube-system -l $label -o jsonpath="{.items[*].metadata.name}")
-  else
-    PODS=$($cli get pods -n kube-system -o jsonpath="{.items[*].metadata.name}")
-  fi
+  PODS=$($cli get pods -n kube-system -l $label -o jsonpath="{.items[*].metadata.name}")
   for POD in $PODS; do
   LOG_FILE="${output_dir}/logs/${POD}.log"
   #echo "Fetching logs for pod: $POD"
