@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.4.0"
+SCRIPT_VERSION="25.4.1"
 
 # Function to display usage
 usage() {
@@ -463,6 +463,8 @@ else
     "get cm kdmp-config -n kube-system -o yaml"
     "version"
     "api-resources"
+    "get ns"
+    "get ns -o yaml"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -527,6 +529,8 @@ else
     "k8s_pxb/kdmp-config.yaml"
     "k8s_oth/k8s_version.txt"
     "k8s_oth/k8s_api_resources.txt"
+    "k8s_oth/ns.txt"
+    "k8s_oth/ns.yaml"
   )
 log_labels=(
   ""
