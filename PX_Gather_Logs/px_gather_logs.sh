@@ -39,7 +39,7 @@ print_progress() {
 # Parse command-line arguments
 while getopts "n:c:o:" opt; do
   case $opt in
-    n) namespace=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
+    n) namespace=$(echo "$OPTARG" | tr '[:upper:]' '[:lower:]') ;;
     c) cli="$OPTARG" ;;
     o) option=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
     *) usage ;;
@@ -48,7 +48,7 @@ done
 
 # Prompt for namespace if not provided
 if [[ -z "$namespace" ]]; then
-  read -p "Enter the namespace: " namespace && namespace=${namespace^^}
+  read -p "Enter the namespace: " namespace && namespace=${namespace,,}
   if [[ -z "$namespace" ]]; then
     echo "Error: Namespace cannot be empty."
     exit 1
