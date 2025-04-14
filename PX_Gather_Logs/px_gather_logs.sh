@@ -39,16 +39,16 @@ print_progress() {
 # Parse command-line arguments
 while getopts "n:c:o:" opt; do
   case $opt in
-    n) namespace="$OPTARG" ;;
+    n) namespace=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
     c) cli="$OPTARG" ;;
-    o) option="$OPTARG" ;;
+    o) option=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
     *) usage ;;
   esac
 done
 
 # Prompt for namespace if not provided
 if [[ -z "$namespace" ]]; then
-  read -p "Enter the namespace: " namespace
+  read -p "Enter the namespace: " namespace && namespace=${namespace^^}
   if [[ -z "$namespace" ]]; then
     echo "Error: Namespace cannot be empty."
     exit 1
@@ -66,7 +66,7 @@ fi
 
 # Prompt for option if not provided
 if [[ -z "$option" ]]; then
-  read -p "Choose an option (PX/PXB) (Enter PX for Portworx Enterprise/CSI, Enter PXB for PX Backup): " option
+  read -p "Choose an option (PX/PXB) (Enter PX for Portworx Enterprise/CSI, Enter PXB for PX Backup): " option && option=${option^^}
   if [[ "$option" != "PX" && "$option" != "PXB" ]]; then
     echo "Error: Invalid option. Choose either 'PX' or 'PXB'."
     exit 1
