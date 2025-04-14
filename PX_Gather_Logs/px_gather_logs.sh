@@ -430,7 +430,7 @@ else
     "get cm -o yaml -n $namespace"
     "get job,cronjobs -o wide -n $namespace"
     "get job,cronjobs -n $namespace -o yaml"
-    "describe job,cronjobs -n $namespace -o yaml"
+    "describe job,cronjobs -n $namespace"
     "get applicationbackups -A"
     "get applicationbackups -A -o yaml"
     "get applicationbackupschedule -A"
