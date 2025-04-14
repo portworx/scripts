@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.4.1"
+SCRIPT_VERSION="25.4.3"
 
 # Function to display usage
 usage() {
