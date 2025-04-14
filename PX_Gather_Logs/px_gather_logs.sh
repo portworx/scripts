@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.4.1"
+SCRIPT_VERSION="25.4.2"
 
 # Function to display usage
 usage() {
@@ -112,6 +112,7 @@ if [[ "$option" == "PX" ]]; then
     "get sc"
     "get sc -o yaml"
     "get pvc -A"
+    "get pvc -A -o yaml"
     "get pv"
     "get sn -n $namespace"
     "get mutatingwebhookconfiguration"
@@ -192,6 +193,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/sc.txt"
     "k8s_oth/sc.yaml"
     "k8s_oth/pvc_list.txt"
+    "k8s_oth/pvc_all.yaml"
     "k8s_oth/pv_list.txt"
     "k8s_oth/storagenodes_list.txt"
     "k8s_oth/mutatingwebhookconfiguration.txt"
@@ -427,6 +429,8 @@ else
     "get pvc -n $namespace -o yaml"
     "get cm -o yaml -n $namespace"
     "get job,cronjobs -o wide -n $namespace"
+    "get job,cronjobs -n $namespace -o yaml"
+    "describe job,cronjobs -n $namespace"
     "get applicationbackups -A"
     "get applicationbackups -A -o yaml"
     "get applicationbackupschedule -A"
@@ -456,6 +460,7 @@ else
     "get sc"
     "get sc -o yaml"
     "get pvc -A"
+    "get pvc -A -o yaml"
     "get pv"
     "get dataexports -A"
     "get mutatingwebhookconfiguration"
@@ -493,6 +498,8 @@ else
     "k8s_pxb/pxb_pvc.yaml"
     "k8s_pxb/pxb_cm.yaml" 
     "k8s_pxb/pxb_job_cronjob.txt"
+    "k8s_pxb/pxb_job_cronjob.yaml"
+    "k8s_pxb/pxb_job_cronjob_desc.txt"
     "k8s_bkp/pxb_applicationbackups.txt"
     "k8s_bkp/pxb_applicationbackups.yaml"
     "k8s_bkp/pxb_applicationbackupschedules.txt"
@@ -522,6 +529,7 @@ else
     "k8s_oth/sc.txt"
     "k8s_oth/sc.yaml"
     "k8s_oth/pvc_list.txt"
+    "k8s_oth/pvc_all.yaml"
     "k8s_oth/pv_list.txt"
     "k8s_bkp/pxb_dataexports.txt"
     "k8s_oth/mutatingwebhookconfiguration.txt"
