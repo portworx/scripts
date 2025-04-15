@@ -370,6 +370,7 @@ if [[ "$option" == "PX" ]]; then
     "get virtualmachinerestore -A -o yaml"
     "describe virtualmachinerestore -A"
     "get pods -l kubevirt.io=virt-launcher -A"
+    "get pods -l kubevirt.io=virt-launcher -A -o yaml"
   )
   
    kubevirt_output=(
@@ -396,6 +397,7 @@ if [[ "$option" == "PX" ]]; then
     "kubevirt/kubevirt_vmrestore.yaml"
     "kubevirt/kubevirt_vmrestore_desc.txt"
     "kubevirt/kubevirt_virt_launcher_pods.txt"
+    "kubevirt/kubevirt_virt_launcher_pods.yaml"
   )
   
   logs_oth_ns=()
