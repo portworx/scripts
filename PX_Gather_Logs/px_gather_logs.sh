@@ -37,11 +37,13 @@ print_progress() {
 }
 
 # Parse command-line arguments
-while getopts "n:c:o:" opt; do
+while getopts "n:c:o:u:p:" opt; do
   case $opt in
     n) namespace=$(echo "$OPTARG" | tr '[:upper:]' '[:lower:]') ;;
     c) cli="$OPTARG" ;;
     o) option=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
+    u) ftpsuser=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
+    p) ftpspass="$OPTARG" ;;
     *) usage ;;
   esac
 done
@@ -741,6 +743,28 @@ if [[ -d "$output_dir" ]]; then
   echo ""
 else
   echo ""
+fi
+
+#Uploags to FTPS if FTPS credentails are provided with -u username and -p password
+if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
+  echo "FTPS credentials are provided as Argument. Uploading to FTPS directly"
+  ftpshost="https://ftps.purestorage.com"
+  ftps_connection_response=$(curl -Is "$ftpshost" -u "$ftpsuser:$ftpspass" -o /dev/null -w "%{http_code}\n")
+
+  if [[ "$ftps_connection_response" -eq 200 ]]; then
+    echo "FTPS connection successful."
+    echo "Executing: curl --ftp-ssl --ftp-port 443 -u <username>:<password> -T \"/tmp/$archive_file\" \"$ftpshost/\""
+    curl --ftp-ssl --ftp-port 443 -u $ftpsuser:$ftpspass -T /tmp/$archive_file "$ftpshost"
+    if [ $? -eq 0 ]; then
+      echo "Successfully uploaded to FTPS - $ftpshost"
+      else
+        echo "Error: Problem in uploading. Upload failed/partial"
+    fi
+  elif [[ "$ftps_connection_response" -eq 401 ]]; then
+    echo "FTPS connection successful, but credentials provided look incorrect. Please get updated credentials or upload the generated log file manually over case"
+  else
+    echo "FTPS connection check failed. Please provide the output file /tmp/$archive_file over case"
+  fi
 fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Script execution completed successfully."
