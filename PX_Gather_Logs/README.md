@@ -1,7 +1,7 @@
 # px_gather_logs.sh
 
 ## Description
-Collects logs and other information related to Portworx/PX Backup for issue analysis. This can be executed from anywhere we have kubectl/oc command access to the cluster. Script will generate a tarball file in /tmp folder
+Collects logs and other information related to Portworx/PX Backup for issue analysis. This can be executed from any unix-based terminal where we have kubectl/oc command access to the cluster. Script will generate a tarball file in /tmp folder
 
 ## Usage
 ### Passing Inputs as Parameters
