@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.4.5"
+SCRIPT_VERSION="25.4.6"
 
 # Function to display usage
 usage() {
@@ -301,6 +301,7 @@ if [[ "$option" == "PX" ]]; then
     "name=px-telemetry-phonehome"
     "app=px-plugin"
     "name=px-plugin-proxy"
+    "name=portworx"
   )
 
 
@@ -642,9 +643,20 @@ for i in "${!log_labels[@]}"; do
   fi
   for POD in $PODS; do
   LOG_FILE="${output_dir}/logs/${POD}.log"
+
+  if [[ "$label" == "name=portworx" ]]
+  then
+     $cli get pod -n "$namespace" "$POD" -o custom-columns=":.status.containerStatuses[*].ready" --no-headers | grep -q "false"
+     if [[ $? -eq 0 ]]
+     then
+        #echo "Found non-ready container in pod: $pod"
+        $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+     fi
+  else
   #echo "Fetching logs for pod: $POD"
   # Fetch logs and write to file
   $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+  fi
   done
   #echo "Logs for pod $POD written to: $LOG_FILE"
 done
