@@ -39,7 +39,7 @@ curl -ssL https://raw.githubusercontent.com/portworx/scripts/refs/heads/main/PX_
 ```
 Example:
 ```bash
-curl -ssL https://raw.githubusercontent.com/portworx/scripts/refs/heads/main/PX_Gather_Logs/x | bash -s -- -n portworx -c kubectl -o PX
+curl -ssL https://raw.githubusercontent.com/portworx/scripts/refs/heads/main/PX_Gather_Logs/x_gather_logs.sh | bash -s -- -n portworx -c kubectl -o PX
 ```
 ### Directly upload to FTPS using Curl within script (i.e ftps.purestorage.com) if you have credentials for corresponding case with optional argument "-u" and "-p"
 ```bash
