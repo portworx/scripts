@@ -477,6 +477,7 @@ else
     "api-resources"
     "get ns"
     "get ns -o yaml"
+    "get secret -n $namespace"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -546,6 +547,7 @@ else
     "k8s_oth/k8s_api_resources.txt"
     "k8s_oth/ns.txt"
     "k8s_oth/ns.yaml"
+    "k8s_pxb/pxb_secret_list.txt"
   )
 log_labels=(
   ""
