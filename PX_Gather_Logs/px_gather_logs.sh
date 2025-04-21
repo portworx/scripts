@@ -638,6 +638,7 @@ for i in "${!log_labels[@]}"; do
   label="${log_labels[$i]}"
   if [[ "$option" == "PX" ]]; then
     PODS=$($cli get pods -n $namespace -l $label -o jsonpath="{.items[*].metadata.name}")
+    log_count=0
   else
     PODS=$($cli get pods -n $namespace -o jsonpath="{.items[*].metadata.name}")
   fi
@@ -646,11 +647,17 @@ for i in "${!log_labels[@]}"; do
 
   if [[ "$label" == "name=portworx" ]]
   then
-     $cli get pod -n "$namespace" "$POD" -o custom-columns=":.status.containerStatuses[*].ready" --no-headers | grep -q "false"
-     if [[ $? -eq 0 ]]
+     max_logs=5
+     if [[ $log_count -lt $max_logs ]]
      then
-        #echo "Found non-ready container in pod: $pod"
-        $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+        #echo "log_count- $log_count max_logs: $max_logs pod: $POD"
+        $cli get pod -n "$namespace" "$POD" -o custom-columns=":.status.containerStatuses[*].ready" --no-headers | grep -q "false"
+        if [[ $? -eq 0 ]]
+        then
+           #echo "Found non-ready container in pod: $pod"
+           $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+           ((log_count++))
+        fi
      fi
   else
   #echo "Fetching logs for pod: $POD"
