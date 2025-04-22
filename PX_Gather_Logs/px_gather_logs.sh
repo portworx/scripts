@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.4.5"
+SCRIPT_VERSION="25.4.6"
 
 # Function to display usage
 usage() {
@@ -57,14 +57,33 @@ if [[ -z "$namespace" ]]; then
   fi
 fi
 
+
+
 # Prompt for k8s CLI  if not provided
 if [[ -z "$cli" ]]; then
-  read -p "Enter the k8s CLI  (oc/kubectl): " cli
-  if [[ "$cli" != "oc" && "$cli" != "kubectl" ]]; then
-    echo "Error: Invalid k8s CLI . Choose either 'oc' or 'kubectl'."
-    exit 1
-  fi
+  read -p "Enter the k8s CLI (oc/kubectl): " cli
 fi
+
+# Check if the CLI value is kubectl or OC
+
+if [[ "$cli" != "oc" && "$cli" != "kubectl" ]]; then
+  echo "Error: Invalid k8s CLI. Choose either 'oc' or 'kubectl'."
+  exit 1
+fi
+
+# Check if the CLI is available
+if ! command -v "$cli" &> /dev/null; then
+  echo "Error: '$cli' command not found. Please ensure that '$cli' is available in this server"
+  exit 1
+fi
+
+# Check if the CLI command works
+if ! $cli cluster-info &> /dev/null; then
+  echo "Error: '$cli' is available but not functioning correctly. Ensure you have the necessary permissions to execute '$cli' commands on the cluster."
+  exit 1
+fi
+
+
 
 # Prompt for option if not provided
 if [[ -z "$option" ]]; then
@@ -301,6 +320,7 @@ if [[ "$option" == "PX" ]]; then
     "name=px-telemetry-phonehome"
     "app=px-plugin"
     "name=px-plugin-proxy"
+    "name=portworx"
   )
 
 
@@ -476,6 +496,7 @@ else
     "api-resources"
     "get ns"
     "get ns -o yaml"
+    "get secret -n $namespace"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -545,6 +566,7 @@ else
     "k8s_oth/k8s_api_resources.txt"
     "k8s_oth/ns.txt"
     "k8s_oth/ns.yaml"
+    "k8s_pxb/pxb_secret_list.txt"
   )
 log_labels=(
   ""
@@ -637,14 +659,32 @@ for i in "${!log_labels[@]}"; do
   label="${log_labels[$i]}"
   if [[ "$option" == "PX" ]]; then
     PODS=$($cli get pods -n $namespace -l $label -o jsonpath="{.items[*].metadata.name}")
+    log_count=0
   else
     PODS=$($cli get pods -n $namespace -o jsonpath="{.items[*].metadata.name}")
   fi
   for POD in $PODS; do
   LOG_FILE="${output_dir}/logs/${POD}.log"
+
+  if [[ "$label" == "name=portworx" ]]
+  then
+     max_logs=5
+     if [[ $log_count -lt $max_logs ]]
+     then
+        #echo "log_count- $log_count max_logs: $max_logs pod: $POD"
+        $cli get pod -n "$namespace" "$POD" -o custom-columns=":.status.containerStatuses[*].ready" --no-headers | grep -q "false"
+        if [[ $? -eq 0 ]]
+        then
+           #echo "Found non-ready container in pod: $pod"
+           $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+           ((log_count++))
+        fi
+     fi
+  else
   #echo "Fetching logs for pod: $POD"
   # Fetch logs and write to file
   $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+  fi
   done
   #echo "Logs for pod $POD written to: $LOG_FILE"
 done
