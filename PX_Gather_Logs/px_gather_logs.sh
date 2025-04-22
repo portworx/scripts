@@ -57,14 +57,33 @@ if [[ -z "$namespace" ]]; then
   fi
 fi
 
+
+
 # Prompt for k8s CLI  if not provided
 if [[ -z "$cli" ]]; then
-  read -p "Enter the k8s CLI  (oc/kubectl): " cli
-  if [[ "$cli" != "oc" && "$cli" != "kubectl" ]]; then
-    echo "Error: Invalid k8s CLI . Choose either 'oc' or 'kubectl'."
-    exit 1
-  fi
+  read -p "Enter the k8s CLI (oc/kubectl): " cli
 fi
+
+# Check if the CLI value is kubectl or OC
+
+if [[ "$cli" != "oc" && "$cli" != "kubectl" ]]; then
+  echo "Error: Invalid k8s CLI. Choose either 'oc' or 'kubectl'."
+  exit 1
+fi
+
+# Check if the CLI is available
+if ! command -v "$cli" &> /dev/null; then
+  echo "Error: '$cli' command not found. Please ensure that '$cli' is available in this server"
+  exit 1
+fi
+
+# Check if the CLI command works
+if ! $cli cluster-info &> /dev/null; then
+  echo "Error: '$cli' is available but not functioning correctly. Ensure you have the necessary permissions to execute '$cli' commands on the cluster."
+  exit 1
+fi
+
+
 
 # Prompt for option if not provided
 if [[ -z "$option" ]]; then
