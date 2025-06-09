@@ -508,6 +508,7 @@ else
     "get pvc -A"
     "get pvc -A -o yaml"
     "get pv"
+    "get dataexports -A"
     "get prometheuses -A"
     "get prometheuses -A -o yaml"
     "get prometheusrules -A"
