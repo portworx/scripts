@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.4.7"
+SCRIPT_VERSION="25.6.0"
 
 # Function to display usage
 usage() {
@@ -194,6 +194,7 @@ if [[ "$option" == "PX" ]]; then
     "get rules -A -o yaml"
     "get svc,ep -A -l "portworx.io/volid" -o wide"
     "get svc,ep -A -l "portworx.io/volid" -o yaml"
+    "get pods -A -o wide"
     
     
   )
@@ -226,7 +227,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/pvc_list.txt"
     "k8s_oth/pvc_all.yaml"
     "k8s_oth/pv_list.txt"
-    "k8s_oth/storagenodes_list.txt"
+    "k8s_px/storagenodes_list.txt"
     "k8s_oth/mutatingwebhookconfiguration.txt"
     "k8s_oth/mutatingwebhookconfiguration.yaml"
     "k8s_px/px_svc_ep.txt"
@@ -285,6 +286,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/px_rules.yaml"
     "k8s_px/px_sharedv4_svc_ep.txt"
     "k8s_px/px_sharedv4_svc_ep.yaml"
+    "k8s_oth/pods_all.txt"
 
   )
   pxctl_commands=(
@@ -527,6 +529,7 @@ else
     "get ns"
     "get ns -o yaml"
     "get secret -n $namespace"
+    "get pods -A -o wide"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -607,6 +610,7 @@ else
     "k8s_oth/ns.txt"
     "k8s_oth/ns.yaml"
     "k8s_pxb/pxb_secret_list.txt"
+    "k8s_oth/pods_all.txt"
   )
 log_labels=(
   ""
