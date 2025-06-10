@@ -227,7 +227,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/pvc_list.txt"
     "k8s_oth/pvc_all.yaml"
     "k8s_oth/pv_list.txt"
-    "k8s_px/storagenodes_list.txt"
+    "k8s_px/px_storagenodes_list.txt"
     "k8s_oth/mutatingwebhookconfiguration.txt"
     "k8s_oth/mutatingwebhookconfiguration.yaml"
     "k8s_px/px_svc_ep.txt"
