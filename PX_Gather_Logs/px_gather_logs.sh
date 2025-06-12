@@ -363,9 +363,9 @@ if [[ "$option" == "PX" ]]; then
   )
   migration_commands=(
     "get clusterpair -n $admin_ns"
-    "get migrations -n $admin_ns"
-    "describe migrations -n $admin_ns"
-    "get migrations -n $admin_ns -o yaml"
+    "get get migrations.stork.libopenstorage.org -n $admin_ns"
+    "describe get migrations.stork.libopenstorage.org -n $admin_ns"
+    "get get migrations.stork.libopenstorage.org -n $admin_ns -o yaml"
     "get migrationschedule -n $admin_ns"
     "get migrationschedule -n $admin_ns -o yaml"
     "get schedulepolicies"
