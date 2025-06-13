@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.1"
+SCRIPT_VERSION="25.6.2"
 
 # Function to display usage
 usage() {
@@ -135,6 +135,7 @@ if [[ "$option" == "PX" ]]; then
     "get pvc -A"
     "get pvc -A -o yaml"
     "get pv"
+    "get pv -o yaml"
     "get sn -n $namespace"
     "get mutatingwebhookconfiguration"
     "get mutatingwebhookconfiguration -o yaml"
@@ -227,6 +228,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/pvc_list.txt"
     "k8s_oth/pvc_all.yaml"
     "k8s_oth/pv_list.txt"
+    "k8s_oth/pv_all.yaml"
     "k8s_px/px_storagenodes_list.txt"
     "k8s_oth/mutatingwebhookconfiguration.txt"
     "k8s_oth/mutatingwebhookconfiguration.yaml"
@@ -510,6 +512,7 @@ else
     "get pvc -A"
     "get pvc -A -o yaml"
     "get pv"
+    "get pv -o yaml"
     "get dataexports -A"
     "get prometheuses -A"
     "get prometheuses -A -o yaml"
@@ -591,6 +594,7 @@ else
     "k8s_oth/pvc_list.txt"
     "k8s_oth/pvc_all.yaml"
     "k8s_oth/pv_list.txt"
+    "k8s_oth/pv_all.yaml"
     "k8s_bkp/pxb_dataexports.txt"
     "k8s_oth/prometheuses_list.txt"
     "k8s_oth/prometheuses.yaml"
