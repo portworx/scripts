@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.0"
+SCRIPT_VERSION="25.6.1"
 
 # Function to display usage
 usage() {
@@ -101,7 +101,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): CLI tool: $cli"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): option: $option"
 # Set commands based on the chosen option
 if [[ "$option" == "PX" ]]; then
-  admin_ns=$($cli -n $namespace get stc -o yaml|grep admin-namespace|cut -d ":" -f2|tr -d " ")
+  admin_ns=$($cli -n $namespace get stc -o jsonpath='{.items[*].spec.stork.args.admin-namespace}')
   admin_ns="${admin_ns:-kube-system}"
   sec_enabled=$($cli -n $namespace get stc -o=jsonpath='{.items[*].spec.security.enabled}')
 
