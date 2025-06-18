@@ -825,11 +825,11 @@ log_info "Extraction is completed"
 archive_file="${main_dir}.tar.gz"
 cd /tmp
 tar -czf "$archive_file" "$main_dir"
-echo "************************************************"
+echo "************************************************************************************************"
 echo ""
 echo "$(date '+%Y-%m-%d %H:%M:%S'): All outputs compressed into: /tmp/$archive_file"
 echo ""
-echo "************************************************"
+echo "************************************************************************************************"
 
 # Delete the temporary op directory 
 if [[ -d "$output_dir" ]]; then
@@ -845,7 +845,7 @@ if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
   echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS credentials are provided as Argument. Uploading to FTPS directly"
 
   ftpshost_base="ftps.purestorage.com"
-  ftps_url_primary="ftps1://$ftpshost_base/"
+  ftps_url_primary="ftps://$ftpshost_base/"
   ftps_url_fallback="https://$ftpshost_base/"  
 
   echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_primary"
