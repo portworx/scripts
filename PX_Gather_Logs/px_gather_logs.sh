@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.3"
+SCRIPT_VERSION="25.6.4"
 
 # Function to display usage
 usage() {
@@ -839,25 +839,38 @@ else
   echo ""
 fi
 
-#Uploags to FTPS if FTPS credentails are provided with -u username and -p password
-if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
-  echo "FTPS credentials are provided as Argument. Uploading to FTPS directly"
-  ftpshost="https://ftps.purestorage.com"
-  ftps_connection_response=$(curl -Is "$ftpshost" -u "$ftpsuser:$ftpspass" -o /dev/null -w "%{http_code}\n")
+#Uploads to FTPS if FTPS credentails are provided with -u username and -p password
 
-  if [[ "$ftps_connection_response" -eq 200 ]]; then
-    echo "FTPS connection successful."
-    echo "Executing: curl --ftp-ssl --ftp-port 443 -u <username>:<password> -T \"/tmp/$archive_file\" \"$ftpshost/\""
-    curl --ftp-ssl --ftp-port 443 -u $ftpsuser:$ftpspass -T /tmp/$archive_file "$ftpshost"
-    if [ $? -eq 0 ]; then
-      echo "Successfully uploaded to FTPS - $ftpshost"
-      else
-        echo "Error: Problem in uploading. Upload failed/partial"
-    fi
-  elif [[ "$ftps_connection_response" -eq 401 ]]; then
-    echo "FTPS connection successful, but credentials provided look incorrect. Please get updated credentials or upload the generated log file manually over case"
+if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
+  echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS credentials are provided as Argument. Uploading to FTPS directly"
+
+  ftpshost_base="ftps.purestorage.com"
+  ftps_url_primary="ftps1://$ftpshost_base/"
+  ftps_url_fallback="https://$ftpshost_base/"  
+
+  echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_primary"
+  curl --progress-bar -S -u "$ftpsuser:$ftpspass" -T "/tmp/$archive_file" "$ftps_url_primary"
+  if [[ $? -eq 0 ]]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Successfully uploaded to FTPS - $ftps_url_primary"
   else
-    echo "FTPS connection check failed. Please provide the output file /tmp/$archive_file over case"
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS upload failed to $ftps_url_primary. Trying fallback method..."
+
+    ftps_connection_response=$(curl -Is "$ftps_url_fallback" -u "$ftpsuser:$ftpspass" -o /dev/null -w "%{http_code}\n")
+
+    if [[ "$ftps_connection_response" -eq 200 ]]; then
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS connection successful to $ftps_url_fallback."
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_fallback..."
+      curl --progress-bar --ftp-ssl -u "$ftpsuser:$ftpspass" -T "/tmp/$archive_file" "$ftps_url_fallback" -o /dev/null
+      if [[ $? -eq 0 ]]; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S'): Successfully uploaded to FTPS - $ftps_url_fallback"
+      else
+        echo "$(date '+%Y-%m-%d %H:%M:%S'): Error: Problem in upload to "$ftps_url_fallback". Upload failed/partial"
+      fi
+    elif [[ "$ftps_connection_response" -eq 401 ]]; then
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS connection successful, but credentials look incorrect. Please get updated credentials or upload the generated log file manually over case."
+    else
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS fallback connection check failed. Please provide the output file: /tmp/$archive_file over case"
+    fi
   fi
 fi
 
