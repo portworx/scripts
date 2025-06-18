@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.2"
+SCRIPT_VERSION="25.6.3"
 
 # Function to display usage
 usage() {
@@ -125,6 +125,7 @@ if [[ "$option" == "PX" ]]; then
     "get csinodes"
     "get csinodes -o yaml"
     "get configmaps -n $namespace"
+    "get configmap px-versions -n $namespace -o yaml"
     "describe namespace $namespace"
     "get namespace $namespace -o yaml"
     "get pvc -n $namespace"
@@ -219,6 +220,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/csinodes.txt"
     "k8s_oth/csinodes.yaml"
     "k8s_px/px_cm.txt"
+    "k8s_px/px-versions_cm.yaml"
     "k8s_px/px_ns_dec.txt"
     "k8s_px/px_ns_dec.yaml"
     "k8s_px/px_pvc.txt"
