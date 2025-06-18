@@ -32,7 +32,7 @@ log_info() {
 
 print_progress() {
     local current_stage=$1
-    local total_stages="7"
+    local total_stages="8"
     echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
@@ -742,6 +742,7 @@ for i in "${!log_labels[@]}"; do
   done
   #echo "Logs for pod $POD written to: $LOG_FILE"
 done
+print_progress 4
 
 for i in "${!k8s_log_labels[@]}"; do
   label="${k8s_log_labels[$i]}"
@@ -756,7 +757,7 @@ for i in "${!k8s_log_labels[@]}"; do
 done
 
 # Execute other commands 
-print_progress 4
+print_progress 5
 
 for i in "${!oth_commands[@]}"; do
   cmd="${oth_commands[$i]}"
@@ -769,7 +770,7 @@ for i in "${!oth_commands[@]}"; do
 done
 
 #Check if kubevirt is enabled and get kubevirt configs only if kubevirt is enabled
-print_progress 5
+print_progress 6
 
 if $cli get crd | grep -q "virtualmachines.kubevirt.io"; then
   #echo "KubeVirt is likely enabled."
@@ -783,7 +784,7 @@ fi
 
 #Execute Migration commands
 
-print_progress 6
+print_progress 7
 
 for i in "${!migration_commands[@]}"; do
   cmd="${migration_commands[$i]}"
@@ -797,7 +798,7 @@ done
 
 #Execute log extractions from other namespaces
 
-print_progress 7
+print_progress 8
 
 for i in "${!logs_oth_ns[@]}"; do
   label="${logs_oth_ns[$i]}"
@@ -827,7 +828,7 @@ cd /tmp
 tar -czf "$archive_file" "$main_dir"
 echo "************************************************************************************************"
 echo ""
-echo "$(date '+%Y-%m-%d %H:%M:%S'): All outputs compressed into: /tmp/$archive_file"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Diagnostic bundle created at: /tmp/$archive_file"
 echo ""
 echo "************************************************************************************************"
 
