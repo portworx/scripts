@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.3"
+SCRIPT_VERSION="25.6.4"
 
 # Function to display usage
 usage() {
@@ -32,7 +32,7 @@ log_info() {
 
 print_progress() {
     local current_stage=$1
-    local total_stages="7"
+    local total_stages="8"
     echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
@@ -734,6 +734,7 @@ for i in "${!log_labels[@]}"; do
   done
   #echo "Logs for pod $POD written to: $LOG_FILE"
 done
+print_progress 4
 
 for i in "${!k8s_log_labels[@]}"; do
   label="${k8s_log_labels[$i]}"
@@ -748,7 +749,7 @@ for i in "${!k8s_log_labels[@]}"; do
 done
 
 # Execute other commands 
-print_progress 4
+print_progress 5
 
 for i in "${!oth_commands[@]}"; do
   cmd="${oth_commands[$i]}"
@@ -761,7 +762,7 @@ for i in "${!oth_commands[@]}"; do
 done
 
 #Check if kubevirt is enabled and get kubevirt configs only if kubevirt is enabled
-print_progress 5
+print_progress 6
 
 if $cli get crd | grep -q "virtualmachines.kubevirt.io"; then
   #echo "KubeVirt is likely enabled."
@@ -775,7 +776,7 @@ fi
 
 #Execute Migration commands
 
-print_progress 6
+print_progress 7
 
 for i in "${!migration_commands[@]}"; do
   cmd="${migration_commands[$i]}"
@@ -789,7 +790,7 @@ done
 
 #Execute log extractions from other namespaces
 
-print_progress 7
+print_progress 8
 
 for i in "${!logs_oth_ns[@]}"; do
   label="${logs_oth_ns[$i]}"
@@ -817,11 +818,11 @@ log_info "Extraction is completed"
 archive_file="${main_dir}.tar.gz"
 cd /tmp
 tar -czf "$archive_file" "$main_dir"
-echo "************************************************"
+echo "************************************************************************************************"
 echo ""
-echo "$(date '+%Y-%m-%d %H:%M:%S'): All outputs compressed into: /tmp/$archive_file"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Diagnostic bundle created at: /tmp/$archive_file"
 echo ""
-echo "************************************************"
+echo "************************************************************************************************"
 
 # Delete the temporary op directory 
 if [[ -d "$output_dir" ]]; then
@@ -831,25 +832,38 @@ else
   echo ""
 fi
 
-#Uploags to FTPS if FTPS credentails are provided with -u username and -p password
-if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
-  echo "FTPS credentials are provided as Argument. Uploading to FTPS directly"
-  ftpshost="https://ftps.purestorage.com"
-  ftps_connection_response=$(curl -Is "$ftpshost" -u "$ftpsuser:$ftpspass" -o /dev/null -w "%{http_code}\n")
+#Uploads to FTPS if FTPS credentails are provided with -u username and -p password
 
-  if [[ "$ftps_connection_response" -eq 200 ]]; then
-    echo "FTPS connection successful."
-    echo "Executing: curl --ftp-ssl --ftp-port 443 -u <username>:<password> -T \"/tmp/$archive_file\" \"$ftpshost/\""
-    curl --ftp-ssl --ftp-port 443 -u $ftpsuser:$ftpspass -T /tmp/$archive_file "$ftpshost"
-    if [ $? -eq 0 ]; then
-      echo "Successfully uploaded to FTPS - $ftpshost"
-      else
-        echo "Error: Problem in uploading. Upload failed/partial"
-    fi
-  elif [[ "$ftps_connection_response" -eq 401 ]]; then
-    echo "FTPS connection successful, but credentials provided look incorrect. Please get updated credentials or upload the generated log file manually over case"
+if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
+  echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS credentials are provided as Argument. Uploading to FTPS directly"
+
+  ftpshost_base="ftps.purestorage.com"
+  ftps_url_primary="ftps://$ftpshost_base/"
+  ftps_url_fallback="https://$ftpshost_base/"  
+
+  echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_primary"
+  curl --progress-bar -S -u "$ftpsuser:$ftpspass" -T "/tmp/$archive_file" "$ftps_url_primary"
+  if [[ $? -eq 0 ]]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Successfully uploaded to FTPS - $ftps_url_primary"
   else
-    echo "FTPS connection check failed. Please provide the output file /tmp/$archive_file over case"
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS upload failed to $ftps_url_primary. Trying fallback method..."
+
+    ftps_connection_response=$(curl -Is "$ftps_url_fallback" -u "$ftpsuser:$ftpspass" -o /dev/null -w "%{http_code}\n")
+
+    if [[ "$ftps_connection_response" -eq 200 ]]; then
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS connection successful to $ftps_url_fallback."
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_fallback..."
+      curl --progress-bar --ftp-ssl -u "$ftpsuser:$ftpspass" -T "/tmp/$archive_file" "$ftps_url_fallback" -o /dev/null
+      if [[ $? -eq 0 ]]; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S'): Successfully uploaded to FTPS - $ftps_url_fallback"
+      else
+        echo "$(date '+%Y-%m-%d %H:%M:%S'): Error: Problem in upload to "$ftps_url_fallback". Upload failed/partial"
+      fi
+    elif [[ "$ftps_connection_response" -eq 401 ]]; then
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS connection successful, but credentials look incorrect. Please get updated credentials or upload the generated log file manually over case."
+    else
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS fallback connection check failed. Please provide the output file: /tmp/$archive_file over case"
+    fi
   fi
 fi
 
