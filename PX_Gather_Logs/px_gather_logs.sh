@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.4"
+SCRIPT_VERSION="25.6.5"
 
 # Function to display usage
 usage() {
@@ -525,6 +525,16 @@ else
     "get mutatingwebhookconfiguration"
     "get mutatingwebhookconfiguration -o yaml"
     "get cm kdmp-config -n kube-system -o yaml"
+    "get backuplocationmaintenances -A"
+    "get backuplocationmaintenances -A -o yaml"
+    "get resourcebackups -A"
+    "get resourcebackups -A -o yaml"
+    "get resourceexports -A"
+    "get resourceexports -A -o yaml"
+    "get volumebackups -A"
+    "get volumebackups -A -o yaml"
+    "get volumebackupdeletes -A"
+    "get volumebackupdeletes -A -o yaml"
     "get cm stork-controller-config -n kube-system -o yaml"
     "version"
     "api-resources -o wide"
@@ -606,6 +616,16 @@ else
     "k8s_oth/mutatingwebhookconfiguration.txt"
     "k8s_oth/mutatingwebhookconfiguration.yaml"
     "k8s_pxb/kdmp-config.yaml"
+    "k8s_pxb/kdmp_backuplocationmaintenances.txt"
+    "k8s_pxb/kdmp_backuplocationmaintenances.yaml"
+    "k8s_pxb/kdmp_resourcebackups.txt"
+    "k8s_pxb/kdmp_resourcebackups.yaml"
+    "k8s_pxb/kdmp_resourceexports.txt"
+    "k8s_pxb/kdmp_resourceexports.yaml"
+    "k8s_pxb/kdmp_volumebackups.txt"
+    "k8s_pxb/kdmp_volumebackups.yaml"
+    "k8s_pxb/kdmp_volumebackupdeletes.txt"
+    "k8s_pxb/kdmp_volumebackupdeletes.yaml"
     "k8s_pxb/stork-controller-config.yaml"
     "k8s_oth/k8s_version.txt"
     "k8s_oth/k8s_api_resources.txt"
