@@ -179,6 +179,7 @@ if [[ "$option" == "PX" ]]; then
     "get schedulepolicies"
     "get schedulepolicies -o yaml"
     "get dataexports -A"
+    "get dataexports -A -o yaml"
     "get prometheuses -A"
     "get prometheuses -A -o yaml"
     "get prometheusrules -A"
@@ -198,7 +199,8 @@ if [[ "$option" == "PX" ]]; then
     "get svc,ep -A -l "portworx.io/volid" -o wide"
     "get svc,ep -A -l "portworx.io/volid" -o yaml"
     "get pods -A -o wide"
-    
+    "get volumebackup -A"
+    "get volumebackup -A -o yaml"    
     
   )
   output_files=(
@@ -274,6 +276,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/pxb_schedulepolicies.txt"
     "k8s_bkp/pxb_schedulepolicies.yaml"  
     "k8s_bkp/pxb_dataexports.txt"
+    "k8s_bkp/pxb_dataexports.yaml"
     "k8s_oth/prometheuses_list.txt"
     "k8s_oth/prometheuses.yaml"
     "k8s_oth/prometheuses_rules_list.txt"
@@ -293,6 +296,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_sharedv4_svc_ep.txt"
     "k8s_px/px_sharedv4_svc_ep.yaml"
     "k8s_oth/pods_all.txt"
+    "k8s_bkp/volumebackup.txt"
+    "k8s_bkp/volumebackup.yaml"
 
   )
   pxctl_commands=(
