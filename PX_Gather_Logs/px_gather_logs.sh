@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.5"
+SCRIPT_VERSION="25.6.6"
 
 # Function to display usage
 usage() {
@@ -177,6 +177,7 @@ if [[ "$option" == "PX" ]]; then
     "get schedulepolicies"
     "get schedulepolicies -o yaml"
     "get dataexports -A"
+    "get dataexports -A -o yaml"
     "get prometheuses -A"
     "get prometheuses -A -o yaml"
     "get prometheusrules -A"
@@ -196,6 +197,8 @@ if [[ "$option" == "PX" ]]; then
     "get svc,ep -A -l "portworx.io/volid" -o wide"
     "get svc,ep -A -l "portworx.io/volid" -o yaml"
     "get pods -A -o wide"
+    "get volumebackups -A"
+    "get volumebackups -A -o yaml"
     
     
   )
@@ -270,6 +273,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/pxb_schedulepolicies.txt"
     "k8s_bkp/pxb_schedulepolicies.yaml"  
     "k8s_bkp/pxb_dataexports.txt"
+    "k8s_bkp/pxb_dataexports.yaml"
     "k8s_oth/prometheuses_list.txt"
     "k8s_oth/prometheuses.yaml"
     "k8s_oth/prometheuses_rules_list.txt"
@@ -289,6 +293,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/px_sharedv4_svc_ep.txt"
     "k8s_px/px_sharedv4_svc_ep.yaml"
     "k8s_oth/pods_all.txt"
+    "k8s_bkp/pxb_volumebackups.txt"
+    "k8s_bkp/pxb_volumebackups.yaml"
 
   )
   pxctl_commands=(
