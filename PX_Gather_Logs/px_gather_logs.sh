@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.6"
+SCRIPT_VERSION="25.6.7"
 
 # Function to display usage
 usage() {
@@ -199,7 +199,8 @@ if [[ "$option" == "PX" ]]; then
     "get pods -A -o wide"
     "get volumebackups -A"
     "get volumebackups -A -o yaml"
-    
+    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup"
+    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
     
   )
   output_files=(
@@ -295,6 +296,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/pods_all.txt"
     "k8s_bkp/pxb_volumebackups.txt"
     "k8s_bkp/pxb_volumebackups.yaml"
+    "k8s_pxb/kopia_backup_jobs.txt"
+    "k8s_pxb/kopia_backup_jobs.yaml"
 
   )
   pxctl_commands=(
@@ -548,6 +551,8 @@ else
     "get ns -o yaml"
     "get secret -n $namespace"
     "get pods -A -o wide"
+    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup"
+    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -639,6 +644,8 @@ else
     "k8s_oth/ns.yaml"
     "k8s_pxb/pxb_secret_list.txt"
     "k8s_oth/pods_all.txt"
+    "k8s_pxb/kopia_backup_jobs.txt"
+    "k8s_pxb/kopia_backup_jobs.yaml"
   )
 log_labels=(
   ""
