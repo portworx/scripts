@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.7"
+SCRIPT_VERSION="25.6.8"
 
 # Function to display usage
 usage() {
@@ -354,6 +354,11 @@ if [[ "$option" == "PX" ]]; then
     "app=px-plugin"
     "name=px-plugin-proxy"
     "name=portworx"
+  )
+
+    log_labels_prev=(
+    "name=portworx-operator"
+    "name=stork"
   )
 
 
@@ -766,6 +771,40 @@ for i in "${!log_labels[@]}"; do
   fi
   done
   #echo "Logs for pod $POD written to: $LOG_FILE"
+done
+
+for i in "${!log_labels_prev[@]}"; do
+  label="${log_labels_prev[$i]}"
+  if [[ "$option" == "PX" ]]; then
+    PODS=$($cli get pods -n $namespace -l $label -o jsonpath="{.items[*].metadata.name}")
+    log_count=0
+  else
+    PODS=$($cli get pods -n $namespace -o jsonpath="{.items[*].metadata.name}")
+  fi
+  for POD in $PODS; do
+  LOG_FILE="${output_dir}/logs/${POD}_previous.log"
+
+  if [[ "$label" == "name=portworx" ]]
+  then
+     max_logs=5
+     if [[ $log_count -lt $max_logs ]]
+     then
+        #echo "log_count- $log_count max_logs: $max_logs pod: $POD"
+        $cli get pod -n "$namespace" "$POD" -o custom-columns=":.status.containerStatuses[*].ready" --no-headers | grep -q "false"
+        if [[ $? -eq 0 ]]
+        then
+           #echo "Found non-ready container in pod: $pod"
+           $cli logs -n "$namespace" "$POD" --tail -1 --all-containers -p > "$LOG_FILE"
+           ((log_count++))
+        fi
+     fi
+  else
+  #echo "Fetching logs for pod: $POD"
+  # Fetch logs and write to file
+  $cli logs -n "$namespace" "$POD" --tail -1 --all-containers -p > "$LOG_FILE"
+  fi
+  done
+  #echo "Previous Logs for pod $POD written to: $LOG_FILE"
 done
 print_progress 4
 
