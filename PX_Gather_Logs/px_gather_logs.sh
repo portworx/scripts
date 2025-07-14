@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.0"
+SCRIPT_VERSION="25.7.1"
 
 # Function to display usage
 usage() {
@@ -199,7 +199,7 @@ if [[ "$option" == "PX" ]]; then
     "get pods -A -o wide"
     "get volumebackups -A"
     "get volumebackups -A -o yaml"
-    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup"
+    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup --show-labels"
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
     
   )
@@ -487,7 +487,7 @@ else
     "describe namespace $namespace"
     "get namespace $namespace -o yaml"
     "get cm -o yaml -n $namespace"
-    "get job,cronjobs -o wide -n $namespace"
+    "get job,cronjobs -o wide -n $namespace --show-labels"
     "get job,cronjobs -n $namespace -o yaml"
     "describe job,cronjobs -n $namespace"
     "get applicationbackups -A"
@@ -553,7 +553,7 @@ else
     "get ns -o yaml"
     "get secret -n $namespace --show-labels"
     "get pods -A -o wide"
-    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup"
+    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup --show-labels"
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
  )
  output_files=(
