@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.0"
+SCRIPT_VERSION="25.7.1"
 
 # Function to display usage
 usage() {
@@ -833,6 +833,7 @@ for i in "${!logs_oth_ns[@]}"; do
   while read -r namespace pod; do  
   if [[ -n "$namespace" && -n "$pod" ]]; then
         LOG_FILE="${output_dir}/logs/${pod}.log"
+        LOG_FILE_PREV="${output_dir}/logs/${pod}_prev.log"
         if [[ "$option" == "PXB" ]]; then
         POD_YAML_FILE="${output_dir}/k8s_pxb/${pod}.yaml"
         else
@@ -841,6 +842,9 @@ for i in "${!logs_oth_ns[@]}"; do
         #echo "Saving logs for Pod: $pod (Namespace: $namespace)"
         $cli logs -n "$namespace" "$pod" --tail -1 --all-containers > "$LOG_FILE"
         $cli -n "$namespace" get pod "$pod" -o yaml > "$POD_YAML_FILE"
+        if [[ "$label" == "name=portworx-operator" || "$label" == "name=stork" || "$label" == "name=stork-scheduler" ]]; then
+          $cli logs -n "$namespace" "$pod" --tail -1 --all-containers  -p > "$LOG_FILE_PREV"
+        fi
   fi
   
   done
