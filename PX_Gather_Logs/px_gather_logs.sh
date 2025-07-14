@@ -551,7 +551,7 @@ else
     "api-resources -o wide"
     "get ns"
     "get ns -o yaml"
-    "get secret -n $namespace"
+    "get secret -n $namespace --show-labels"
     "get pods -A -o wide"
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup"
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
