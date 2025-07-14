@@ -345,8 +345,6 @@ if [[ "$option" == "PX" ]]; then
     "name=autopilot"
     "name=portworx-api"
     "app=px-csi-driver"
-    "name=stork"
-    "name=stork-scheduler"
     "name=portworx-pvc-controller"
     "role=px-telemetry-registration"
     "name=px-telemetry-phonehome"
@@ -456,7 +454,10 @@ if [[ "$option" == "PX" ]]; then
   
 logs_oth_ns=(
     "name=portworx-operator" #Some installations using PX Operator in different namespace than PXE installed
+    "name=stork"
+    "name=stork-scheduler"
     "kdmp.portworx.com/driver-name=kopiabackup"
+    "kdmp.portworx.com/driver-name=nfsbackup"
 )
 
   main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
