@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.6.7"
+SCRIPT_VERSION="25.7.0"
 
 # Function to display usage
 usage() {
@@ -344,7 +344,6 @@ if [[ "$option" == "PX" ]]; then
   log_labels=(
     "name=autopilot"
     "name=portworx-api"
-    "name=portworx-operator"
     "app=px-csi-driver"
     "name=stork"
     "name=stork-scheduler"
@@ -455,7 +454,10 @@ if [[ "$option" == "PX" ]]; then
     "kubevirt/kubevirt_virt_launcher_pods.yaml"
   )
   
-  logs_oth_ns=()
+logs_oth_ns=(
+    "name=portworx-operator" #Some installations using PX Operator in different namespace than PXE installed
+    "kdmp.portworx.com/driver-name=kopiabackup"
+)
 
   main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
