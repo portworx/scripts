@@ -301,7 +301,6 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/pxb_volumebackups.yaml"
     "k8s_pxb/kopia_backup_jobs.txt"
     "k8s_pxb/kopia_backup_jobs.yaml"
-    "k8s_bkp/volumesnapshotclasses.yaml"
     "k8s_bkp/groupvolumesnapshots.txt"
     "k8s_bkp/groupvolumesnapshots.yaml"
 
