@@ -41,7 +41,8 @@ Example:
 ```bash
 curl -ssL https://raw.githubusercontent.com/portworx/scripts/refs/heads/main/PX_Gather_Logs/px_gather_logs.sh | bash -s -- -n portworx -c kubectl -o PX
 ```
-### Directly upload to FTPS using Curl within script (i.e ftps.purestorage.com) if you have credentials for corresponding case with optional argument "-u" and "-p"
+### Direct upload to FTPS 
+Direct FTP upload to ftps.purestorage.com can be performed through the script if you have the credentials associated with the corresponding case. You can use the optional -u and -p arguments to provide the username and password
 ```bash
 curl -ssL https://raw.githubusercontent.com/portworx/scripts/refs/heads/main/PX_Gather_Logs/px_gather_logs.sh | bash -s -- -n <namespace> -c <kubectl/oc> -o <PX/PXB> -u <ftpsusername> -p <ftpspassword>
 ```

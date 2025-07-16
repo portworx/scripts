@@ -14,6 +14,7 @@
 
 SCRIPT_VERSION="25.7.2"
 
+
 # Function to display usage
 usage() {
   echo "Usage: $0 [-n <namespace>] [-c <cli>] [-o <option>]"
@@ -350,8 +351,6 @@ if [[ "$option" == "PX" ]]; then
     "name=autopilot"
     "name=portworx-api"
     "app=px-csi-driver"
-    "name=stork"
-    "name=stork-scheduler"
     "name=portworx-pvc-controller"
     "role=px-telemetry-registration"
     "name=px-telemetry-phonehome"
@@ -461,12 +460,15 @@ if [[ "$option" == "PX" ]]; then
   
 logs_oth_ns=(
     "name=portworx-operator" #Some installations using PX Operator in different namespace than PXE installed
+    "name=stork"
+    "name=stork-scheduler"
     "kdmp.portworx.com/driver-name=kopiabackup"
+    "kdmp.portworx.com/driver-name=nfsbackup"
 )
 
   main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
-  sub_dir=(${output_dir}/logs ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp ${output_dir}/k8s_pxb)
+  sub_dir=(${output_dir}/logs ${output_dir}/logs/previous ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp ${output_dir}/k8s_pxb)
 else
   commands=(
     "get pods -o wide -n $namespace"
@@ -667,7 +669,7 @@ logs_oth_ns=(
 
   main_dir="PX_Backup_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
   output_dir="/tmp/${main_dir}"
-  sub_dir=(${output_dir}/logs ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
+  sub_dir=(${output_dir}/logs ${output_dir}/logs/previous ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
 
 fi
 
@@ -834,10 +836,11 @@ print_progress 8
 
 for i in "${!logs_oth_ns[@]}"; do
   label="${logs_oth_ns[$i]}"
-  $cli get pods -A -l $label -o jsonpath="{range .items[*]}{.metadata.namespace} {.metadata.name}{'\n'}{end}"|
-  while read -r namespace pod; do  
+  $cli get pods -A -l $label -o jsonpath="{range .items[*]}{.metadata.namespace}{' '}{.metadata.name}{' '}{.status.containerStatuses[*].restartCount}{'\n'}{end}"|
+  while read -r namespace pod restartcount; do  
   if [[ -n "$namespace" && -n "$pod" ]]; then
         LOG_FILE="${output_dir}/logs/${pod}.log"
+        LOG_FILE_PREV="${output_dir}/logs/previous/${pod}_prev.log"
         if [[ "$option" == "PXB" ]]; then
         POD_YAML_FILE="${output_dir}/k8s_pxb/${pod}.yaml"
         else
@@ -846,6 +849,11 @@ for i in "${!logs_oth_ns[@]}"; do
         #echo "Saving logs for Pod: $pod (Namespace: $namespace)"
         $cli logs -n "$namespace" "$pod" --tail -1 --all-containers > "$LOG_FILE"
         $cli -n "$namespace" get pod "$pod" -o yaml > "$POD_YAML_FILE"
+        if [[ "$restartcount" > 0 ]]; then         
+          if [[ "$label" == "name=portworx-operator" || "$label" == "name=stork" || "$label" == "name=stork-scheduler" ]]; then
+            $cli logs -n "$namespace" "$pod" --tail -1 --all-containers  -p 2>/dev/null > "$LOG_FILE_PREV"
+          fi
+        fi
   fi
   
   done
