@@ -12,7 +12,8 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.1"
+SCRIPT_VERSION="25.7.2"
+
 
 # Function to display usage
 usage() {
@@ -199,8 +200,11 @@ if [[ "$option" == "PX" ]]; then
     "get pods -A -o wide"
     "get volumebackups -A"
     "get volumebackups -A -o yaml"
-    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup"
+    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup --show-labels"
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
+    "get groupvolumesnapshots.stork.libopenstorage.org -A"
+    "get groupvolumesnapshots.stork.libopenstorage.org -A -o yaml"
+    
     
   )
   output_files=(
@@ -298,6 +302,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/pxb_volumebackups.yaml"
     "k8s_pxb/kopia_backup_jobs.txt"
     "k8s_pxb/kopia_backup_jobs.yaml"
+    "k8s_bkp/groupvolumesnapshots.txt"
+    "k8s_bkp/groupvolumesnapshots.yaml"
 
   )
   pxctl_commands=(
@@ -488,7 +494,7 @@ else
     "describe namespace $namespace"
     "get namespace $namespace -o yaml"
     "get cm -o yaml -n $namespace"
-    "get job,cronjobs -o wide -n $namespace"
+    "get job,cronjobs -o wide -n $namespace --show-labels"
     "get job,cronjobs -n $namespace -o yaml"
     "describe job,cronjobs -n $namespace"
     "get applicationbackups -A"
@@ -552,9 +558,9 @@ else
     "api-resources -o wide"
     "get ns"
     "get ns -o yaml"
-    "get secret -n $namespace"
+    "get secret -n $namespace --show-labels"
     "get pods -A -o wide"
-    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup"
+    "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup --show-labels"
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
  )
  output_files=(
