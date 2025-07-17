@@ -309,7 +309,7 @@ if [[ "$option" == "PX" ]]; then
   pxctl_commands=(
     "status"
     "status -j"
-    "cluster provision-status"
+    "cluster provision-status --output-type wide"
     "license list"
     "cluster options list"
     "cluster options list -j"
@@ -324,6 +324,7 @@ if [[ "$option" == "PX" ]]; then
     "volume list -v -j"
     "volume list -s"
     "volume list -s -j"
+    "call-home status -j"
 
   )
   pxctl_output_files=(
@@ -344,6 +345,7 @@ if [[ "$option" == "PX" ]]; then
     "px_out/pxctl_volume_list.json"
     "px_out/pxctl_volume_snapshot_list.txt"
     "px_out/pxctl_volume_snapshot_list.json"
+    "px_out/pxctl_callhome_status.json"
     
   )
 
