@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.2"
+SCRIPT_VERSION="25.7.3"
 
 
 # Function to display usage
@@ -745,39 +745,64 @@ done
 # Generating Logs
 print_progress 3
 
+# Define the labels you want to apply the 5-log limit to
+limited_labels=("name=portworx-api" "name=px-telemetry-phonehome" "name=portworx")
+
 for i in "${!log_labels[@]}"; do
   label="${log_labels[$i]}"
-  if [[ "$option" == "PX" ]]; then
-    PODS=$($cli get pods -n $namespace -l $label -o jsonpath="{.items[*].metadata.name}")
-    log_count=0
-  else
-    PODS=$($cli get pods -n $namespace -o jsonpath="{.items[*].metadata.name}")
-  fi
-  for POD in $PODS; do
-  LOG_FILE="${output_dir}/logs/${POD}.log"
+  log_count=0
 
-  if [[ "$label" == "name=portworx" ]]
-  then
-     max_logs=5
-     if [[ $log_count -lt $max_logs ]]
-     then
-        #echo "log_count- $log_count max_logs: $max_logs pod: $POD"
-        $cli get pod -n "$namespace" "$POD" -o custom-columns=":.status.containerStatuses[*].ready" --no-headers | grep -q "false"
-        if [[ $? -eq 0 ]]
-        then
-           #echo "Found non-ready container in pod: $pod"
-           $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
-           ((log_count++))
-        fi
-     fi
+  # Get pods for current label
+  if [[ "$option" == "PX" ]]; then
+    PODS=($($cli get pods -n "$namespace" -l "$label" -o jsonpath="{.items[*].metadata.name}"))
   else
-  #echo "Fetching logs for pod: $POD"
-  # Fetch logs and write to file
-  $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+    PODS=($($cli get pods -n "$namespace" -o jsonpath="{.items[*].metadata.name}"))
   fi
-  done
-  #echo "Logs for pod $POD written to: $LOG_FILE"
+
+  # Check if current label is in the limited set
+  if printf '%s\n' "${limited_labels[@]}" | grep -Fxq "$label"; then
+    max_logs=5
+    not_ready_pods=()
+    ready_pods=()
+
+    # Separate pods by container readiness
+    for POD in "${PODS[@]}"; do
+      ready_statuses=$($cli get pod -n "$namespace" "$POD" -o custom-columns="READY:.status.containerStatuses[*].ready" --no-headers)
+      if echo "$ready_statuses" | grep -q "false"; then
+        not_ready_pods+=("$POD")
+      else
+        ready_pods+=("$POD")
+      fi
+    done
+
+    # Prioritize logs from not-ready pods
+    for POD in "${not_ready_pods[@]}"; do
+      if [[ $log_count -ge $max_logs ]]; then break; fi
+      LOG_FILE="${output_dir}/logs/${POD}.log"
+      $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+      ((log_count++))
+    done
+
+    # Fill remaining with ready pods
+    for POD in "${ready_pods[@]}"; do
+      if [[ $log_count -ge $max_logs ]]; then break; fi
+      LOG_FILE="${output_dir}/logs/${POD}.log"
+      $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+      ((log_count++))
+    done
+
+  else
+    # No limit: dump logs for all matching pods
+    for POD in "${PODS[@]}"; do
+      LOG_FILE="${output_dir}/logs/${POD}.log"
+      $cli logs -n "$namespace" "$POD" --tail -1 --all-containers > "$LOG_FILE"
+    done
+  fi
+
 done
+
+
+
 print_progress 4
 
 for i in "${!k8s_log_labels[@]}"; do
