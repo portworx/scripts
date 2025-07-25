@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.4"
+SCRIPT_VERSION="25.7.5"
 
 
 # Function to display usage
@@ -204,6 +204,8 @@ if [[ "$option" == "PX" ]]; then
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
     "get groupvolumesnapshots.stork.libopenstorage.org -A"
     "get groupvolumesnapshots.stork.libopenstorage.org -A -o yaml"
+    "get volumeplacementstrategies"
+    "get volumeplacementstrategies -o yaml"
     
     
   )
@@ -304,6 +306,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_pxb/kopia_backup_jobs.yaml"
     "k8s_bkp/groupvolumesnapshots.txt"
     "k8s_bkp/groupvolumesnapshots.yaml"
+    "k8s_px/vps.txt"
+    "k8s_px/vps.yaml"
 
   )
   pxctl_commands=(
