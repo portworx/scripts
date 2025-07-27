@@ -12,7 +12,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.5"
+SCRIPT_VERSION="25.7.6"
 
 
 # Function to display usage
@@ -21,6 +21,7 @@ usage() {
   echo "  -n <namespace> : Kubernetes namespace"
   echo "  -c <cli>       : CLI tool to use (oc/kubectl)"
   echo "  -o <option>    : Operation option (PX/PXB)"
+  echo "  -d <output_dir>: Output directory for files (optional)"
   exit 1
 }
 # Function to print info in summary file
@@ -38,13 +39,14 @@ print_progress() {
 }
 
 # Parse command-line arguments
-while getopts "n:c:o:u:p:" opt; do
+while getopts "n:c:o:u:p:d:" opt; do
   case $opt in
     n) namespace=$(echo "$OPTARG" | tr '[:upper:]' '[:lower:]') ;;
     c) cli="$OPTARG" ;;
     o) option=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
     u) ftpsuser=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
     p) ftpspass="$OPTARG" ;;
+    d) user_output_dir="$OPTARG" ;;
     *) usage ;;
   esac
 done
@@ -97,9 +99,39 @@ fi
 
 
 # Confirm inputs
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Script Version: $SCRIPT_VERSION"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Namespace: $namespace"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): CLI tool: $cli"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): option: $option"
+
+# Setting up output directories
+
+setup_output_dirs() {
+if [[ "$option" == "PX" ]]; then
+  main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
+else
+  main_dir="PX_Backup_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
+fi
+
+if [[ -n "$user_output_dir" ]]; then
+  output_dir="${user_output_dir%/}/${main_dir}"
+else
+  output_dir="/tmp/${main_dir}"
+fi
+
+if [[ "$option" == "PX" ]]; then
+  sub_dir=(${output_dir}/logs/previous ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp ${output_dir}/k8s_pxb)
+else
+  sub_dir=(${output_dir}/logs/previous ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
+fi
+
+mkdir -p "$output_dir"
+mkdir -p "${sub_dir[@]}"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Output will be stored in: $output_dir"
+
+}
+setup_output_dirs
+
 # Set commands based on the chosen option
 if [[ "$option" == "PX" ]]; then
   admin_ns=$($cli -n $namespace get stc -o jsonpath='{.items[*].spec.stork.args.admin-namespace}')
@@ -472,9 +504,9 @@ logs_oth_ns=(
     "kdmp.portworx.com/driver-name=nfsbackup"
 )
 
-  main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
-  output_dir="/tmp/${main_dir}"
-  sub_dir=(${output_dir}/logs ${output_dir}/logs/previous ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp ${output_dir}/k8s_pxb)
+#  main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
+#  output_dir="/tmp/${main_dir}"
+#  sub_dir=(${output_dir}/logs ${output_dir}/logs/previous ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp ${output_dir}/k8s_pxb)
 else
   commands=(
     "get pods -o wide -n $namespace"
@@ -673,9 +705,9 @@ logs_oth_ns=(
     "kdmp.portworx.com/driver-name=nfsbackup"
 )
 
-  main_dir="PX_Backup_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
-  output_dir="/tmp/${main_dir}"
-  sub_dir=(${output_dir}/logs ${output_dir}/logs/previous ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
+#  main_dir="PX_Backup_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
+#  output_dir="/tmp/${main_dir}"
+# sub_dir=(${output_dir}/logs ${output_dir}/logs/previous ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
 
 fi
 
@@ -689,9 +721,9 @@ fi
   )
 
 # Create a temporary directory for storing outputs
-mkdir -p "$output_dir"
-mkdir -p "${sub_dir[@]}"
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Output will be stored in: $output_dir"
+#mkdir -p "$output_dir"
+#mkdir -p "${sub_dir[@]}"
+#echo "$(date '+%Y-%m-%d %H:%M:%S'): Output will be stored in: $output_dir"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is started"
 
 #Generate Summary file with parameter and date information
@@ -895,11 +927,13 @@ log_info "Extraction is completed"
 
 # Compress the output directory into a tar file
 archive_file="${main_dir}.tar.gz"
-cd /tmp
+parent_dir="$(dirname "$output_dir")"
+#cd /tmp
+cd "$parent_dir"
 tar -czf "$archive_file" "$main_dir"
 echo "************************************************************************************************"
 echo ""
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Diagnostic bundle created at: /tmp/$archive_file"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): Diagnostic bundle created at: $parent_dir/$archive_file"
 echo ""
 echo "************************************************************************************************"
 
@@ -921,7 +955,7 @@ if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
   ftps_url_fallback="https://$ftpshost_base/"  
 
   echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_primary"
-  curl --progress-bar -S -u "$ftpsuser:$ftpspass" -T "/tmp/$archive_file" "$ftps_url_primary"
+  curl --progress-bar -S -u "$ftpsuser:$ftpspass" -T "$output_dir/$archive_file" "$ftps_url_primary"
   if [[ $? -eq 0 ]]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S'): Successfully uploaded to FTPS - $ftps_url_primary"
   else
@@ -932,7 +966,7 @@ if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
     if [[ "$ftps_connection_response" -eq 200 ]]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS connection successful to $ftps_url_fallback."
       echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_fallback..."
-      curl --progress-bar --ftp-ssl -u "$ftpsuser:$ftpspass" -T "/tmp/$archive_file" "$ftps_url_fallback" -o /dev/null
+      curl --progress-bar --ftp-ssl -u "$ftpsuser:$ftpspass" -T "$output_dir/$archive_file" "$ftps_url_fallback" -o /dev/null
       if [[ $? -eq 0 ]]; then
         echo "$(date '+%Y-%m-%d %H:%M:%S'): Successfully uploaded to FTPS - $ftps_url_fallback"
       else
@@ -941,7 +975,7 @@ if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
     elif [[ "$ftps_connection_response" -eq 401 ]]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS connection successful, but credentials look incorrect. Please get updated credentials or upload the generated log file manually over case."
     else
-      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS fallback connection check failed. Please provide the output file: /tmp/$archive_file over case"
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS fallback connection check failed. Please provide the output file: $output_dir/$archive_file over case"
     fi
   fi
 fi
