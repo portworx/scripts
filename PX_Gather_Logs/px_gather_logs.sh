@@ -955,7 +955,7 @@ if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
   ftps_url_fallback="https://$ftpshost_base/"  
 
   echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_primary"
-  curl --progress-bar -S -u "$ftpsuser:$ftpspass" -T "$output_dir/$archive_file" "$ftps_url_primary"
+  curl --progress-bar -S -u "$ftpsuser:$ftpspass" -T "$parent_dir/$archive_file" "$ftps_url_primary"
   if [[ $? -eq 0 ]]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S'): Successfully uploaded to FTPS - $ftps_url_primary"
   else
@@ -966,7 +966,7 @@ if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
     if [[ "$ftps_connection_response" -eq 200 ]]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS connection successful to $ftps_url_fallback."
       echo "$(date '+%Y-%m-%d %H:%M:%S'): Trying FTPS upload method to $ftps_url_fallback..."
-      curl --progress-bar --ftp-ssl -u "$ftpsuser:$ftpspass" -T "$output_dir/$archive_file" "$ftps_url_fallback" -o /dev/null
+      curl --progress-bar --ftp-ssl -u "$ftpsuser:$ftpspass" -T "$parent_dir/$archive_file" "$ftps_url_fallback" -o /dev/null
       if [[ $? -eq 0 ]]; then
         echo "$(date '+%Y-%m-%d %H:%M:%S'): Successfully uploaded to FTPS - $ftps_url_fallback"
       else
@@ -975,7 +975,7 @@ if [[ -n "$ftpsuser" && -n "$ftpspass" ]]; then
     elif [[ "$ftps_connection_response" -eq 401 ]]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS connection successful, but credentials look incorrect. Please get updated credentials or upload the generated log file manually over case."
     else
-      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS fallback connection check failed. Please provide the output file: $output_dir/$archive_file over case"
+      echo "$(date '+%Y-%m-%d %H:%M:%S'): FTPS fallback connection check failed. Please provide the output file: $parent_dir/$archive_file over case"
     fi
   fi
 fi
