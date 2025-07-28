@@ -8,7 +8,7 @@ Collects logs and other information related to Portworx/PX Backup for issue anal
 |---------------|---------------------------------------------------------------------------------|--------------------------------------|
 | `-n`          | Kubernetes namespace                                                            | `-n portworx`                        |
 | `-c`          | CLI tool to use (e.g., `kubectl` or `oc`)                                       | `-c kubectl`                         |
-| `-o`          | Option option (`PX` for Portworx, `PXB` for PX Backup)                          | `-o PX`                              |
+| `-o`          | Option (`PX` for Portworx, `PXB` for PX Backup)                                 | `-o PX`                              |
 
 ### Optional Parameters
 | **Parameter** | **Description**                                                                 | **Example**                          |
