@@ -34,7 +34,7 @@ log_info() {
 
 print_progress() {
     local current_stage=$1
-    local total_stages="8"
+    local total_stages="9"
     echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
@@ -503,6 +503,15 @@ logs_oth_ns=(
     "kdmp.portworx.com/driver-name=kopiabackup"
     "kdmp.portworx.com/driver-name=nfsbackup"
 )
+data_masking_commands=(
+    "$cli get secret px-pure-secret -n $namespace -o jsonpath='{.data.pure\\.json}' | base64 --decode | sed -E 's/\"APIToken\": *\"[^\"]*\"/\"APIToken\": \"*****Masked*****\"/'"
+
+  )
+  data_masking_output=(
+    "k8s_px/px-pure-secret_masked.yaml"
+
+  )
+
 
 #  main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
 #  output_dir="/tmp/${main_dir}"
@@ -921,6 +930,18 @@ for i in "${!logs_oth_ns[@]}"; do
   
   done
 done
+
+#Execute masked data extractions
+
+extract_masked_data() {
+for i in "${!data_masking_commands[@]}"; do
+  cmd="${data_masking_commands[$i]}"
+  output_file="$output_dir/${data_masking_output[$i]}"
+  eval "$cmd" > "$output_file" 2>&1
+done
+}
+print_progress 9
+extract_masked_data
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
 log_info "Extraction is completed"
