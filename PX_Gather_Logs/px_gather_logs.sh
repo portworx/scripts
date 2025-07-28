@@ -3,12 +3,23 @@
 # Script: px_gather_logs.sh
 # Description: Collects logs and other information related to portworx/PX Backup.
 # Usage:
-# - We can pass the inputs as parameters like below
-#   For Portworx : px_gather_logs.sh -n <Portworx namespace> -c <k8s cli> -o PX
-#       Example: px_gather_logs.sh -n portworx -c kubectl -o PX
-#   For PX Backup: px_gather_logs.sh -n <Portworx Backup namespace> -c <k8s cli> -o PXB
-#       Example: px_gather_logs.sh -n px-backup -c oc -o PXB
-# - If there are no parameters passed, shell will prompt for input
+# - Mandatory arguments:
+#   -n <namespace> : Kubernetes namespace
+#   -c <cli>       : CLI tool to use (oc/kubectl)
+#   -o <option>    : Operation option (PX for Portworx, PXB for PX Backup)
+#
+# - Optional arguments:
+#   -u <ftp username>  : FTPS username for uploading logs
+#   -p <ftp password>  : FTPS password for uploading logs
+#   -d <output_dir>: Custom output directory for storing diags
+#
+# Examples:
+#   For Portworx:
+#       px_gather_logs.sh -n portworx -c kubectl -o PX
+#   For PX Backup:
+#       px_gather_logs.sh -n px-backup -c oc -o PXB
+#
+# - If no parameters are passed, the script will prompt for mandatory arguments input.
 #
 # ================================================================
 
