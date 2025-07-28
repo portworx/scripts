@@ -9,8 +9,8 @@
 #   -o <option>    : Operation option (PX for Portworx, PXB for PX Backup)
 #
 # - Optional arguments:
-#   -u <ftp username>  : FTPS username for uploading logs
-#   -p <ftp password>  : FTPS password for uploading logs
+#   -u <pure ftps username>  : Pure Storage FTPS username for uploading logs
+#   -p <pure ftps password>  : Pure Storage FTPS password for uploading logs
 #   -d <output_dir>: Custom output directory for storing diags
 #
 # Examples:
