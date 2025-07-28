@@ -1,7 +1,22 @@
 # px_gather_logs.sh
 
 ## Description
-Collects logs and other information related to Portworx/PX Backup for issue analysis. This can be executed from any unix-based terminal where we have kubectl/oc command access to the cluster. Script will generate a tarball file in /tmp folder
+Collects logs and other information related to Portworx/PX Backup for issue analysis. This can be executed from any unix-based terminal where we have kubectl/oc command access to the cluster. Script will generate a tarball file in /tmp or user defined folder
+
+### Mandatory Parameters
+| **Parameter** | **Description**                                                                 | **Example**                          |
+|---------------|---------------------------------------------------------------------------------|--------------------------------------|
+| `-n`          | Kubernetes namespace                                                            | `-n portworx`                        |
+| `-c`          | CLI tool to use (e.g., `kubectl` or `oc`)                                       | `-c kubectl`                         |
+| `-o`          | Option option (`PX` for Portworx, `PXB` for PX Backup)                          | `-o PX`                              |
+
+### Optional Parameters
+| **Parameter** | **Description**                                                                 | **Example**                          |
+|---------------|---------------------------------------------------------------------------------|--------------------------------------|
+| `-u`          | Pure Storage FTPS username for uploading logs                                   | `-u myusername`                      |
+| `-p`          | Pure Storage  FTPS password for uploading logs                                  | `-p mypassword`                      |
+| `-d`          | Custom output directory for storing logs                                        | `-d /path/to/output`                 |
+
 
 ## Usage
 ### Passing Inputs as Parameters
