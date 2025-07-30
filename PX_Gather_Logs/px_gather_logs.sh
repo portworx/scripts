@@ -878,7 +878,7 @@ if kubectl api-versions | grep -q 'openshift'; then
   PODS=$($cli get pods -n openshift-kube-apiserver -l apiserver=true -o jsonpath="{.items[*].metadata.name}")
   for POD in $PODS; do
   LOG_FILE="${output_dir}/logs/${POD}.log"
-  $cli logs -n kube-system "$POD" --tail -1 --all-containers > "$LOG_FILE"
+  $cli logs -n openshift-kube-apiserver "$POD" --tail -1 --all-containers > "$LOG_FILE"
   done
 fi
 
