@@ -874,7 +874,7 @@ for i in "${!k8s_log_labels[@]}"; do
 done
 
 #execute only if is OpenShift cluster to get kube-api server logs
-if kubectl api-versions | grep -q 'openshift'; then
+if $cli api-versions | grep -q 'openshift'; then
   PODS=$($cli get pods -n openshift-kube-apiserver -l apiserver=true -o jsonpath="{.items[*].metadata.name}")
   for POD in $PODS; do
   LOG_FILE="${output_dir}/logs/${POD}.log"
