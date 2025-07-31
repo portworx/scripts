@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.6"
+SCRIPT_VERSION="25.7.7"
 
 
 # Function to display usage
@@ -45,7 +45,7 @@ log_info() {
 
 print_progress() {
     local current_stage=$1
-    local total_stages="9"
+    local total_stages="10"
     echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
@@ -740,6 +740,14 @@ fi
     "component=kube-controller-manager"
   )
 
+# Array for common commands and their output files
+declare -A common_commands_and_files=(
+  ["get resourcequota -A"]="k8s_oth/resourcequota.txt"
+  ["get resourcequota -A -o yaml"]="k8s_oth/resourcequota.yaml"
+  ["get limitrange -A"]="k8s_oth/limitrange.txt"
+  ["get limitrange -A -o yaml"]="k8s_oth/limitrange.yaml"
+)
+
 # Create a temporary directory for storing outputs
 #mkdir -p "$output_dir"
 #mkdir -p "${sub_dir[@]}"
@@ -960,8 +968,23 @@ for i in "${!data_masking_commands[@]}"; do
   eval "$cmd" > "$output_file" 2>&1
 done
 }
+
+# Function to extract common commands and save outputs
+extract_common_commands() {
+  #echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting common commands..."
+  for cmd in "${!common_commands_and_files[@]}"; do
+    output_file="$output_dir/${common_commands_and_files[$cmd]}"
+    #echo "$(date '+%Y-%m-%d %H:%M:%S'): Executing: $cli $cmd"
+    $cli $cmd > "$output_file" 2>&1
+    #echo "$(date '+%Y-%m-%d %H:%M:%S'): Output saved to: $output_file"
+  done
+}
+
+
 print_progress 9
 extract_masked_data
+print_progress 10
+extract_common_commands
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
 log_info "Extraction is completed"
