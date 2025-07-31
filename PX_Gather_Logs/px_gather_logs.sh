@@ -970,7 +970,7 @@ done
 }
 
 # Function to extract common commands and save outputs
-extract_common_commands() {
+extract_common_commands_op() {
   #echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting common commands..."
   for cmd in "${!common_commands_and_files[@]}"; do
     output_file="$output_dir/${common_commands_and_files[$cmd]}"
@@ -984,7 +984,7 @@ extract_common_commands() {
 print_progress 9
 extract_masked_data
 print_progress 10
-extract_common_commands
+extract_common_commands_op
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
 log_info "Extraction is completed"
