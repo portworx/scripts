@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.7"
+SCRIPT_VERSION="25.7.8"
 
 
 # Function to display usage
@@ -153,7 +153,6 @@ if [[ "$option" == "PX" ]]; then
   commands=(
     "get pods -o wide -n $namespace"
     "get pods -o wide -n $namespace -o yaml"
-    "describe pods -n $namespace"
     "get nodes -o wide -n $namespace"
     "get nodes -o wide -n $namespace -o yaml"
     "describe nodes -n $namespace"
@@ -255,7 +254,6 @@ if [[ "$option" == "PX" ]]; then
   output_files=(
     "k8s_px/px_pods.txt"
     "k8s_px/px_pods.yaml"
-    "k8s_px/px_pods_desc.txt"
     "k8s_oth/k8s_nodes.txt"
     "k8s_oth/k8s_nodes.yaml"
     "k8s_oth/k8s_nodes_desc.txt"
@@ -531,7 +529,6 @@ else
   commands=(
     "get pods -o wide -n $namespace"
     "get pods -o wide -n $namespace -o yaml"
-    "describe pods -n $namespace"
     "get nodes -o wide -n $namespace"
     "get nodes -o wide -n $namespace -o yaml"
     "describe nodes -n $namespace"
@@ -624,7 +621,6 @@ else
  output_files=(
     "k8s_pxb/pxb_pods.txt"
     "k8s_pxb/pxb_pods.yaml"
-    "k8s_pxb/pxb_pods_desc.txt"
     "k8s_oth/k8s_nodes.txt"
     "k8s_oth/k8s_nodes.yaml"
     "k8s_oth/k8s_nodes_desc.txt"
