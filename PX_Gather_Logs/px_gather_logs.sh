@@ -58,7 +58,7 @@ while getopts "n:c:o:u:p:d:f:" opt; do
     u) ftpsuser=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
     p) ftpspass="$OPTARG" ;;
     d) user_output_dir="$OPTARG" ;;
-    f) file_prefix="${OPTARG:0:7}_" ;;
+    f) file_prefix="${OPTARG:0:15}_" ;;
     *) usage ;;
   esac
 done
