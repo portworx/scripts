@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.7"
+SCRIPT_VERSION="25.7.8"
 
 
 # Function to display usage
@@ -50,7 +50,7 @@ print_progress() {
 }
 
 # Parse command-line arguments
-while getopts "n:c:o:u:p:d:" opt; do
+while getopts "n:c:o:u:p:d:f:" opt; do
   case $opt in
     n) namespace=$(echo "$OPTARG" | tr '[:upper:]' '[:lower:]') ;;
     c) cli="$OPTARG" ;;
@@ -58,6 +58,7 @@ while getopts "n:c:o:u:p:d:" opt; do
     u) ftpsuser=$(echo "$OPTARG" | tr '[:lower:]' '[:upper:]') ;;
     p) ftpspass="$OPTARG" ;;
     d) user_output_dir="$OPTARG" ;;
+    f) file_prefix="${OPTARG:0:15}_" ;;
     *) usage ;;
   esac
 done
@@ -119,9 +120,9 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): option: $option"
 
 setup_output_dirs() {
 if [[ "$option" == "PX" ]]; then
-  main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
+  main_dir="${file_prefix}PXE_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
 else
-  main_dir="PX_Backup_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
+  main_dir="${file_prefix}PXB_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
 fi
 
 if [[ -n "$user_output_dir" ]]; then
@@ -546,7 +547,6 @@ else
     "get csinodes"
     "get csinodes -o yaml"
     "get all -o wide -n $namespace"
-    "describe all -n $namespace"
     "get all -o wide -n $namespace -o yaml"
     "get configmaps -n $namespace"
     "describe namespace $namespace"
@@ -639,7 +639,6 @@ else
     "k8s_oth/csinodes.txt"
     "k8s_oth/csinodes.yaml"
     "k8s_pxb/pxb_all.txt"
-    "k8s_pxb/pxb_all_desc.txt"
     "k8s_pxb/pxb_all.yaml"
     "k8s_pxb/pxb_cm.txt"
     "k8s_pxb/pxb_ns_dec.txt"
