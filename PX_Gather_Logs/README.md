@@ -6,7 +6,7 @@ Collects logs and other information related to Portworx/PX Backup for issue anal
 ### Mandatory Parameters
 | **Parameter** | **Description**                                                                 | **Example**                          |
 |---------------|---------------------------------------------------------------------------------|--------------------------------------|
-| `-n`          | Kubernetes namespace                                                            | `-n portworx`                        |
+| `-n`          | Namespace                                                                       | `-n portworx`                        |
 | `-c`          | CLI tool to use (e.g., `kubectl` or `oc`)                                       | `-c kubectl`                         |
 | `-o`          | Option (`PX` for Portworx, `PXB` for PX Backup)                                 | `-o PX`                              |
 
@@ -16,6 +16,8 @@ Collects logs and other information related to Portworx/PX Backup for issue anal
 | `-u`          | Pure Storage FTPS username for uploading logs                                   | `-u myusername`                      |
 | `-p`          | Pure Storage  FTPS password for uploading logs                                  | `-p mypassword`                      |
 | `-d`          | Custom output directory for storing logs                                        | `-d /path/to/output`                 |
+| `-f`          | File Name Prefix for diag bundle                                                | `-f PROD_Cluster1`                   |
+
 
 
 ## Usage
