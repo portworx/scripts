@@ -250,8 +250,6 @@ if [[ "$option" == "PX" ]]; then
     "get groupvolumesnapshots.stork.libopenstorage.org -A -o yaml"
     "get volumeplacementstrategies"
     "get volumeplacementstrategies -o yaml"
-    "get leases -n $namespace"
-    "get leases -n $namespace -o yaml"
     
     
   )
@@ -354,8 +352,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/groupvolumesnapshots.yaml"
     "k8s_px/vps.txt"
     "k8s_px/vps.yaml"
-    "k8s_px/px_leases.txt"
-    "k8s_px/px_leases.yaml"
+
 
   )
   pxctl_commands=(
@@ -749,6 +746,8 @@ declare -A common_commands_and_files=(
   ["get resourcequota -A -o yaml"]="k8s_oth/resourcequota.yaml"
   ["get limitrange -A"]="k8s_oth/limitrange.txt"
   ["get limitrange -A -o yaml"]="k8s_oth/limitrange.yaml"
+  ["get leases -A"]="k8s_oth/leases.txt"
+  ["get leases -A -o yaml"]="k8s_oth/leases.yaml"
 )
 
 # Create a temporary directory for storing outputs
