@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.7.8"
+SCRIPT_VERSION="25.8.0"
 
 
 # Function to display usage
@@ -352,6 +352,7 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/groupvolumesnapshots.yaml"
     "k8s_px/vps.txt"
     "k8s_px/vps.yaml"
+
 
   )
   pxctl_commands=(
@@ -745,6 +746,8 @@ declare -A common_commands_and_files=(
   ["get resourcequota -A -o yaml"]="k8s_oth/resourcequota.yaml"
   ["get limitrange -A"]="k8s_oth/limitrange.txt"
   ["get limitrange -A -o yaml"]="k8s_oth/limitrange.yaml"
+  ["get leases -A"]="k8s_oth/leases.txt"
+  ["get leases -A -o yaml"]="k8s_oth/leases.yaml"
 )
 
 # Create a temporary directory for storing outputs
