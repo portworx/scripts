@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.8.0"
+SCRIPT_VERSION="25.8.1"
 
 
 # Function to display usage
@@ -45,7 +45,7 @@ log_info() {
 
 print_progress() {
     local current_stage=$1
-    local total_stages="10"
+    local total_stages="11"
     echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting $current_stage/$total_stages..." | tee -a "$summary_file"
 }
 
@@ -132,7 +132,7 @@ else
 fi
 
 if [[ "$option" == "PX" ]]; then
-  sub_dir=(${output_dir}/logs/previous ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp ${output_dir}/k8s_pxb)
+  sub_dir=(${output_dir}/logs/previous ${output_dir}/px_out ${output_dir}/k8s_px ${output_dir}/k8s_oth ${output_dir}/migration ${output_dir}/k8s_bkp ${output_dir}/k8s_pxb ${output_dir}/storkctl_out)
 else
   sub_dir=(${output_dir}/logs/previous ${output_dir}/k8s_pxb ${output_dir}/k8s_oth ${output_dir}/k8s_bkp)
 fi
@@ -524,7 +524,24 @@ data_masking_commands=(
     "k8s_px/px-pure-secret_masked.yaml"
 
   )
-
+ storkctl_resources=(
+    "clusterpair"
+    "migrations"
+    "migrationschedules"
+    "failover"
+    "failback"
+    "clusterdomainsstatus"
+    "schedulepolicy"
+    "applicationbackups"
+    "applicationbackupschedules"
+    "applicationbackupschedules"
+    "applicationrestores"
+    "backuplocation"
+    "groupsnapshots"
+    "volumesnapshots"
+    "volumesnapshotschedules"
+    "volumesnapshotrestore"
+  )
 
 #  main_dir="PX_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
 #  output_dir="/tmp/${main_dir}"
@@ -982,11 +999,26 @@ extract_common_commands_op() {
   done
 }
 
+# Extract storkctl get output of stork managed objects to have better list representation than kubectl get
+
+extract_storkctl_op() {
+    local resource
+    for resource in "${storkctl_resources[@]}"; do
+        # Build output file path
+        local output_file="$output_dir/storkctl_out/storkctl_${resource}.txt"
+
+        # Run the CLI command and redirect output
+       #$cli -n $namespace exec  get "$resource" --all-namespaces > "$output_file"
+       $cli -n $namespace exec service/stork-service -- bash -c "/storkctl/linux/storkctl get "$resource" --all-namespaces" > "$output_file" 2>&1
+    done
+}
 
 print_progress 9
 extract_masked_data
 print_progress 10
 extract_common_commands_op
+print_progress 11
+extract_storkctl_op
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is completed"
 log_info "Extraction is completed"
