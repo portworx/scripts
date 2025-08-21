@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.8.1"
+SCRIPT_VERSION="25.8.2"
 
 
 # Function to display usage
@@ -159,8 +159,6 @@ if [[ "$option" == "PX" ]]; then
     "get nodes -o wide -n $namespace -o yaml"
     "describe nodes -n $namespace"
     "get events -A -o wide --sort-by=.lastTimestamp"
-    "get stc -o yaml -n $namespace"
-    "describe stc -n $namespace"
     "get deploy -o wide -n $namespace"
     "get deploy -o wide -n $namespace -o yaml"
     "describe deploy -n $namespace"
@@ -261,8 +259,6 @@ if [[ "$option" == "PX" ]]; then
     "k8s_oth/k8s_nodes.yaml"
     "k8s_oth/k8s_nodes_desc.txt"
     "k8s_oth/k8s_events_all.txt"
-    "k8s_px/px_stc.yaml"
-    "k8s_px/px_stc_desc.txt"
     "k8s_px/px_deploy.txt"
     "k8s_px/px_deploy.yaml"
     "k8s_px/px_deploy_desc.txt"
@@ -518,10 +514,14 @@ logs_oth_ns=(
 )
 data_masking_commands=(
     "$cli get secret px-pure-secret -n $namespace -o jsonpath='{.data.pure\\.json}' | base64 --decode | sed -E 's/\"APIToken\": *\"[^\"]*\"/\"APIToken\": \"*****Masked*****\"/'"
+    "$cli get storagecluster -n  $namespace -o yaml | sed -E '/name:[[:space:]]*AWS_ACCESS_KEY_ID/{n;s/(value:).*/\1 "****masked****"/}; /name:[[:space:]]*AWS_SECRET_ACCESS_KEY/{n;s/(value:).*/\1 "****masked****"/}'"
+    "$cli describe storagecluster -n $namespace | sed -E '/^[[:space:]]*Name:[[:space:]]*([A-Z_]*ACCESS_KEY[A-Z_]*|[A-Z_]*SECRET_ACCESS[A-Z_]*)[[:space:]]*$/ { n; s/^([[:space:]]*Value:[[:space:]]*).*/\1"****masked****"/; }'"
 
   )
   data_masking_output=(
     "k8s_px/px-pure-secret_masked.yaml"
+    "k8s_px/px_stc_masked.yaml"
+    "k8s_px/px_stc_describe_masked.txt"
 
   )
  storkctl_resources=(
