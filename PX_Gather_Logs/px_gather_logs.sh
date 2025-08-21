@@ -514,8 +514,8 @@ logs_oth_ns=(
 )
 data_masking_commands=(
     "$cli get secret px-pure-secret -n $namespace -o jsonpath='{.data.pure\\.json}' | base64 --decode | sed -E 's/\"APIToken\": *\"[^\"]*\"/\"APIToken\": \"*****Masked*****\"/'"
-    "$cli get storagecluster -n  $namespace -o yaml | sed -E '/name:[[:space:]]*AWS_ACCESS_KEY_ID/{n;s/(value:).*/\1 "****masked****"/}; /name:[[:space:]]*AWS_SECRET_ACCESS_KEY/{n;s/(value:).*/\1 "****masked****"/}'"
-    "$cli describe storagecluster -n $namespace | sed -E '/^[[:space:]]*Name:[[:space:]]*([A-Z_]*ACCESS_KEY[A-Z_]*|[A-Z_]*SECRET_ACCESS[A-Z_]*)[[:space:]]*$/ { n; s/^([[:space:]]*Value:[[:space:]]*).*/\1"****masked****"/; }'"
+    "$cli get storagecluster -n  $namespace -o yaml | sed -E '/name:[[:space:]]*(.*ACCESS_KEY.*)/{n;s/(value:).*/\1 "****masked****"/}; /name:[[:space:]]*(.*SECRET_ACCESS.*)/{n;s/(value:).*/\1 "****masked****"/}'"
+    "$cli describe storagecluster -n $namespace | sed -E '/^[[:space:]]*Name:[[:space:]]*(.*ACCESS_KEY.*|.*SECRET_ACCESS.*)[[:space:]]*$/ { n; s/^([[:space:]]*Value:[[:space:]]*).*/\1"****masked****"/; }'"
 
   )
   data_masking_output=(
