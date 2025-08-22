@@ -152,9 +152,9 @@ fi
 
 
 if [[ "$option" == "PX" ]]; then
-  main_dir="${file_prefix}PXE_${cluster_name}_${cluster_part}k8s_diags_$(date +%Y%m%d_%H%M%S)"
+  main_dir="${file_prefix}PXE_${cluster_part}${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
 else
-  main_dir="${file_prefix}PXB_${cluster_name}_${cluster_part}k8s_diags_$(date +%Y%m%d_%H%M%S)"
+  main_dir="${file_prefix}PXB_${cluster_part}${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
 fi
 
 if [[ -n "$user_output_dir" ]]; then
