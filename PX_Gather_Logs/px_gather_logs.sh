@@ -124,12 +124,11 @@ if [[ -z "$cluster_name" ]]; then
     cluster_name="unknown_cluster"
 fi
 
-echo "Cluster Name: $cluster_name"
 
 
 # Confirm inputs
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Script Version: $SCRIPT_VERSION"
-echo "$(date '+%Y-%m-%d %H:%M:%S'): Cluster Name: $cluster_name"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): k8s Cluster Name: $cluster_name"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Namespace: $namespace"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): CLI tool: $cli"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): option: $option"
