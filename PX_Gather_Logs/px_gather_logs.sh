@@ -110,10 +110,21 @@ if [[ -z "$option" ]]; then
 fi
 
 # Automatically get Kubernetes cluster name
-cluster_name=$($cli config view --minify --output jsonpath='{.clusters[0].name}')
+
+if $cli get infrastructure cluster &>/dev/null; then
+    # Example: mycluster-xyz12, for openshift
+    cluster_name=$($cli get infrastructure cluster -o jsonpath='{.status.infrastructureName}')
+else
+    # Generic Kubernetes fallback (from kubeconfig)
+    cluster_name=$($cli config view --minify -o jsonpath='{.clusters[0].name}')
+fi
+
+# Default fallback
 if [[ -z "$cluster_name" ]]; then
     cluster_name="unknown_cluster"
 fi
+
+echo "Cluster Name: $cluster_name"
 
 
 # Confirm inputs
