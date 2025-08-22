@@ -113,7 +113,6 @@ fi
 cluster_name=$($cli config view --minify --output jsonpath='{.clusters[0].name}')
 if [[ -z "$cluster_name" ]]; then
     cluster_name="unknown_cluster"
-    echo "WARNING: Could not automatically determine cluster name. Using '$cluster_name'."
 fi
 
 
