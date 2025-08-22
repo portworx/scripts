@@ -794,7 +794,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is started"
 #Generate Summary file with parameter and date information
 summary_file=$output_dir/Summary.txt
 log_info "Script version: $SCRIPT_VERSION"
-log_info "Cluster Name: $cluster_name"
+log_info "k8s Cluster Name: $cluster_name"
 log_info "Namespace: $namespace"
 log_info "CLI tool: $cli"
 log_info "option: $option"
