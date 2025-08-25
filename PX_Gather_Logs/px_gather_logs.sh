@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.8.2"
+SCRIPT_VERSION="25.8.3"
 
 
 # Function to display usage
@@ -109,9 +109,20 @@ if [[ -z "$option" ]]; then
   fi
 fi
 
+# Automatically get Kubernetes cluster name
+
+if $cli get infrastructure cluster &>/dev/null; then
+    # Example: mycluster-xyz12, for openshift
+    cluster_name=$($cli get infrastructure cluster -o jsonpath='{.status.infrastructureName}')
+else
+    # Generic Kubernetes fallback (from kubeconfig)
+    cluster_name=$($cli config view --minify -o jsonpath='{.clusters[0].name}')
+fi
+
 
 # Confirm inputs
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Script Version: $SCRIPT_VERSION"
+echo "$(date '+%Y-%m-%d %H:%M:%S'): k8s Cluster Name: $cluster_name"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Namespace: $namespace"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): CLI tool: $cli"
 echo "$(date '+%Y-%m-%d %H:%M:%S'): option: $option"
@@ -119,10 +130,31 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): option: $option"
 # Setting up output directories
 
 setup_output_dirs() {
+
+# List of the cluster names we want to exclude from diag name (default ones)
+invalid_cluster_names=("default" "kubernetes" "cluster.local")
+
+cluster_part=""
+if [[ -z "$file_prefix" && -n "$cluster_name" ]]; then
+  skip_cluster=false
+  for invalid in "${invalid_cluster_names[@]}"; do
+    if [[ "$cluster_name" == "$invalid" ]]; then
+      skip_cluster=true
+      break
+    fi
+  done
+
+  if [[ "$skip_cluster" == false ]]; then
+    cluster_part="${cluster_name}_"
+  fi
+fi
+
+
+
 if [[ "$option" == "PX" ]]; then
-  main_dir="${file_prefix}PXE_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
+  main_dir="${file_prefix}PXE_${cluster_part}${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
 else
-  main_dir="${file_prefix}PXB_${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
+  main_dir="${file_prefix}PXB_${cluster_part}${namespace}_k8s_diags_$(date +%Y%m%d_%H%M%S)"
 fi
 
 if [[ -n "$user_output_dir" ]]; then
@@ -776,6 +808,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S'): Extraction is started"
 #Generate Summary file with parameter and date information
 summary_file=$output_dir/Summary.txt
 log_info "Script version: $SCRIPT_VERSION"
+log_info "k8s Cluster Name: $cluster_name"
 log_info "Namespace: $namespace"
 log_info "CLI tool: $cli"
 log_info "option: $option"
