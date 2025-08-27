@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.8.4"
+SCRIPT_VERSION="25.8.5"
 
 
 # Function to display usage
@@ -792,13 +792,13 @@ fi
   )
 
 # Array for common commands and their output files
-declare -A common_commands_and_files=(
-  ["get resourcequota -A"]="k8s_oth/resourcequota.txt"
-  ["get resourcequota -A -o yaml"]="k8s_oth/resourcequota.yaml"
-  ["get limitrange -A"]="k8s_oth/limitrange.txt"
-  ["get limitrange -A -o yaml"]="k8s_oth/limitrange.yaml"
-  ["get leases -A"]="k8s_oth/leases.txt"
-  ["get leases -A -o yaml"]="k8s_oth/leases.yaml"
+common_commands_and_files=(
+  "get resourcequota -A" "k8s_oth/resourcequota.txt"
+  "get resourcequota -A -o yaml" "k8s_oth/resourcequota.yaml"
+  "get limitrange -A" "k8s_oth/limitrange.txt"
+  "get limitrange -A -o yaml" "k8s_oth/limitrange.yaml"
+  "get leases -A" "k8s_oth/leases.txt"
+  "get leases -A -o yaml" "k8s_oth/leases.yaml"
 )
 
 # Create a temporary directory for storing outputs
@@ -1026,11 +1026,11 @@ done
 # Function to extract common commands and save outputs
 extract_common_commands_op() {
   #echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting common commands..."
-  for cmd in "${!common_commands_and_files[@]}"; do
-    output_file="$output_dir/${common_commands_and_files[$cmd]}"
-    #echo "$(date '+%Y-%m-%d %H:%M:%S'): Executing: $cli $cmd"
+  for ((i=0; i<${#common_commands_and_files[@]}; i+=2)); do
+    cmd="${common_commands_and_files[i]}"
+    output_file="$output_dir/${common_commands_and_files[i+1]}"
+    #echo ">>> Running: kubectl $cmd > $file"
     $cli $cmd > "$output_file" 2>&1
-    #echo "$(date '+%Y-%m-%d %H:%M:%S'): Output saved to: $output_file"
   done
 }
 
