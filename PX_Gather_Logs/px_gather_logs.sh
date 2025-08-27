@@ -397,7 +397,7 @@ if [[ "$option" == "PX" ]]; then
     "cloudsnap status"
     "cloudsnap status -j"
     "cloudsnap schedules list"
-    "pxctl sched-policy list"
+    "sched-policy list"
     "cd list"
     "cd list -j"
     "cred list"
