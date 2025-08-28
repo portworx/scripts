@@ -180,8 +180,8 @@ setup_output_dirs
 
 # Set commands based on the chosen option
 if [[ "$option" == "PX" ]]; then
-  admin_ns=$($cli -n $namespace get stc -o jsonpath='{.items[*].spec.stork.args.admin-namespace}')
-  admin_ns="${admin_ns:-kube-system}"
+#  admin_ns=$($cli -n $namespace get stc -o jsonpath='{.items[*].spec.stork.args.admin-namespace}')
+#  admin_ns="${admin_ns:-kube-system}"
   sec_enabled=$($cli -n $namespace get stc -o=jsonpath='{.items[*].spec.security.enabled}')
 
 
@@ -461,12 +461,13 @@ if [[ "$option" == "PX" ]]; then
 
   )
   migration_commands=(
-    "get clusterpair -n $admin_ns"
-    "get migrations.stork.libopenstorage.org -n $admin_ns"
-    "describe migrations.stork.libopenstorage.org -n $admin_ns"
-    "get migrations.stork.libopenstorage.org -n $admin_ns -o yaml"
-    "get migrationschedule -n $admin_ns"
-    "get migrationschedule -n $admin_ns -o yaml"
+    "get clusterpair -A"
+    "get migrations.stork.libopenstorage.org -A"
+    "describe migrations.stork.libopenstorage.org -A"
+    "get migrations.stork.libopenstorage.org -A -o yaml"
+    "get migrationschedule -A"
+    "describe migrationschedule -A"
+    "get migrationschedule -A -o yaml"
     "get schedulepolicies"
     "get schedulepolicies -o yaml"
     "get clusterdomainsstatuses"
@@ -480,6 +481,7 @@ if [[ "$option" == "PX" ]]; then
     "migration/migrations_desc.txt"
     "migration/migrations.yaml"
     "migration/migrationschedule.txt"
+    "migration/migrationschedule_desc.txt"
     "migration/migrationschedule.yaml"
     "migration/schedulepolicies.txt"
     "migration/schedulepolicies.yaml"
