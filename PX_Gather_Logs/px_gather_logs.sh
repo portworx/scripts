@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.8.5"
+SCRIPT_VERSION="25.8.6"
 
 
 # Function to display usage
