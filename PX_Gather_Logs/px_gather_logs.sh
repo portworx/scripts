@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.8.5"
+SCRIPT_VERSION="25.8.6"
 
 
 # Function to display usage
@@ -180,8 +180,8 @@ setup_output_dirs
 
 # Set commands based on the chosen option
 if [[ "$option" == "PX" ]]; then
-  admin_ns=$($cli -n $namespace get stc -o jsonpath='{.items[*].spec.stork.args.admin-namespace}')
-  admin_ns="${admin_ns:-kube-system}"
+#  admin_ns=$($cli -n $namespace get stc -o jsonpath='{.items[*].spec.stork.args.admin-namespace}')
+#  admin_ns="${admin_ns:-kube-system}"
   sec_enabled=$($cli -n $namespace get stc -o=jsonpath='{.items[*].spec.security.enabled}')
 
 
@@ -461,12 +461,12 @@ if [[ "$option" == "PX" ]]; then
 
   )
   migration_commands=(
-    "get clusterpair -n $admin_ns"
-    "get migrations.stork.libopenstorage.org -n $admin_ns"
-    "describe migrations.stork.libopenstorage.org -n $admin_ns"
-    "get migrations.stork.libopenstorage.org -n $admin_ns -o yaml"
-    "get migrationschedule -n $admin_ns"
-    "get migrationschedule -n $admin_ns -o yaml"
+    "get clusterpair -A"
+    "get migrations.stork.libopenstorage.org -A"
+    "describe migrations.stork.libopenstorage.org -A"
+    "get migrations.stork.libopenstorage.org -A -o yaml"
+    "get migrationschedule -A"
+    "get migrationschedule -A -o yaml"
     "get schedulepolicies"
     "get schedulepolicies -o yaml"
     "get clusterdomainsstatuses"
@@ -554,12 +554,16 @@ data_masking_commands=(
     "$cli get secret px-pure-secret -n $namespace -o jsonpath='{.data.pure\\.json}' | base64 --decode | sed -E 's/\"APIToken\": *\"[^\"]*\"/\"APIToken\": \"*****Masked*****\"/'"
     "$cli get storagecluster -n $namespace -o yaml | awk '/ACCESS_KEY|SECRET_ACCESS/{p=1;print;next}p==1{sub(/value:.*/,\"value: \\\"****masked****\\\"\");p=0}1'"
     "$cli describe storagecluster -n $namespace | sed -E '/^[[:space:]]*Name:[[:space:]]*(.*ACCESS_KEY.*|.*SECRET_ACCESS.*)[[:space:]]*$/ { n; s/^([[:space:]]*Value:[[:space:]]*).*/\1"****masked****"/; }'"
+    "$cli get clusterpair -A -o yaml|sed -E -e 's/(certificate-authority-data: ).*/\1***Masked*****/' -e 's/(client-key-data: ).*/\1***Masked*****/' -e 's/(token: ).*/\1***Masked*****/'  -e 's/(client-certificate-data: ).*/\1***Masked*****/' -e 's/(kubectl.kubernetes.io\/last-applied-configuration: ).*/\1***Masked*****/'|sed '/kubectl.kubernetes.io\/last-applied-configuration:/ {n;d;}'"
+    "$cli describe clusterpair -A|sed -E -e 's/(Token: ).*/\1****Masked****/' -e 's/(Client - Key - Data: ).*/\1****Masked****/' -e 's/(Client - Certificate - Data: ).*/\1****Masked****/'  -e 's/(Certificate - Authority - Data: ).*/\1****Masked****/'"
 
   )
   data_masking_output=(
     "k8s_px/px-pure-secret_masked.yaml"
     "k8s_px/px_stc.yaml"
     "k8s_px/px_stc_desc.txt"
+    "migration/clusterpair.yaml"
+    "migration/clusterpair_desc.txt"
 
   )
  storkctl_resources=(
