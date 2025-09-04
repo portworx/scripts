@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.8.6"
+SCRIPT_VERSION="25.9.1"
 
 
 # Function to display usage
@@ -846,6 +846,15 @@ done
      #echo "Security Enabled: false">>$summary_file
      #pxcmd="exec service/portworx-service -- \"/opt/pwx/bin/pxctl"
   fi
+
+# Get top command output for node
+if [[ "$cli" == "oc" ]]; then
+  $cli adm top node > "$output_dir/k8s_oth/top_nodes.txt" 2>&1
+else
+  $cli top node > "$output_dir/k8s_oth/top_nodes.txt" 2>&1
+fi
+
+
 # Execute pxctl commands 
 print_progress 2
 
