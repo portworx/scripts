@@ -282,6 +282,8 @@ if [[ "$option" == "PX" ]]; then
     "get groupvolumesnapshots.stork.libopenstorage.org -A -o yaml"
     "get volumeplacementstrategies"
     "get volumeplacementstrategies -o yaml"
+    "get sa -o wide -n $namespace"
+    "get sa -o yaml -n $namespace"
     
     
   )
@@ -382,6 +384,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/groupvolumesnapshots.yaml"
     "k8s_px/vps.txt"
     "k8s_px/vps.yaml"
+    "k8s_px/sa.txt"
+    "k8s_px/sa.yaml"
 
 
   )
@@ -678,6 +682,8 @@ else
     "get pods -A -o wide"
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup --show-labels"
     "get jobs -A -l kdmp.portworx.com/driver-name=kopiabackup -o yaml"
+    "get sa -o wide -n $namespace"
+    "get sa -o yaml -n $namespace"
  )
  output_files=(
     "k8s_pxb/pxb_pods.txt"
@@ -770,6 +776,8 @@ else
     "k8s_oth/pods_all.txt"
     "k8s_pxb/kopia_backup_jobs.txt"
     "k8s_pxb/kopia_backup_jobs.yaml"
+    "k8s_pxb/sa.txt"
+    "k8s_pxb/sa.yaml"
   )
 log_labels=(
   ""
