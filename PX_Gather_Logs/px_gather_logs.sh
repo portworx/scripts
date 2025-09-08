@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.9.1"
+SCRIPT_VERSION="25.9.2"
 
 
 # Function to display usage
@@ -282,6 +282,8 @@ if [[ "$option" == "PX" ]]; then
     "get groupvolumesnapshots.stork.libopenstorage.org -A -o yaml"
     "get volumeplacementstrategies"
     "get volumeplacementstrategies -o yaml"
+    "get ComponentK8sConfig -n $namespace"
+    "get ComponentK8sConfig -n $namespace -o yaml"
     "get sa -o wide -n $namespace"
     "get sa -o yaml -n $namespace"
     
@@ -384,6 +386,8 @@ if [[ "$option" == "PX" ]]; then
     "k8s_bkp/groupvolumesnapshots.yaml"
     "k8s_px/vps.txt"
     "k8s_px/vps.yaml"
+    "k8s_px/componentk8sconfig.txt"
+    "k8s_px/componentk8sconfig.yaml"
     "k8s_px/sa.txt"
     "k8s_px/sa.yaml"
 
