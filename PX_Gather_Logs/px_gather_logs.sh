@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.9.2"
+SCRIPT_VERSION="25.9.3"
 
 
 # Function to display usage
@@ -414,6 +414,8 @@ if [[ "$option" == "PX" ]]; then
     "volume list -s"
     "volume list -s -j"
     "call-home status -j"
+    "sv pool drain list"
+    "sv pool drain list -j"
 
   )
   pxctl_output_files=(
@@ -437,6 +439,8 @@ if [[ "$option" == "PX" ]]; then
     "px_out/pxctl_volume_snapshot_list.txt"
     "px_out/pxctl_volume_snapshot_list.json"
     "px_out/pxctl_callhome_status.json"
+    "px_out/pxctl_pool_drain_list.txt"
+    "px_out/pxctl_pool_drain_list.json"
     
   )
 
