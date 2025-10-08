@@ -979,6 +979,11 @@ if $cli api-versions | grep -q 'openshift'; then
   LOG_FILE="${output_dir}/logs/${POD}.log"
   $cli logs -n openshift-kube-apiserver "$POD" --tail -1 --all-containers > "$LOG_FILE"
   done
+
+  common_commands_and_files=(
+  "get scc -A" "k8s_oth/scc.txt"
+  "get scc -A -o yaml" "k8s_oth/scc.yaml"
+  )
 fi
 
 # Execute other commands 
