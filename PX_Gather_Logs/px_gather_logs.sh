@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.9.3"
+SCRIPT_VERSION="25.10.0"
 
 
 # Function to display usage
@@ -413,7 +413,7 @@ if [[ "$option" == "PX" ]]; then
     "volume list -v -j"
     "volume list -s"
     "volume list -s -j"
-    "call-home status -j"
+    "sv call-home status -j"
     "sv pool drain list"
     "sv pool drain list -j"
 
@@ -528,6 +528,9 @@ if [[ "$option" == "PX" ]]; then
     "describe virtualmachinerestore -A"
     "get pods -l kubevirt.io=virt-launcher -A"
     "get pods -l kubevirt.io=virt-launcher -A -o yaml"
+    "get virtualmachineinstancemigration -A"
+    "get virtualmachineinstancemigration -A -o yaml"
+    
   )
   
    kubevirt_output=(
@@ -555,6 +558,9 @@ if [[ "$option" == "PX" ]]; then
     "kubevirt/kubevirt_vmrestore_desc.txt"
     "kubevirt/kubevirt_virt_launcher_pods.txt"
     "kubevirt/kubevirt_virt_launcher_pods.yaml"
+    "kubevirt/kubevirt_vminstancemigration.txt"
+    "kubevirt/kubevirt_vminstancemigration.yaml"
+    
   )
   
 logs_oth_ns=(
