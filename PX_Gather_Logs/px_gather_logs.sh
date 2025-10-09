@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.10.0"
+SCRIPT_VERSION="25.10.1"
 
 
 # Function to display usage
@@ -416,6 +416,8 @@ if [[ "$option" == "PX" ]]; then
     "sv call-home status -j"
     "sv pool drain list"
     "sv pool drain list -j"
+    "cluster defrag schedule show"
+    "cluster defrag status"
 
   )
   pxctl_output_files=(
@@ -441,6 +443,8 @@ if [[ "$option" == "PX" ]]; then
     "px_out/pxctl_callhome_status.json"
     "px_out/pxctl_pool_drain_list.txt"
     "px_out/pxctl_pool_drain_list.json"
+    "px_out/pxctl_defrag_schedules.txt"
+    "px_out/pxctl_defrag_status.txt"
     
   )
 
