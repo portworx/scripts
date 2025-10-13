@@ -841,6 +841,16 @@ common_commands_and_files=(
   "get leases -A -o yaml" "k8s_oth/leases.yaml"
 )
 
+extract_ocp_specific_commands_op() {
+  #echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting common commands..."
+  for ((i=0; i<${#ocp_specific_commands_and_files[@]}; i+=2)); do
+    cmd="${ocp_specific_commands_and_files[i]}"
+    output_file="$output_dir/${ocp_specific_commands_and_files[i+1]}"
+    #echo ">>> Running: kubectl $cmd > $file"
+    $cli $cmd > "$output_file" 2>&1
+  done
+}
+
 # Create a temporary directory for storing outputs
 #mkdir -p "$output_dir"
 #mkdir -p "${sub_dir[@]}"
@@ -986,11 +996,38 @@ done
 
 #execute only if is OpenShift cluster to get kube-api server logs
 if $cli api-versions | grep -q 'openshift'; then
+
+  ocp_specific_commands_and_files=(
+  "get consoleplugins" "k8s_oth/ocp_consoleplugins.txt"
+  "get console.config" "k8s_oth/ocp_console_config.txt"
+  "get console.operator" "k8s_oth/ocp_onsole_operator.txt"
+  "get csv -n "$namespace"  " "k8s_px/px_ocp_csv.txt"
+  "get consoleplugins -o yaml" "k8s_oth/ocp_consoleplugins.yaml"
+  "get console.config -o yaml" "k8s_oth/ocp_console_config.yaml"
+  "get console.operator -o yaml" "k8s_oth/ocp_console_operator.yaml"
+  "get csv -n "$namespace" -o yaml" "k8s_px/px_ocp_csv.yaml"
+  )
+
+  extract_ocp_specific_commands_op
+  
   PODS=$($cli get pods -n openshift-kube-apiserver -l apiserver=true -o jsonpath="{.items[*].metadata.name}")
   for POD in $PODS; do
   LOG_FILE="${output_dir}/logs/${POD}.log"
   $cli logs -n openshift-kube-apiserver "$POD" --tail -1 --all-containers > "$LOG_FILE"
   done
+
+  PODS=$($cli get pods -n openshift-console-operator -l name=console-operator -o jsonpath="{.items[*].metadata.name}")
+  for POD in $PODS; do
+  LOG_FILE="${output_dir}/logs/${POD}.log"
+  $cli logs -n openshift-console-operator "$POD" --tail -1 --all-containers > "$LOG_FILE"
+  done
+
+  PODS=$($cli get pods -n openshift-console -l component=ui -o jsonpath="{.items[*].metadata.name}")
+  for POD in $PODS; do
+  LOG_FILE="${output_dir}/logs/${POD}.log"
+  $cli logs -n openshift-console "$POD" --tail -1 --all-containers > "$LOG_FILE"
+  done
+  
 fi
 
 # Execute other commands 
