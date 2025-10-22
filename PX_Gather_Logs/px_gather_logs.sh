@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.10.1"
+SCRIPT_VERSION="25.10.2"
 
 
 # Function to display usage
@@ -286,6 +286,14 @@ if [[ "$option" == "PX" ]]; then
     "get ComponentK8sConfig -n $namespace -o yaml"
     "get sa -o wide -n $namespace"
     "get sa -o yaml -n $namespace"
+    "get purevolumes -A"
+    "get purevolumes -A -o yaml"
+    "get puresnapshots -A"
+    "get puresnapshots -A -o yaml"
+    "get storagenodeinitiators"
+    "get storagenodeinitiators -o yaml"
+    "get purestoragecluster -n $namespace"
+    "get purestoragecluster -n $namespace -o yaml"
     
     
   )
@@ -390,6 +398,14 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/componentk8sconfig.yaml"
     "k8s_px/sa.txt"
     "k8s_px/sa.yaml"
+    "k8s_px/purevolumes.txt"
+    "k8s_px/purevolumes.yaml"
+    "k8s_px/puresnapshots.txt"
+    "k8s_px/puresnapshots.yaml"
+    "k8s_px/storagenodeinitiators.txt"
+    "k8s_px/storagenodeinitiators.yaml"
+    "k8s_px/purestoragecluster.txt"
+    "k8s_px/purestoragecluster.yaml"
 
 
   )
@@ -466,6 +482,10 @@ if [[ "$option" == "PX" ]]; then
     "app=px-plugin"
     "name=px-plugin-proxy"
     "name=portworx"
+    "job-name=post-pure-csi-migrator"
+    "job-name=pre-pure-csi-migrator"
+    "app.kubernetes.io/component=controller-plugin"
+    "app.kubernetes.io/component=node-plugin"
   )
 
 
