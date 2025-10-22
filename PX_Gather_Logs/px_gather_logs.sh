@@ -468,6 +468,8 @@ if [[ "$option" == "PX" ]]; then
     "name=portworx"
     "job-name=post-pure-csi-migrator"
     "job-name=pre-pure-csi-migrator"
+    "app.kubernetes.io/component=controller-plugin"
+    "app.kubernetes.io/component=node-plugin"
   )
 
 
