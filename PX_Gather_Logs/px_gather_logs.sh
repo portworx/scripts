@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.10.1"
+SCRIPT_VERSION="25.10.2"
 
 
 # Function to display usage
@@ -466,6 +466,8 @@ if [[ "$option" == "PX" ]]; then
     "app=px-plugin"
     "name=px-plugin-proxy"
     "name=portworx"
+    "job-name=post-pure-csi-migrator"
+    "job-name=pre-pure-csi-migrator"
   )
 
 
