@@ -286,6 +286,12 @@ if [[ "$option" == "PX" ]]; then
     "get ComponentK8sConfig -n $namespace -o yaml"
     "get sa -o wide -n $namespace"
     "get sa -o yaml -n $namespace"
+    "get purevolumes -A"
+    "get purevolumes -A -o yaml"
+    "get puresnapshots -A"
+    "get puresnapshots -A -o yaml"
+    "get storagenodeinitiators"
+    "get storagenodeinitiators -o yaml"
     
     
   )
@@ -390,6 +396,12 @@ if [[ "$option" == "PX" ]]; then
     "k8s_px/componentk8sconfig.yaml"
     "k8s_px/sa.txt"
     "k8s_px/sa.yaml"
+    "k8s_px/purevolumes.txt"
+    "k8s_px/purevolumes.yaml"
+    "k8s_px/puresnapshots.txt"
+    "k8s_px/puresnapshots.yaml"
+    "k8s_px/storagenodeinitiators.txt"
+    "k8s_px/storagenodeinitiators.yaml"
 
 
   )
