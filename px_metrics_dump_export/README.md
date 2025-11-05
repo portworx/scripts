@@ -28,5 +28,5 @@ Once exported, this script validates the exported metrics for
 
 And compress this exported dump along with its log file at “px_metrics_export_yyyymmdd_<hhmmss.tar.gz”
 
-***Sample Screenshot for executing "ppx_metrics_dump_exporter.sh"***
-<img width="1339" height="587" alt="Screenshot 2025-11-04 at 3 45 20 PM" src="https://github.com/user-attachments/assets/612d42d1-d3bd-4597-b637-6684245d86c6" />
+***Sample Screenshot for executing "px_metrics_dump_exporter.sh"***
+<img width="1339" height="587" alt="Screenshot 2025-11-04 at 3 45 20 PM" src="https://github.com/user-attachments/assets/60b92bda-d285-477c-971b-0befb0e7f41f" />
