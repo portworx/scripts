@@ -18,7 +18,7 @@ A script "px_metrics_dump_exporter.sh" is created for this which gets below two 
 - Prometheus namespace where PX metrics are exported (e.g., 'portworx' if px-built-in prometheus, 'openshift-user-workload-monitoring' if OCP Thanos-Prometheus)
 - Past number of days to export px metrics (e.g., 7)
 
-which exports the px-metrics dump to “export_yyyymmdd_hhmmss.om”
+which exports the px-metrics dump to “px_metrics_export_yyyymmdd_hhmmss.om”
 
 Once exported, this script validates the exported metrics for 
   - Total Metrics lines                       : 
