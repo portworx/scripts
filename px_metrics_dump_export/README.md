@@ -1,4 +1,4 @@
-1) Generate Prometheus TSDB dump from Prometheus [To be done at customer Prometheus]
+1) Generate Prometheus TSDB dump from Prometheus [To be done at Prometheus]
 
 - Execute into Prometheus Pod
 - Generate Prometheus TSDB dump using below promtool command
@@ -26,7 +26,7 @@ Once exported, this script validates the exported metrics for
   - Available PX metrics Start time (UTC)     : 
   - Available PX metrics End time (UTC)       : 
 
-And compress this exported dump along with its log file at “export_yyyymmdd_<hhmmss.tar.gz”
+And compress this exported dump along with its log file at “px_metrics_export_yyyymmdd_<hhmmss.tar.gz”
 
 ***Sample Screenshot for executing "ppx_metrics_dump_exporter.sh"***
 <img width="1339" height="587" alt="Screenshot 2025-11-04 at 3 45 20 PM" src="https://github.com/user-attachments/assets/612d42d1-d3bd-4597-b637-6684245d86c6" />
