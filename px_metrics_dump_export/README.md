@@ -55,29 +55,30 @@ Found Prometheus pod: prometheus-px-prometheus-0
 
 =======SUMMARY======
     Using CLI         : kubectl
-    Min time          : 1761797571000 (UTC: 2025-10-30T04:12:51.000Z)
-    Max time          : 1762402371000 (UTC: 2025-11-06T04:12:51.000Z)
+    Min time          : 1761827199000 (UTC: 2025-10-30T12:26:39.000Z)
+    Max time          : 1762431999000 (UTC: 2025-11-06T12:26:39.000Z)
     Getting from pod  : prometheus-px-prometheus-0 (namespace: portworx)
-    Saving output to  : px_metrics_export_20251106_041251.om
+    Saving output to  : px_metrics_export_20251106_122640.om
 
-Extracting PX metrics from prometheus-px-prometheus-0 and saving at /root/px_metrics_export_20251106_041251.om
+Extracting PX metrics from prometheus-px-prometheus-0 and saving at /tmp/px_metrics_export_20251106_122640.om
 Extraction In-Progress ... ...
 
-Extraction completed. File saved at: /root/px_metrics_export_20251106_041251.om
+Extraction completed. File saved at: /tmp/px_metrics_export_20251106_122640.om
 
 
 ===Validation Summary for presence of metrics on exported file===
-  - Total Metrics lines                       : 6775241
-  - Total unique Metrics count                : 198
-  - Available PX metrics Start time (UTC)     : 2025-11-05T02:00:09.497Z  [epoch_ms: 1762308009497]
-  - Available PX metrics End time (UTC)       : 2025-11-06T04:12:49.433Z  [epoch_ms: 1762402369433]
+  - Total Metrics lines                       : 6387390
+  - Total unique Metrics count                : 199
+  - Available PX metrics Start time (UTC)     : 2025-11-05T10:00:09.497Z  [epoch_ms: 1762336809497]
+  - Available PX metrics End time (UTC)       : 2025-11-06T12:26:24.849Z  [epoch_ms: 1762431984849]
 
-Packaged artifacts into: /root/px_metrics_export_20251106_041251.om.tar.gz
+Packaged artifacts into: /tmp/px_metrics_export_20251106_122640.om.tar.gz
 
 Done.
 ```
 ---
 
 ***Sample Screenshot for executing "px_metrics_dump_exporter.sh"***
+<img width="2023" height="630" alt="Screenshot 2025-11-06 at 6 03 11 PM" src="https://github.com/user-attachments/assets/c45c41b1-3a0a-42c1-9903-1845b0ccc269" />
 
-<img width="1417" height="422" alt="Screenshot 2025-11-06 at 10 00 56 AM" src="https://github.com/user-attachments/assets/c4a5a70f-b4d6-415c-a983-603892c9d8d4" />
+
