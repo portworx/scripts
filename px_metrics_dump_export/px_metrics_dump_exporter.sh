@@ -201,7 +201,7 @@ done
 
 # Prompt for namespace if not provided
 if [[ -z "$PROM_NAMESPACE" ]]; then
-  read -r -p "Enter Prometheus namespace where PX metrics are exported (e.g., 'portworx' if px-built-in prometheus, 'openshift-user-workload-monitoring' if OCP Thanos-Prometheus): " PROM_NAMESPACE
+  read -r -p "[USER-INPUT-1] Enter Prometheus namespace where PX metrics are exported (e.g., 'portworx' if px-built-in prometheus, 'openshift-user-workload-monitoring' if OCP Thanos-Prometheus): " PROM_NAMESPACE
   if [[ -z "$PROM_NAMESPACE" ]]; then
     echo "Error: Namespace cannot be empty."
     exit 1
@@ -209,7 +209,7 @@ if [[ -z "$PROM_NAMESPACE" ]]; then
 fi
 
 if [[ -z "$SINCE_DAYS" && -z "$MIN_MS" ]]; then
-  read -r -p "Enter past number of days to export px metrics (e.g., 7): " SINCE_DAYS
+  read -r -p "[USER-INPUT-2] Enter past number of days to export px metrics (e.g., 7): " SINCE_DAYS
   if [[ -z "$SINCE_DAYS" ]]; then
     echo "Error: Time range is needed"
     exit 1
