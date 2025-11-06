@@ -23,7 +23,7 @@ Extract the px-metrics from prometheus and export to a file. This script generat
 ## Usage
 Example:
 ```bash
- px_metrics_dump_exporter.sh --prom-ns portworx --since-days 3 --match-prefix px
+ px_metrics_dump_exporter.sh --prom-ns portworx --since-days 3
 ```
 
 ### Without Parameters
