@@ -26,7 +26,10 @@ Example:
  px_metrics_dump_exporter.sh --prom-ns portworx --since-days 3
 ```
 
-### Without Parameters
+#### Where to Execute:
+In the host where kubectl or oc CLI is accessible for the cluster.The file gets created on the location where the script is being executed
+
+#### Without Parameters
 If no parameters are passed, the script will prompt for input.
 ````bash
 ./px_metrics_dump_exporter.sh 
@@ -34,7 +37,7 @@ If no parameters are passed, the script will prompt for input.
 [USER-INPUT-2] Enter past number of days to export px metrics (e.g., 7): 3
 ````
 
-### Execute Using Curl
+#### Execute Using Curl
 You can download and execute the script directly from GitHub using the following command:
 
 Example:
