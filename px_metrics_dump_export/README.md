@@ -43,9 +43,9 @@ bash <(curl -sSL https://raw.githubusercontent.com/portworx/scripts/refs/heads/s
 
 Sample Execution:
 ```
-root@ip-10-13-169-97:~# bash <(curl -sSL https://raw.githubusercontent.com/portworx/scripts/refs/heads/sathish-px-metrics-dump-exporter/px_metrics_dump_export/px_metrics_dump_exporter.sh)
-Enter Prometheus namespace where PX metrics are exported (e.g., 'portworx' if px-built-in prometheus, 'openshift-user-workload-monitoring' if OCP Thanos-Prometheus): portworx
-Enter past number of days to export px metrics (e.g., 7): 7
+$ bash <(curl -sSL https://raw.githubusercontent.com/portworx/scripts/refs/heads/sathish-px-metrics-dump-exporter/px_metrics_dump_export/px_metrics_dump_exporter.sh)
+[USER-INPUT-1] Enter Prometheus namespace where PX metrics are exported (e.g., 'portworx' if px-built-in prometheus, 'openshift-user-workload-monitoring' if OCP Thanos-Prometheus): portworx
+[USER-INPUT-1] Enter past number of days to export px metrics (e.g., 7): 7
 Calculating time range for last 7 day(s)...
 Found Prometheus pod: prometheus-px-prometheus-0
 
@@ -75,4 +75,5 @@ Done.
 ---
 
 ***Sample Screenshot for executing "px_metrics_dump_exporter.sh"***
-<img width="1339" height="587" alt="Screenshot 2025-11-04 at 3 45 20 PM" src="https://github.com/user-attachments/assets/60b92bda-d285-477c-971b-0befb0e7f41f" />
+
+<img width="1417" height="422" alt="Screenshot 2025-11-06 at 10 00 56 AM" src="https://github.com/user-attachments/assets/c4a5a70f-b4d6-415c-a983-603892c9d8d4" />
