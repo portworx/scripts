@@ -14,7 +14,7 @@ Extract the px-metrics from prometheus and export to a file. This script generat
 | **Parameter** | **Description**                                                                 | **Example**                          |
 |---------------|---------------------------------------------------------------------------------|--------------------------------------|
 | `--match-prefix`          | Metric name prefix; expands to --match '{__name__=~"(prefix)_.*"}'. Can be repeated. Defaults to px (i.e., px_*)                                   | `--match-prefix px`                      |
-| `--output`          |  Save dump to a local file (default: px_metrics_export_<YYYYMMDD>_<HHMMSS>.om)                                  | `---output px-metrics_prod_cluster.om`                      |
+| `--output`          |  Save dump to a local file (default: px_metrics_export_<YYYYMMDD>_<HHMMSS>.om)                                  | `--output px-metrics_prod_cluster.om`                      |
 | `--cli`          | CLI to use (default: auto-detect; prefers kubectl, falls back to oc)                                       | `--cli oc`                 |
 | `--help`          | how this help message and exit                                               | `--help`                   |
 
