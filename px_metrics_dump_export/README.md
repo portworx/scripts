@@ -7,7 +7,7 @@ Extract the px-metrics from prometheus and export to a file. This script generat
 | **Parameter** | **Description**                                                                 | **Example**                          |
 |---------------|---------------------------------------------------------------------------------|--------------------------------------|
 | `--prom-ns`   | Namespace where Prometheus is running and scrapping px-metrics                  | `--prom-ns portworx` for portworx built=in prometheus, --prom-ns openshift-user-workload-monitoring` for OCP thanos         |
-| `--since-days` [OR] `--min-ms <ms> [--max-ms <ms>]`| --since-days -> Use last N days to automatically set min/max time [OR] --min-ms <ms> [--max-ms <ms>] Explicit minimum time (epoch ms), with optional max (defaults to now) | `--since-days 3` [OR]--min-ms 1730000000000 --max-ms 1730100000000|
+| `--since-days` [OR] `--min-ms <ms> [--max-ms <ms>]`| --since-days --> Use last N days to automatically set min/max time   [OR]    `--min-ms <ms> [--max-ms <ms>]` --> Explicit minimum time (epoch ms), with optional max (defaults to now) | `--since-days 3` [OR]`--min-ms 1730000000000 --max-ms 1730100000000`|
 
 
 ### Optional Parameters
