@@ -30,8 +30,8 @@ Example:
 If no parameters are passed, the script will prompt for input.
 ````bash
 ./px_metrics_dump_exporter.sh 
-Enter Prometheus namespace where PX metrics are exported (e.g., 'portworx' if px-built-in prometheus, 'openshift-user-workload-monitoring' if OCP Thanos-Prometheus): portworx
-Enter past number of days to export px metrics (e.g., 7): 3
+[USER-INPUT-1] Enter Prometheus namespace where PX metrics are exported (e.g., 'portworx' if px-built-in prometheus, 'openshift-user-workload-monitoring' if OCP Thanos-Prometheus): portworx
+[USER-INPUT-2] Enter past number of days to export px metrics (e.g., 7): 3
 ````
 
 ### Execute Using Curl
