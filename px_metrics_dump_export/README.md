@@ -45,7 +45,7 @@ Sample Execution:
 ```
 $ bash <(curl -sSL https://raw.githubusercontent.com/portworx/scripts/refs/heads/sathish-px-metrics-dump-exporter/px_metrics_dump_export/px_metrics_dump_exporter.sh)
 [USER-INPUT-1] Enter Prometheus namespace where PX metrics are exported (e.g., 'portworx' if px-built-in prometheus, 'openshift-user-workload-monitoring' if OCP Thanos-Prometheus): portworx
-[USER-INPUT-1] Enter past number of days to export px metrics (e.g., 7): 7
+[USER-INPUT-2] Enter past number of days to export px metrics (e.g., 7): 7
 Calculating time range for last 7 day(s)...
 Found Prometheus pod: prometheus-px-prometheus-0
 
