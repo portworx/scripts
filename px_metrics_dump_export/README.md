@@ -36,6 +36,7 @@ Enter past number of days to export px metrics (e.g., 7): 3
 
 ### Execute Using Curl
 You can download and execute the script directly from GitHub using the following command:
+
 Example:
 ```bash
 bash <(curl -sSL https://raw.githubusercontent.com/portworx/scripts/refs/heads/sathish-px-metrics-dump-exporter/px_metrics_dump_export/px_metrics_dump_exporter.sh)
