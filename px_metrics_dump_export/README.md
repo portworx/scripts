@@ -1,4 +1,4 @@
-# px_gmetrics_dump_exporter.sh
+# px_metrics_dump_exporter.sh
 
 ## Description
 Extract the px-metrics from prometheus and export to a file. This script generates the tarball file with the px_metrics_export values and analyse the file for presence of metrics
