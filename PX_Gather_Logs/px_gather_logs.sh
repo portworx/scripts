@@ -135,6 +135,7 @@ setup_output_dirs() {
 
 # List of the cluster names we want to exclude from diag name (default ones)
 invalid_cluster_names=("default" "kubernetes" "cluster.local")
+cluster_name=${cluster_name##*/}
 
 cluster_part=""
 if [[ -z "$file_prefix" && -n "$cluster_name" ]]; then
