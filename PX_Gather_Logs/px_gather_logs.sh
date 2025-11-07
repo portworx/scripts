@@ -137,8 +137,8 @@ setup_output_dirs() {
 invalid_cluster_names=("default" "kubernetes" "cluster.local")
 
 
-cluster_name=${cluster_name##*/} #Consider the string after "/" if cluster name has "/"
-cluster_name=${cluster_name//:/_}     # replace ':' with '_'
+cluster_name_derived=${cluster_name##*/} #Consider the string after "/" if cluster name has "/"
+cluster_name_derived=${cluster_name_derived//:/_}     # replace ':' with '_'
 
 cluster_part=""
 if [[ -z "$file_prefix" && -n "$cluster_name" ]]; then
@@ -151,7 +151,7 @@ if [[ -z "$file_prefix" && -n "$cluster_name" ]]; then
   done
 
   if [[ "$skip_cluster" == false ]]; then
-    cluster_part="${cluster_name}_"
+    cluster_part="${cluster_name_derived}_"
   fi
 fi
 
