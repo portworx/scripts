@@ -23,7 +23,7 @@
 #
 # ================================================================
 
-SCRIPT_VERSION="25.10.2"
+SCRIPT_VERSION="25.11.0"
 
 
 # Function to display usage
@@ -135,6 +135,8 @@ setup_output_dirs() {
 
 # List of the cluster names we want to exclude from diag name (default ones)
 invalid_cluster_names=("default" "kubernetes" "cluster.local")
+
+#Consider the string after "/" if cluster name has "/"
 cluster_name=${cluster_name##*/}
 
 cluster_part=""
