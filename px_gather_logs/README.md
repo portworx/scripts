@@ -52,16 +52,16 @@ Choose an option (PX/PXB) (Enter PX for Portworx Enterprise/CSI, Enter PXB for P
 ### Execute Using Curl
 You can download and execute the script directly from GitHub using the following command:
 ```bash
-curl -ssL https://raw.githubusercontent.com/portworx/scripts/refs/heads/main/PX_Gather_Logs/px_gather_logs.sh | bash -s -- -n <namespace> -c <kubectl/oc> -o <PX/PXB>
+curl -ssL https://raw.githubusercontent.com/portworx/support-external-scripts/refs/heads/main/px_gather_logs/px_gather_logs.sh | bash -s -- -n <namespace> -c <kubectl/oc> -o <PX/PXB>
 ```
 Example:
 ```bash
-curl -ssL https://raw.githubusercontent.com/portworx/scripts/refs/heads/main/PX_Gather_Logs/px_gather_logs.sh | bash -s -- -n portworx -c kubectl -o PX
+curl -ssL https://raw.githubusercontent.com/portworx/support-external-scripts/refs/heads/main/px_gather_logs/px_gather_logs.sh | bash -s -- -n portworx -c kubectl -o PX
 ```
 ### Direct upload to FTPS 
 Direct FTP upload to ftps.purestorage.com can be performed through the script if you have the credentials associated with the corresponding case. You can use the optional -u and -p arguments to provide the username and password
 ```bash
-curl -ssL https://raw.githubusercontent.com/portworx/scripts/refs/heads/main/PX_Gather_Logs/px_gather_logs.sh | bash -s -- -n <namespace> -c <kubectl/oc> -o <PX/PXB> -u <ftpsusername> -p <ftpspassword>
+curl -ssL https://raw.githubusercontent.com/portworx/support-external-scripts/refs/heads/main/px_gather_logs/px_gather_logs.sh | bash -s -- -n <namespace> -c <kubectl/oc> -o <PX/PXB> -u <ftpsusername> -p <ftpspassword>
 ```
 ---
 
