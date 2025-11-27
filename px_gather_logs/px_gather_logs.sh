@@ -865,6 +865,22 @@ common_commands_and_files=(
   "get leases -A -o yaml" "k8s_oth/leases.yaml"
 )
 
+ocp_common_commands_and_files=(
+  "get scc" "k8s_oth/ocp_scc.txt"
+  "get scc -o yaml" "k8s_oth/ocp_scc.yaml"
+  )
+
+ocp_px_commands_and_files=(  
+  "get consoleplugins" "k8s_oth/ocp_consoleplugins.txt"
+  "get console.config" "k8s_oth/ocp_console_config.txt"
+  "get console.operator" "k8s_oth/ocp_onsole_operator.txt"
+  "get csv -n "$namespace"  " "k8s_px/px_ocp_csv.txt"
+  "get consoleplugins -o yaml" "k8s_oth/ocp_consoleplugins.yaml"
+  "get console.config -o yaml" "k8s_oth/ocp_console_config.yaml"
+  "get console.operator -o yaml" "k8s_oth/ocp_console_operator.yaml"
+  "get csv -n "$namespace" -o yaml" "k8s_px/px_ocp_csv.yaml"
+  )
+
 # Create a temporary directory for storing outputs
 #mkdir -p "$output_dir"
 #mkdir -p "${sub_dir[@]}"
@@ -1015,6 +1031,22 @@ if $cli api-versions | grep -q 'openshift'; then
   LOG_FILE="${output_dir}/logs/${POD}.log"
   $cli logs -n openshift-kube-apiserver "$POD" --tail -1 --all-containers > "$LOG_FILE"
   done
+
+  if [[ "$option" == "PX" ]]; then
+    {
+    PODS=$($cli get pods -n openshift-console-operator -l name=console-operator -o jsonpath="{.items[*].metadata.name}")
+    for POD in $PODS; do
+    LOG_FILE="${output_dir}/logs/${POD}.log"
+    $cli logs -n openshift-console-operator "$POD" --tail -1 --all-containers > "$LOG_FILE"
+    done
+
+    PODS=$($cli get pods -n openshift-console -l component=ui -o jsonpath="{.items[*].metadata.name}")
+    for POD in $PODS; do
+    LOG_FILE="${output_dir}/logs/${POD}.log"
+    $cli logs -n openshift-console "$POD" --tail -1 --all-containers > "$LOG_FILE"
+    done
+    }
+  fi
 fi
 
 # Execute other commands 
@@ -1107,6 +1139,25 @@ extract_common_commands_op() {
   done
 }
 
+extract_ocp_specific_commands_op() {
+  #echo "$(date '+%Y-%m-%d %H:%M:%S'): Extracting common commands..."
+  for ((i=0; i<${#ocp_common_commands_and_files[@]}; i+=2)); do
+    cmd="${ocp_common_commands_and_files[i]}"
+    output_file="$output_dir/${ocp_common_commands_and_files[i+1]}"
+    #echo ">>> Running: kubectl $cmd > $file"
+    $cli $cmd > "$output_file" 2>&1
+  done
+
+  if [[ "$option" == "PX" ]]; then
+    for ((i=0; i<${#ocp_px_commands_and_files[@]}; i+=2)); do
+      cmd="${ocp_px_commands_and_files[i]}"
+      output_file="$output_dir/${ocp_px_commands_and_files[i+1]}"
+      #echo ">>> Running: kubectl $cmd > $file"
+      $cli $cmd > "$output_file" 2>&1
+    done
+  fi
+}
+
 # Extract storkctl get output of stork managed objects to have better list representation than kubectl get
 
 extract_storkctl_op() {
@@ -1125,6 +1176,9 @@ print_progress 9
 extract_masked_data
 print_progress 10
 extract_common_commands_op
+if $cli api-versions | grep -q 'openshift'; then
+extract_ocp_specific_commands_op
+fi
 print_progress 11
 extract_storkctl_op
 
